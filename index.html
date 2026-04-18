@@ -471,12 +471,65 @@
     </div>
   </div>
 
+  <!-- AJUSTES -->
+  <div class="section" id="sec-ajustes">
+    <div class="card">
+      <div class="card-title">Seguridad — Cambiar PIN</div>
+      <div id="ajustes-step-actual">
+        <div style="font-size:14px;font-weight:500;text-align:center;margin-bottom:4px;">Paso 1 de 2</div>
+        <div style="font-size:13px;color:var(--text2);text-align:center;margin-bottom:12px;">Ingresa tu PIN actual</div>
+        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:14px;">
+          <div class="cp-dot" id="aa0"></div><div class="cp-dot" id="aa1"></div>
+          <div class="cp-dot" id="aa2"></div><div class="cp-dot" id="aa3"></div>
+        </div>
+        <div class="pin-change-grid">
+          <button class="pcb" onclick="apPress('a','1')">1</button><button class="pcb" onclick="apPress('a','2')">2</button><button class="pcb" onclick="apPress('a','3')">3</button>
+          <button class="pcb" onclick="apPress('a','4')">4</button><button class="pcb" onclick="apPress('a','5')">5</button><button class="pcb" onclick="apPress('a','6')">6</button>
+          <button class="pcb" onclick="apPress('a','7')">7</button><button class="pcb" onclick="apPress('a','8')">8</button><button class="pcb" onclick="apPress('a','9')">9</button>
+          <button class="pcb" onclick="apClear('a')" style="font-size:13px;">Borrar</button>
+          <button class="pcb" onclick="apPress('a','0')">0</button>
+          <button class="pcb" onclick="apVerificar()" style="font-size:13px;background:var(--blue-l);color:var(--blue);">OK</button>
+        </div>
+      </div>
+      <div id="ajustes-step-nuevo" style="display:none;">
+        <div style="font-size:14px;font-weight:500;text-align:center;margin-bottom:4px;">Paso 2 de 2</div>
+        <div style="font-size:13px;color:var(--text2);text-align:center;margin-bottom:12px;" id="ap-nuevo-label">Ingresa tu nuevo PIN</div>
+        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:14px;">
+          <div class="cp-dot" id="an0"></div><div class="cp-dot" id="an1"></div>
+          <div class="cp-dot" id="an2"></div><div class="cp-dot" id="an3"></div>
+        </div>
+        <div class="pin-change-grid">
+          <button class="pcb" onclick="apPress('n','1')">1</button><button class="pcb" onclick="apPress('n','2')">2</button><button class="pcb" onclick="apPress('n','3')">3</button>
+          <button class="pcb" onclick="apPress('n','4')">4</button><button class="pcb" onclick="apPress('n','5')">5</button><button class="pcb" onclick="apPress('n','6')">6</button>
+          <button class="pcb" onclick="apPress('n','7')">7</button><button class="pcb" onclick="apPress('n','8')">8</button><button class="pcb" onclick="apPress('n','9')">9</button>
+          <button class="pcb" onclick="apClear('n')" style="font-size:13px;">Borrar</button>
+          <button class="pcb" onclick="apPress('n','0')">0</button>
+          <button class="pcb" onclick="apConfirmar()" style="font-size:13px;background:var(--blue-l);color:var(--blue);">OK</button>
+        </div>
+        <button onclick="apVolver()" style="width:100%;padding:10px;background:none;border:0.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;color:var(--text2);margin-top:4px;">Volver al paso 1</button>
+      </div>
+    </div>
+
+    <div class="about-bar">
+      <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:8px;">
+        <rect width="200" height="200" rx="44" fill="#185FA5"/>
+        <rect x="82" y="44" width="36" height="112" rx="8" fill="white"/>
+        <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
+      </svg><br>
+      <strong style="color:var(--text);">MediBitácora Pro v1.0</strong><br>
+      © 2025 Gustavo Molina Zafra · Todos los derechos reservados<br>
+      Uso personal y privado exclusivamente<br>
+      <span style="font-size:11px;">Esta app no constituye asesoramiento médico.</span>
+    </div>
+  </div>
+
   <div class="bottom-nav">
     <button class="nav-btn active" id="nav-evolucion" onclick="setSection('evolucion')"><span class="nav-icon">📈</span>Evolución</button>
     <button class="nav-btn" id="nav-tratamientos" onclick="setSection('tratamientos')"><span class="nav-icon">💊</span>Tratamientos</button>
     <button class="nav-btn" id="nav-vademecum" onclick="setSection('vademecum')"><span class="nav-icon">💡</span>Vademécum</button>
     <button class="nav-btn" id="nav-informes" onclick="setSection('informes')"><span class="nav-icon">📁</span>Informes</button>
     <button class="nav-btn" id="nav-resumen" onclick="setSection('resumen')"><span class="nav-icon">🩺</span>Resumen</button>
+    <button class="nav-btn" id="nav-ajustes" onclick="setSection('ajustes')"><span class="nav-icon">⚙️</span>Ajustes</button>
   </div>
 </div>
 
@@ -496,7 +549,7 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPro
 function instalarPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('installBanner').classList.remove('show');});}}
 
 // SERVICE WORKER
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/medibitacora-pro/sw.js',{scope:'/medibitacora-pro/'}).catch(()=>{});});}
 
 function showToast(msg,err=false){const t=document.getElementById('toastEl');t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
@@ -516,7 +569,61 @@ async function sbGet(t,p=''){const r=await fetch(`${SB_URL}/rest/v1/${t}?${p}`,{
 async function sbPost(t,b){const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());}
 
 // SECTIONS
-function setSection(s){['evolucion','tratamientos','informes','vademecum','resumen'].forEach(id=>{document.getElementById('sec-'+id).classList.remove('active');document.getElementById('nav-'+id).classList.remove('active');});document.getElementById('sec-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='tratamientos')cargarMeds();if(s==='informes')cargarDocs();if(s==='resumen')cargarResumen();}
+function setSection(s){['evolucion','tratamientos','informes','vademecum','resumen','ajustes'].forEach(id=>{document.getElementById('sec-'+id).classList.remove('active');document.getElementById('nav-'+id).classList.remove('active');});document.getElementById('sec-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='tratamientos')cargarMeds();if(s==='informes')cargarDocs();if(s==='resumen')cargarResumen();}
+
+// CAMBIAR PIN (sección Ajustes)
+let apVals={a:'',n:''};let apFase='ingreso';let apPrimerNuevo='';
+function apPress(m,d){if(apVals[m].length>=4)return;apVals[m]+=d;apUpdateDots(m);}
+function apClear(m){apVals[m]=apVals[m].slice(0,-1);apUpdateDots(m);}
+function apUpdateDots(m){const p=m==='a'?'aa':'an';for(let i=0;i<4;i++){const e=document.getElementById(p+i);if(!e)return;e.classList.remove('filled','error','ok');if(i<apVals[m].length)e.classList.add('filled');}}
+function apSetDots(p,cls){for(let i=0;i<4;i++){const e=document.getElementById(p+i);if(!e)return;e.classList.remove('filled','error','ok');if(cls)e.classList.add(cls);}}
+function apVerificar(){
+  if(apVals.a.length<4){showToast('Ingresa 4 dígitos',true);return;}
+  if(apVals.a===getPin()){
+    apSetDots('aa','ok');
+    setTimeout(()=>{
+      document.getElementById('ajustes-step-actual').style.display='none';
+      document.getElementById('ajustes-step-nuevo').style.display='block';
+      apFase='ingreso';apPrimerNuevo='';
+      document.getElementById('ap-nuevo-label').textContent='Ingresa tu nuevo PIN';
+      apVals.n='';apUpdateDots('n');
+    },400);
+  } else {
+    apSetDots('aa','error');apVals.a='';
+    setTimeout(()=>apUpdateDots('a'),700);
+    showToast('PIN incorrecto',true);
+  }
+}
+function apConfirmar(){
+  if(apVals.n.length<4){showToast('Ingresa 4 dígitos',true);return;}
+  if(apFase==='ingreso'){
+    apPrimerNuevo=apVals.n;apVals.n='';apUpdateDots('n');
+    document.getElementById('ap-nuevo-label').textContent='Confirma tu nuevo PIN';
+    apFase='confirmar';showToast('Repite el nuevo PIN para confirmar');
+  } else {
+    if(apVals.n===apPrimerNuevo){
+      localStorage.setItem(PIN_KEY,apPrimerNuevo);
+      apSetDots('an','ok');
+      showToast('✓ PIN cambiado correctamente');
+      setTimeout(()=>{
+        document.getElementById('ajustes-step-nuevo').style.display='none';
+        document.getElementById('ajustes-step-actual').style.display='block';
+        apVals={a:'',n:''};apUpdateDots('a');apUpdateDots('n');apFase='ingreso';apPrimerNuevo='';
+      },1800);
+    } else {
+      apSetDots('an','error');apVals.n='';
+      setTimeout(()=>apUpdateDots('n'),700);
+      apFase='ingreso';
+      document.getElementById('ap-nuevo-label').textContent='No coinciden. Ingresa el nuevo PIN';
+      showToast('Los PINs no coinciden',true);
+    }
+  }
+}
+function apVolver(){
+  document.getElementById('ajustes-step-nuevo').style.display='none';
+  document.getElementById('ajustes-step-actual').style.display='block';
+  apVals={a:'',n:''};apUpdateDots('a');apUpdateDots('n');apFase='ingreso';apPrimerNuevo='';
+}
 
 // REGISTROS
 async function cargarRegistros(){const el=document.getElementById('log-list');el.innerHTML='<div class="loader">Cargando...</div>';try{let p='order=fecha.desc&limit=60';const d=document.getElementById('f-desde').value,h=document.getElementById('f-hasta').value;if(d)p+=`&fecha=gte.${d}`;if(h)p+=`&fecha=lte.${h}`;const data=await sbGet('registros',p);cachedLogs=data;actualizarStats(data);renderChart(data);el.innerHTML=data.length?data.map(l=>`<div class="log-item"><div class="log-date">${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div><div class="log-row"><div class="log-text">${l.estado} · ${(l.sintomas||'').substring(0,40)}${(l.sintomas||'').length>40?'…':''}</div><span class="chip">Dolor ${l.dolor}</span></div>${l.mejoria?`<div style="font-size:13px;color:var(--green);margin-top:3px;">+ ${l.mejoria}</div>`:''}</div>`).join(''):'<div class="empty">Sin registros aún.</div>';}catch(e){el.innerHTML='<div class="empty">Error cargando.</div>';}}

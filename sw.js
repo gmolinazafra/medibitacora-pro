@@ -63,11 +63,11 @@ self.addEventListener('notificationclick', event => {
 });
 const CACHE_NAME_ASSETS = 'medibitacora-assets-v2';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
+  '/medibitacora-pro/',
+  '/medibitacora-pro/index.html',
+  '/medibitacora-pro/manifest.json',
+  '/medibitacora-pro/icon-192.png',
+  '/medibitacora-pro/icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
 ];
