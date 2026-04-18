@@ -185,6 +185,13 @@
 
 <div class="toast-wrap"><div id="toastEl" class="toast"></div></div>
 
+<!-- BANNER NOTIFICACIONES -->
+<div id="notif-banner" style="display:none;background:#FFF3CD;border-bottom:2px solid #FBBF24;padding:12px 16px;font-size:13px;color:#92400E;align-items:center;gap:10px;flex-wrap:wrap;">
+  <span>🔔 Activa las notificaciones para recibir recordatorios de tus medicamentos a la hora exacta</span>
+  <button onclick="pedirPermisoNotificaciones()" style="padding:6px 14px;background:var(--blue);color:white;border:none;border-radius:20px;font-size:13px;cursor:pointer;white-space:nowrap;">Activar</button>
+  <button onclick="document.getElementById('notif-banner').style.display='none'" style="background:none;border:none;font-size:18px;cursor:pointer;color:#92400E;">✕</button>
+</div>
+
 <!-- BANNER INSTALAR -->
 <div class="install-banner" id="installBanner">
   <span>📲 Instala MediBitácora en tu móvil</span>
@@ -501,7 +508,7 @@ function pinPress(d){if(pinValue.length>=4)return;pinValue+=d;updateDots();}
 function pinClear(){pinValue=pinValue.slice(0,-1);updateDots();}
 function updateDots(){for(let i=0;i<4;i++){const e=document.getElementById('d'+i);e.classList.remove('filled','error');if(i<pinValue.length)e.classList.add('filled');}}
 function pinSubmit(){if(pinValue.length<4){showToast('Ingresa 4 dígitos',true);return;}if(pinValue===getPin()){unlockApp();}else{pinValue='';for(let i=0;i<4;i++){const e=document.getElementById('d'+i);e.classList.remove('filled');e.classList.add('error');}setTimeout(()=>{for(let i=0;i<4;i++)document.getElementById('d'+i).classList.remove('error');},700);showToast('PIN incorrecto',true);}}
-function unlockApp(){document.getElementById('pinScreen').style.display='none';document.getElementById('mainApp').style.display='block';init();}
+function unlockApp(){document.getElementById('pinScreen').style.display='none';document.getElementById('mainApp').style.display='block';init();mostrarBannerNotificaciones();}
 function lockApp(){document.getElementById('mainApp').style.display='none';pinValue='';updateDots();document.getElementById('pinTitle').textContent='App bloqueada';document.getElementById('pinSub').textContent='Ingresa tu PIN para continuar';document.getElementById('pinHint').textContent='';document.getElementById('pinScreen').style.display='flex';}
 
 // SB
@@ -528,7 +535,7 @@ function renderFrec(s){const f=parseFrec(s);if(f.tipo==='diaria'){const pills=(f
 function frecTipo(s){try{return JSON.parse(s).tipo||'otro';}catch(e){return'otro';}}
 
 // MEDS
-async function guardarMed(){const btn=document.getElementById('btn-med'),nombre=document.getElementById('m-nombre').value.trim();if(!nombre){showToast('Escribe el nombre',true);return;}const tipo=document.getElementById('m-freq-tipo').value;if(!tipo){showToast('Selecciona frecuencia',true);return;}if(tipo==='semanal'&&diasSel.length===0){showToast('Selecciona al menos un día',true);return;}btn.disabled=true;btn.textContent='Guardando...';try{await sbPost('medicamentos',{nombre,dosis:document.getElementById('m-dosis').value,frecuencia:buildFrecStr(),fecha_inicio:document.getElementById('m-inicio').value||null,fecha_fin:document.getElementById('m-fin').value||null,estado:document.getElementById('m-estado').value});document.getElementById('m-nombre').value='';document.getElementById('m-dosis').value='';document.getElementById('m-freq-tipo').value='';diasSel=[];document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('sel'));['diaria','semanal','otro'].forEach(s=>document.getElementById('freq-'+s).classList.remove('active'));showToast('✓ Medicamento guardado');cargarMeds();}catch(e){showToast('Error al guardar',true);}btn.disabled=false;btn.textContent='Agregar medicamento';}
+async function guardarMed(){const btn=document.getElementById('btn-med'),nombre=document.getElementById('m-nombre').value.trim();if(!nombre){showToast('Escribe el nombre',true);return;}const tipo=document.getElementById('m-freq-tipo').value;if(!tipo){showToast('Selecciona frecuencia',true);return;}if(tipo==='semanal'&&diasSel.length===0){showToast('Selecciona al menos un día',true);return;}btn.disabled=true;btn.textContent='Guardando...';try{await sbPost('medicamentos',{nombre,dosis:document.getElementById('m-dosis').value,frecuencia:buildFrecStr(),fecha_inicio:document.getElementById('m-inicio').value||null,fecha_fin:document.getElementById('m-fin').value||null,estado:document.getElementById('m-estado').value});document.getElementById('m-nombre').value='';document.getElementById('m-dosis').value='';document.getElementById('m-freq-tipo').value='';diasSel=[];document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('sel'));['diaria','semanal','otro'].forEach(s=>document.getElementById('freq-'+s).classList.remove('active'));showToast('✓ Medicamento guardado');cargarMeds();if(Notification.permission==='granted')programarTodasLasNotificaciones();}catch(e){showToast('Error al guardar',true);}btn.disabled=false;btn.textContent='Agregar medicamento';}
 async function cargarMeds(){const el=document.getElementById('med-list');el.innerHTML='<div class="loader">Cargando...</div>';try{const estado=medTab==='activo'?'Activo':'Finalizado';const data=await sbGet('medicamentos',`estado=eq.${estado}&order=created_at.desc`);todosLosMeds=data;cachedMeds=data;renderMeds();}catch(e){el.innerHTML='<div class="empty">Error cargando.</div>';}}
 function setMedTab(tab){medTab=tab;document.getElementById('tab-a').classList.toggle('active',tab==='activo');document.getElementById('tab-f').classList.toggle('active',tab==='finalizado');cargarMeds();}
 function setFiltro(btn,f){filtroActual=f;document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMeds();}
@@ -560,6 +567,90 @@ async function exportarPDF(){showToast('Generando PDF...');try{let meds=cachedMe
 
 // INIT
 function init(){const today=new Date().toISOString().split('T')[0];document.getElementById('r-fecha').value=today;document.getElementById('m-inicio').value=today;document.getElementById('d-fecha').value=today;actualizarHoras();sbGet('registros','limit=1').then(()=>{document.getElementById('hstatus').textContent='✓ Conectado · '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});cargarRegistros();setTimeout(checkAlarm,800);}).catch(()=>{document.getElementById('hstatus').textContent='⚠ Sin conexión';showToast('Sin conexión a internet',true);});}
+// NOTIFICACIONES PUSH
+async function pedirPermisoNotificaciones(){
+  if(!('Notification' in window)){showToast('Tu navegador no soporta notificaciones',true);return;}
+  const permiso = await Notification.requestPermission();
+  if(permiso === 'granted'){
+    document.getElementById('notif-banner').style.display='none';
+    localStorage.setItem('notif_activadas','1');
+    showToast('✓ Notificaciones activadas');
+    programarTodasLasNotificaciones();
+  } else {
+    showToast('Notificaciones denegadas. Actívalas en ajustes del navegador.',true);
+  }
+}
+
+async function programarTodasLasNotificaciones(){
+  if(Notification.permission !== 'granted') return;
+  try {
+    const meds = await sbGet('medicamentos','estado=eq.Activo&order=nombre.asc');
+    if(!meds.length) return;
+
+    // Envía los medicamentos al service worker para que los programe
+    if('serviceWorker' in navigator){
+      const sw = await navigator.serviceWorker.ready;
+      sw.active.postMessage({type:'PROGRAMAR_NOTIFICACIONES', meds});
+    }
+
+    // Programa comprobaciones cada minuto con setInterval como fallback
+    if(window._notifInterval) clearInterval(window._notifInterval);
+    window._notifInterval = setInterval(()=>comprobarHoraMeds(meds), 60000);
+    // Comprueba inmediatamente también
+    comprobarHoraMeds(meds);
+
+    showToast(`✓ ${meds.length} medicamento(s) con recordatorio activo`);
+  } catch(e){}
+}
+
+function comprobarHoraMeds(meds){
+  if(Notification.permission !== 'granted') return;
+  const ahora = new Date();
+  const horaActual = `${String(ahora.getHours()).padStart(2,'0')}:${String(ahora.getMinutes()).padStart(2,'0')}`;
+  const dias = ['D','L','M','X','J','V','S'];
+  const diaActual = dias[ahora.getDay()];
+
+  meds.forEach(med => {
+    try {
+      const f = parseFrec(med.frecuencia || '');
+      let debeNotificar = false;
+
+      if(f.tipo === 'diaria'){
+        debeNotificar = (f.horas || []).includes(horaActual);
+      } else if(f.tipo === 'semanal'){
+        debeNotificar = (f.dias || []).includes(diaActual) && f.hora === horaActual;
+      }
+
+      if(debeNotificar){
+        const tagKey = `notif_${med.nombre}_${horaActual}_${ahora.toDateString()}`;
+        // Evita duplicar la misma notificación en el mismo minuto
+        if(sessionStorage.getItem(tagKey)) return;
+        sessionStorage.setItem(tagKey,'1');
+
+        new Notification('💊 MediBitácora Pro', {
+          body: `Hora de tomar ${med.nombre}${med.dosis ? ' · ' + med.dosis : ''}`,
+          icon: '/icon-192.png',
+          tag: tagKey,
+          requireInteraction: true
+        });
+      }
+    } catch(e){}
+  });
+}
+
+function mostrarBannerNotificaciones(){
+  if(!('Notification' in window)) return;
+  if(Notification.permission === 'granted'){
+    // Ya tiene permiso, programa directamente
+    programarTodasLasNotificaciones();
+  } else if(Notification.permission !== 'denied' && !localStorage.getItem('notif_rechazadas')){
+    // Muestra el banner para pedir permiso
+    setTimeout(()=>{
+      document.getElementById('notif-banner').style.display='flex';
+    }, 2000);
+  }
+}
+
 window.addEventListener('load',()=>{if(localStorage.getItem(SPLASH_KEY)){document.getElementById('splash').style.display='none';mostrarPin();}});
 
 // CAMBIAR PIN
