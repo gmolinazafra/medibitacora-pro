@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="MediBitácora Pro — La app que pone orden en tu salud. Registra tus medicamentos, evolución y genera informes para tu médico."/>
+<title>MediBitácora Pro — Tu salud, bajo control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#185FA5;--blue-d:#0C3E70;--blue-l:#E6F1FB;
+  --green:#1D9E75;--white:#ffffff;--off:#F8F9FC;
+  --text:#0f1923;--text2:#4a5568;--border:rgba(24,95,165,0.12);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;color:var(--blue-d);}
+.nav-cta{padding:10px 22px;background:var(--blue);color:white;border:none;border-radius:50px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;}
+.nav-cta:hover{background:var(--blue-d);transform:translateY(-1px);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 24px 60px;position:relative;overflow:hidden;background:linear-gradient(160deg,#f0f6ff 0%,#ffffff 60%,#e8f4f0 100%);}
+.hero-bg-circle{position:absolute;border-radius:50%;opacity:0.07;}
+.hero-bg-circle.c1{width:600px;height:600px;background:var(--blue);top:-200px;right:-200px;}
+.hero-bg-circle.c2{width:400px;height:400px;background:var(--green);bottom:-150px;left:-100px;}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blue-l);color:var(--blue);padding:6px 14px;border-radius:50px;font-size:13px;font-weight:500;margin-bottom:20px;}
+.hero-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,58px);line-height:1.15;color:var(--blue-d);margin-bottom:20px;}
+.hero-title span{color:var(--blue);}
+.hero-sub{font-size:17px;line-height:1.7;color:var(--text2);margin-bottom:32px;font-weight:300;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:var(--blue);color:white;border:none;border-radius:50px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;box-shadow:0 8px 24px rgba(24,95,165,0.3);}
+.btn-primary:hover{background:var(--blue-d);transform:translateY(-2px);box-shadow:0 12px 32px rgba(24,95,165,0.4);}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:16px 28px;background:transparent;color:var(--blue);border:1.5px solid var(--blue);border-radius:50px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;}
+.btn-secondary:hover{background:var(--blue-l);}
+.hero-price{font-size:13px;color:var(--text2);margin-top:16px;}
+.hero-price strong{color:var(--blue);font-size:22px;}
+
+/* PHONE MOCKUP */
+.phone-wrap{display:flex;justify-content:center;align-items:center;position:relative;}
+.phone{width:260px;background:var(--blue-d);border-radius:40px;padding:14px;box-shadow:0 40px 80px rgba(15,30,50,0.25),0 0 0 8px rgba(24,95,165,0.08);position:relative;}
+.phone-screen{background:#f0f4f8;border-radius:28px;overflow:hidden;}
+.phone-header{background:var(--blue);padding:14px 16px 10px;color:white;}
+.phone-header-row{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
+.phone-eyebrow{font-size:8px;letter-spacing:0.1em;opacity:0.7;}
+.phone-title{font-size:14px;font-weight:600;}
+.phone-status{font-size:9px;opacity:0.65;}
+.phone-body{padding:10px;}
+.phone-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
+.phone-stat{background:white;border-radius:8px;padding:10px;text-align:center;}
+.phone-stat-label{font-size:8px;color:#666;margin-bottom:2px;}
+.phone-stat-val{font-size:18px;font-weight:700;color:var(--blue);}
+.phone-card{background:white;border-radius:8px;padding:10px;margin-bottom:6px;}
+.phone-card-title{font-size:8px;color:#666;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;font-weight:600;}
+.phone-chart{height:50px;display:flex;align-items:flex-end;gap:4px;}
+.phone-bar{background:var(--blue-l);border-radius:3px 3px 0 0;flex:1;position:relative;}
+.phone-bar::after{content:'';position:absolute;bottom:0;left:0;right:0;background:var(--blue);border-radius:3px 3px 0 0;animation:grow 1.5s ease-out forwards;}
+.phone-med{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:0.5px solid #eee;}
+.phone-med:last-child{border-bottom:none;}
+.phone-med-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.phone-med-name{font-size:10px;font-weight:600;flex:1;}
+.phone-med-chip{font-size:8px;padding:2px 6px;border-radius:10px;background:#E6F1FB;color:var(--blue);}
+.phone-nav{display:flex;background:white;border-top:0.5px solid #eee;}
+.phone-nav-btn{flex:1;padding:6px 2px;text-align:center;font-size:7px;color:#999;}
+.phone-nav-btn.active{color:var(--blue);}
+.phone-nav-icon{font-size:12px;display:block;margin-bottom:1px;}
+.float-badge{position:absolute;top:-16px;right:-16px;background:var(--green);color:white;font-size:12px;font-weight:600;padding:8px 14px;border-radius:50px;box-shadow:0 4px 16px rgba(29,158,117,0.35);white-space:nowrap;}
+
+/* FEATURES */
+.section{padding:80px 24px;max-width:1100px;margin:0 auto;}
+.section-label{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:12px;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);color:var(--blue-d);margin-bottom:16px;line-height:1.2;}
+.section-sub{font-size:17px;color:var(--text2);font-weight:300;max-width:560px;line-height:1.7;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px;}
+.feature-card{background:var(--off);border-radius:20px;padding:28px;border:1px solid var(--border);transition:all 0.3s;position:relative;overflow:hidden;}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(24,95,165,0.1);border-color:var(--blue);}
+.feature-icon{width:52px;height:52px;border-radius:14px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+.feature-title{font-size:17px;font-weight:500;color:var(--blue-d);margin-bottom:8px;}
+.feature-desc{font-size:14px;color:var(--text2);line-height:1.65;font-weight:300;}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--green));opacity:0;transition:opacity 0.3s;}
+.feature-card:hover::before{opacity:1;}
+
+/* TESTIMONIALS */
+.testimonials-bg{background:linear-gradient(160deg,#f0f6ff,#e8f8f3);padding:80px 24px;}
+.testimonials-inner{max-width:1100px;margin:0 auto;}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px;}
+.testimonial{background:white;border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(24,95,165,0.06);}
+.testimonial-stars{color:#F59E0B;font-size:16px;margin-bottom:12px;}
+.testimonial-text{font-size:15px;color:var(--text2);line-height:1.7;font-style:italic;margin-bottom:16px;font-weight:300;}
+.testimonial-author{display:flex;align-items:center;gap:10px;}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--blue);}
+.testimonial-name{font-size:14px;font-weight:500;}
+.testimonial-role{font-size:12px;color:var(--text2);}
+
+/* PRICING */
+.pricing-section{padding:80px 24px;text-align:center;}
+.pricing-inner{max-width:480px;margin:0 auto;}
+.pricing-card{background:white;border:2px solid var(--blue);border-radius:28px;padding:40px;box-shadow:0 20px 60px rgba(24,95,165,0.15);position:relative;margin-top:48px;}
+.pricing-best{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:white;font-size:12px;font-weight:600;padding:6px 18px;border-radius:50px;letter-spacing:0.05em;white-space:nowrap;}
+.pricing-name{font-size:14px;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:8px;}
+.pricing-price{font-family:'Playfair Display',serif;font-size:64px;color:var(--blue-d);line-height:1;}
+.pricing-price sup{font-size:28px;vertical-align:top;margin-top:12px;font-family:'DM Sans',sans-serif;}
+.pricing-period{font-size:14px;color:var(--text2);margin-bottom:28px;}
+.pricing-features{list-style:none;text-align:left;margin-bottom:32px;}
+.pricing-features li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid #f0f0f0;font-size:15px;color:var(--text2);}
+.pricing-features li:last-child{border-bottom:none;}
+.pricing-check{width:22px;height:22px;border-radius:50%;background:var(--green-l,#EAF3DE);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:var(--green);}
+.pricing-guarantee{font-size:13px;color:var(--text2);margin-top:16px;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* HOW */
+.how-section{padding:80px 24px;background:var(--off);}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-top:48px;position:relative;}
+.how-step{text-align:center;}
+.how-num{width:52px;height:52px;border-radius:50%;background:var(--blue);color:white;font-family:'Playfair Display',serif;font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.how-title{font-size:16px;font-weight:500;color:var(--blue-d);margin-bottom:8px;}
+.how-desc{font-size:14px;color:var(--text2);line-height:1.65;font-weight:300;}
+
+/* CTA FINAL */
+.cta-section{padding:100px 24px;background:linear-gradient(135deg,var(--blue-d),var(--blue));text-align:center;color:white;}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);margin-bottom:16px;line-height:1.2;}
+.cta-sub{font-size:18px;opacity:0.8;margin-bottom:40px;font-weight:300;}
+.btn-white{display:inline-flex;align-items:center;gap:8px;padding:18px 36px;background:white;color:var(--blue);border:none;border-radius:50px;font-size:17px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;box-shadow:0 8px 32px rgba(0,0,0,0.2);}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,0.3);}
+.cta-guarantee{font-size:13px;opacity:0.65;margin-top:16px;}
+
+/* FOOTER */
+footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;}
+.footer-copy{font-size:12px;opacity:0.5;line-height:1.8;}
+
+/* PAYMENT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:999;padding:20px;backdrop-filter:blur(4px);}
+.modal-overlay.show{display:flex;}
+.modal{background:white;border-radius:24px;padding:32px;width:100%;max-width:420px;text-align:center;}
+.modal-logo{margin-bottom:12px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--blue-d);margin-bottom:6px;}
+.modal-sub{font-size:14px;color:var(--text2);margin-bottom:24px;}
+.modal-price-box{background:var(--blue-l);border-radius:14px;padding:20px;margin-bottom:24px;}
+.modal-price{font-family:'Playfair Display',serif;font-size:48px;color:var(--blue-d);}
+.modal-price sup{font-size:22px;font-family:'DM Sans',sans-serif;vertical-align:top;margin-top:10px;}
+.modal-price-desc{font-size:13px;color:var(--text2);margin-top:4px;}
+.modal-features{text-align:left;margin-bottom:24px;}
+.modal-feat{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:14px;color:var(--text2);}
+.modal-feat-check{color:var(--green);font-size:16px;}
+.modal-btn{width:100%;padding:16px;background:var(--blue);color:white;border:none;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:10px;transition:all 0.2s;}
+.modal-btn:hover{background:var(--blue-d);}
+.modal-note{font-size:12px;color:var(--text2);}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text2);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;}
+  .phone-wrap{order:-1;}
+  .phone{width:220px;}
+  nav{padding:12px 16px;}
+  .hero{padding:90px 20px 50px;}
+}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" rx="44" fill="#185FA5"/>
+      <rect x="82" y="44" width="36" height="112" rx="8" fill="white"/>
+      <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
+    </svg>
+    <span class="nav-logo-text">MediBitácora Pro</span>
+  </div>
+  <a href="#comprar" class="nav-cta" onclick="abrirModal()">Obtener por 2,99€</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-inner">
+    <div class="fade-up">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> App médica personal</div>
+      <h1 class="hero-title">Tu salud,<br><span>bajo control</span></h1>
+      <p class="hero-sub">Registra tus medicamentos, sigue tu evolución día a día y genera informes profesionales para llevar a tu médico. Todo en tu bolsillo.</p>
+      <div class="hero-actions">
+        <a href="#comprar" class="btn-primary" onclick="abrirModal()">
+          Obtener MediBitácora Pro
+        </a>
+        <a href="#funciones" class="btn-secondary">Ver funciones</a>
+      </div>
+      <div class="hero-price">Pago único · <strong>2,99€</strong> · Sin suscripciones</div>
+    </div>
+    <div class="phone-wrap fade-up" style="transition-delay:0.2s;">
+      <div class="float-badge">✓ Disponible ya</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-header">
+            <div class="phone-header-row">
+              <svg width="22" height="22" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="200" height="200" rx="40" fill="rgba(255,255,255,0.2)"/>
+                <rect x="82" y="44" width="36" height="112" rx="7" fill="white"/>
+                <rect x="44" y="82" width="112" height="36" rx="7" fill="white"/>
+              </svg>
+              <div>
+                <div class="phone-eyebrow">GESTIÓN MÉDICA</div>
+                <div class="phone-title">MediBitácora Pro</div>
+              </div>
+            </div>
+            <div class="phone-status">✓ Conectado · Hoy</div>
+          </div>
+          <div class="phone-body">
+            <div class="phone-stat-row">
+              <div class="phone-stat"><div class="phone-stat-label">Registros</div><div class="phone-stat-val">24</div></div>
+              <div class="phone-stat"><div class="phone-stat-label">Dolor prom.</div><div class="phone-stat-val">3.8</div></div>
+            </div>
+            <div class="phone-card">
+              <div class="phone-card-title">Tendencia del dolor</div>
+              <div class="phone-chart">
+                <div class="phone-bar" style="height:60%;"></div>
+                <div class="phone-bar" style="height:75%;"></div>
+                <div class="phone-bar" style="height:50%;"></div>
+                <div class="phone-bar" style="height:65%;"></div>
+                <div class="phone-bar" style="height:40%;"></div>
+                <div class="phone-bar" style="height:55%;"></div>
+                <div class="phone-bar" style="height:38%;"></div>
+              </div>
+            </div>
+            <div class="phone-card">
+              <div class="phone-card-title">Medicación activa</div>
+              <div class="phone-med"><div class="phone-med-dot"></div><span class="phone-med-name">Metotrexato</span><span class="phone-med-chip">Semanal · L</span></div>
+              <div class="phone-med"><div class="phone-med-dot"></div><span class="phone-med-name">Fólico 5mg</span><span class="phone-med-chip">08:00</span></div>
+              <div class="phone-med"><div class="phone-med-dot"></div><span class="phone-med-name">Omeprazol</span><span class="phone-med-chip">2x/día</span></div>
+            </div>
+          </div>
+          <div class="phone-nav">
+            <div class="phone-nav-btn active"><span class="phone-nav-icon">📈</span>Evolución</div>
+            <div class="phone-nav-btn"><span class="phone-nav-icon">💊</span>Trat.</div>
+            <div class="phone-nav-btn"><span class="phone-nav-icon">💡</span>Vadem.</div>
+            <div class="phone-nav-btn"><span class="phone-nav-icon">📁</span>Inf.</div>
+            <div class="phone-nav-btn"><span class="phone-nav-icon">🩺</span>Res.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="funciones">
+  <div class="fade-up">
+    <div class="section-label">Funciones principales</div>
+    <h2 class="section-title">Todo lo que necesitas<br>para gestionar tu salud</h2>
+    <p class="section-sub">Diseñada para pacientes que toman medicación de forma habitual y quieren llevar un seguimiento serio.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-up">
+      <div class="feature-icon">📈</div>
+      <div class="feature-title">Registro de evolución diaria</div>
+      <div class="feature-desc">Anota tu estado, síntomas y nivel de dolor cada día. Visualiza tu progreso en un gráfico de tendencia de los últimos 30 días.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.1s;">
+      <div class="feature-icon">💊</div>
+      <div class="feature-title">Control de medicamentos</div>
+      <div class="feature-desc">Gestiona tu tratamiento actual e historial de medicamentos con frecuencias diarias, semanales y horarios exactos de toma.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.2s;">
+      <div class="feature-icon">💡</div>
+      <div class="feature-title">Vademécum con IA</div>
+      <div class="feature-desc">Consulta cualquier medicamento y obtén información completa: dosis, efectos secundarios, contraindicaciones e interacciones en español.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.3s;">
+      <div class="feature-icon">🩺</div>
+      <div class="feature-title">Resumen para el médico</div>
+      <div class="feature-desc">Genera un informe profesional con tu medicación activa y evolución reciente. Exporta en PDF o envía por email directamente.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.4s;">
+      <div class="feature-icon">📁</div>
+      <div class="feature-title">Archivo de informes</div>
+      <div class="feature-desc">Guarda analíticas, pruebas y documentos médicos con descripción y fecha para tenerlos siempre localizados.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.5s;">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Privacidad total con PIN</div>
+      <div class="feature-desc">Tus datos médicos protegidos con PIN de 4 dígitos. Tus datos se almacenan en tu propia base de datos segura en la nube.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials-bg">
+  <div class="testimonials-inner">
+    <div class="fade-up" style="text-align:center;">
+      <div class="section-label">Lo que dicen los usuarios</div>
+      <h2 class="section-title">Pacientes que ya llevan<br>el control de su salud</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Por fin una app que entiende lo que necesita alguien con una enfermedad crónica. Mi médico quedó impresionado con el informe que le llevé."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MR</div>
+          <div><div class="testimonial-name">María R.</div><div class="testimonial-role">Paciente con artritis reumatoide</div></div>
+        </div>
+      </div>
+      <div class="testimonial fade-up" style="transition-delay:0.1s;">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"El vademécum con IA es increíble. Antes tenía que buscar en mil webs para entender mis medicamentos. Ahora lo tengo todo en un sitio."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JL</div>
+          <div><div class="testimonial-name">José L.</div><div class="testimonial-role">Paciente con tratamiento oncológico</div></div>
+        </div>
+      </div>
+      <div class="testimonial fade-up" style="transition-delay:0.2s;">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Cuido a mi madre mayor y esta app ha cambiado todo. Tengo sus medicamentos organizados con horarios y nunca se nos olvida ninguna toma."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AC</div>
+          <div><div class="testimonial-name">Ana C.</div><div class="testimonial-role">Cuidadora familiar</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="fade-up" style="text-align:center;">
+      <div class="section-label">Cómo funciona</div>
+      <h2 class="section-title">En marcha en 3 minutos</h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step fade-up">
+        <div class="how-num">1</div>
+        <div class="how-title">Compra y accede</div>
+        <div class="how-desc">Pago único de 2,99€. Recibes el enlace de acceso inmediatamente por email.</div>
+      </div>
+      <div class="how-step fade-up" style="transition-delay:0.15s;">
+        <div class="how-num">2</div>
+        <div class="how-title">Instala en tu móvil</div>
+        <div class="how-desc">Abre el enlace en Chrome o Safari y añádela a tu pantalla de inicio como una app nativa.</div>
+      </div>
+      <div class="how-step fade-up" style="transition-delay:0.3s;">
+        <div class="how-num">3</div>
+        <div class="how-title">Empieza a registrar</div>
+        <div class="how-desc">Configura tu PIN, añade tus medicamentos y comienza a llevar el control de tu salud.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="comprar">
+  <div class="pricing-inner">
+    <div class="fade-up">
+      <div class="section-label">Precio</div>
+      <h2 class="section-title">Sin sorpresas,<br>sin suscripciones</h2>
+    </div>
+    <div class="pricing-card fade-up">
+      <div class="pricing-best">Acceso completo de por vida</div>
+      <div class="pricing-name">MediBitácora Pro</div>
+      <div class="pricing-price"><sup>€</sup>2,99</div>
+      <div class="pricing-period">Pago único · Tuyo para siempre</div>
+      <ul class="pricing-features">
+        <li><div class="pricing-check">✓</div>Registro diario de evolución</li>
+        <li><div class="pricing-check">✓</div>Control de medicamentos con horarios</li>
+        <li><div class="pricing-check">✓</div>Vademécum con IA en español</li>
+        <li><div class="pricing-check">✓</div>Exportar informes en PDF</li>
+        <li><div class="pricing-check">✓</div>Envío de informes por email</li>
+        <li><div class="pricing-check">✓</div>Archivo de documentos médicos</li>
+        <li><div class="pricing-check">✓</div>Protección con PIN personal</li>
+        <li><div class="pricing-check">✓</div>Funciona en móvil, tablet y PC</li>
+        <li><div class="pricing-check">✓</div>Actualizaciones incluidas</li>
+      </ul>
+      <button class="btn-primary" style="width:100%;justify-content:center;font-size:17px;padding:18px;" onclick="abrirModal()">
+        Obtener MediBitácora Pro · 2,99€
+      </button>
+      <div class="pricing-guarantee">🔒 Pago seguro · Acceso inmediato</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="fade-up">
+    <h2 class="cta-title">¿Listo para tomar<br>el control de tu salud?</h2>
+    <p class="cta-sub">Únete a los pacientes que ya llevan su salud de forma organizada y profesional.</p>
+    <button class="btn-white" onclick="abrirModal()">Empezar ahora · 2,99€</button>
+    <div class="cta-guarantee">Pago único · Sin suscripciones · Acceso inmediato</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MediBitácora Pro</div>
+  <div class="footer-copy">
+    © 2025 Gustavo Molina Zafra · Todos los derechos reservados<br>
+    Uso personal · Esta app no constituye asesoramiento médico<br>
+    <a href="mailto:contacto@medibitacora.com" style="color:rgba(255,255,255,0.4);font-size:12px;">contacto@medibitacora.com</a>
+  </div>
+</footer>
+
+<!-- MODAL PAGO -->
+<div class="modal-overlay" id="modal" onclick="cerrarModalFuera(event)">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="cerrarModal()">✕</button>
+    <div class="modal-logo">
+      <svg width="52" height="52" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="200" rx="44" fill="#185FA5"/>
+        <rect x="82" y="44" width="36" height="112" rx="8" fill="white"/>
+        <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
+      </svg>
+    </div>
+    <div class="modal-title">MediBitácora Pro</div>
+    <div class="modal-sub">Acceso completo de por vida</div>
+    <div class="modal-price-box">
+      <div class="modal-price"><sup>€</sup>2,99</div>
+      <div class="modal-price-desc">Pago único · Sin suscripciones · Tuyo para siempre</div>
+    </div>
+    <div class="modal-features">
+      <div class="modal-feat"><span class="modal-feat-check">✓</span> Todas las funciones incluidas</div>
+      <div class="modal-feat"><span class="modal-feat-check">✓</span> Vademécum con IA en español</div>
+      <div class="modal-feat"><span class="modal-feat-check">✓</span> Exportar PDF e informes por email</div>
+      <div class="modal-feat"><span class="modal-feat-check">✓</span> Acceso inmediato tras el pago</div>
+    </div>
+    <button class="modal-btn" onclick="irAPago()">Pagar con tarjeta · 2,99€</button>
+    <div class="modal-note">🔒 Pago seguro · Recibirás el enlace de acceso por email</div>
+  </div>
+</div>
+
+<script>
+// MODAL
+function abrirModal(){document.getElementById('modal').classList.add('show');document.body.style.overflow='hidden';}
+function cerrarModal(){document.getElementById('modal').classList.remove('show');document.body.style.overflow='';}
+function cerrarModalFuera(e){if(e.target===document.getElementById('modal'))cerrarModal();}
+
+// PAGO — conecta aquí tu Stripe, PayPal o Gumroad
+function irAPago(){
+  // Reemplaza esta URL con tu enlace de pago real (Stripe, Gumroad, PayPal, etc.)
+  const urlPago = 'https://buy.stripe.com/TU_ENLACE_AQUI';
+  alert('Aquí conecta tu pasarela de pago (Stripe, Gumroad o PayPal).\n\nReemplaza la URL en el código con tu enlace real.');
+  // window.open(urlPago, '_blank');
+}
+
+// SCROLL ANIMATIONS
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// NAV scroll effect
+window.addEventListener('scroll',()=>{
+  const nav=document.querySelector('nav');
+  nav.style.boxShadow=window.scrollY>20?'0 2px 20px rgba(24,95,165,0.1)':'none';
+});
+</script>
+</body>
+</html>
