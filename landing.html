@@ -345,17 +345,129 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
       <div class="how-step fade-up">
         <div class="how-num">1</div>
         <div class="how-title">Compra y accede</div>
-        <div class="how-desc">Pago único de 2,99€. Recibes el enlace de acceso inmediatamente por email.</div>
+        <div class="how-desc">Pago único de 2,99€. Al completar el pago Stripe te redirige directamente a la app. Sin esperas, sin descargas.</div>
       </div>
       <div class="how-step fade-up" style="transition-delay:0.15s;">
         <div class="how-num">2</div>
         <div class="how-title">Instala en tu móvil</div>
-        <div class="how-desc">Abre el enlace en Chrome o Safari y añádela a tu pantalla de inicio como una app nativa.</div>
+        <div class="how-desc">En Android toca "Instalar" en el banner que aparece. En iPhone toca compartir → "Añadir a pantalla de inicio". En 10 segundos tienes el icono en tu móvil.</div>
       </div>
       <div class="how-step fade-up" style="transition-delay:0.3s;">
         <div class="how-num">3</div>
         <div class="how-title">Empieza a registrar</div>
         <div class="how-desc">Configura tu PIN, añade tus medicamentos y comienza a llevar el control de tu salud.</div>
+      </div>
+    </div>
+
+    <!-- GUÍA DE INSTALACIÓN -->
+    <div style="margin-top:60px;" class="fade-up">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div class="section-label">Instalación</div>
+        <h2 class="section-title" style="font-size:clamp(24px,3vw,34px);">Cómo instalarla en tu móvil</h2>
+        <p style="font-size:16px;color:var(--text2);font-weight:300;">Funciona como una app nativa sin pasar por ninguna tienda</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+
+        <!-- ANDROID -->
+        <div style="background:white;border-radius:20px;padding:28px;border:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:48px;height:48px;background:#E8F5E9;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;">🤖</div>
+            <div>
+              <div style="font-size:17px;font-weight:500;color:var(--blue-d);">Android</div>
+              <div style="font-size:13px;color:var(--text2);">Chrome recomendado</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Abre el enlace de la app en <strong>Chrome</strong></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Aparece un banner en la parte inferior: <strong>"Instalar MediBitácora"</strong></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Toca <strong>"Instalar"</strong> → el icono aparece en tu pantalla de inicio</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+              <div style="font-size:14px;color:var(--green);line-height:1.5;font-weight:500;">¡Lista para usar como app nativa!</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding:10px 14px;background:var(--blue-l);border-radius:10px;font-size:12px;color:var(--blue);">
+            💡 Si no aparece el banner, toca los 3 puntos del menú → "Añadir a pantalla de inicio"
+          </div>
+        </div>
+
+        <!-- IPHONE -->
+        <div style="background:white;border-radius:20px;padding:28px;border:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:48px;height:48px;background:#F3E5F5;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;">🍎</div>
+            <div>
+              <div style="font-size:17px;font-weight:500;color:var(--blue-d);">iPhone / iPad</div>
+              <div style="font-size:13px;color:var(--text2);">Safari recomendado</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Abre el enlace de la app en <strong>Safari</strong></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Toca el botón de <strong>compartir</strong> (cuadrado con flecha hacia arriba) en la barra inferior</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Desplázate y toca <strong>"Añadir a pantalla de inicio"</strong></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Toca <strong>"Añadir"</strong> → el icono aparece en tu pantalla de inicio</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+              <div style="font-size:14px;color:var(--green);line-height:1.5;font-weight:500;">¡Lista para usar como app nativa!</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding:10px 14px;background:var(--blue-l);border-radius:10px;font-size:12px;color:var(--blue);">
+            💡 Requiere iOS 16.4 o superior para notificaciones push
+          </div>
+        </div>
+
+        <!-- PC -->
+        <div style="background:white;border-radius:20px;padding:28px;border:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:48px;height:48px;background:#E3F2FD;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;">💻</div>
+            <div>
+              <div style="font-size:17px;font-weight:500;color:var(--blue-d);">Ordenador</div>
+              <div style="font-size:13px;color:var(--text2);">Chrome o Edge</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Abre el enlace en <strong>Chrome o Edge</strong></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Aparece un icono de instalación en la barra de direcciones (esquina derecha)</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+              <div style="font-size:14px;color:var(--text2);line-height:1.5;">Haz clic en <strong>"Instalar"</strong> → se abre como aplicación independiente</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+              <div style="font-size:14px;color:var(--green);line-height:1.5;font-weight:500;">¡Funciona sin navegador como app de escritorio!</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding:10px 14px;background:var(--blue-l);border-radius:10px;font-size:12px;color:var(--blue);">
+            💡 También puedes usarla directamente en el navegador sin instalar nada
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
