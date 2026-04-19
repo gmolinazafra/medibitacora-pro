@@ -147,22 +147,6 @@
     .section-head{font-size:14px;font-weight:600;color:var(--text2);margin:14px 0 10px;}
     .summary-med{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border);}
     .summary-med:last-child{border-bottom:none;}
-    .vad-search-row{display:flex;gap:8px;margin-bottom:14px;}
-    .vad-search-row input{flex:1;margin-bottom:0;}
-    .vad-search-row button{padding:10px 16px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:15px;cursor:pointer;flex-shrink:0;}
-    .vad-search-row button:disabled{opacity:0.5;}
-    .vad-result{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;font-size:14px;line-height:1.75;color:var(--text);}
-    .vad-section{font-weight:700;color:var(--blue);display:block;margin-top:10px;}
-    .vad-disclaimer{font-size:12px;color:var(--text2);margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border);}
-    .vad-history-item{padding:10px 0;border-bottom:0.5px solid var(--border);cursor:pointer;}
-    .vad-history-item:last-child{border-bottom:none;}
-    .vad-history-name{font-size:14px;font-weight:600;color:var(--blue);}
-    .vad-history-sub{font-size:13px;color:var(--text2);}
-    .typing-dots{display:inline-flex;gap:5px;align-items:center;padding:10px 0;}
-    .typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:blink 1.2s infinite;}
-    .typing-dots span:nth-child(2){animation-delay:0.2s;}
-    .typing-dots span:nth-child(3){animation-delay:0.4s;}
-    @keyframes blink{0%,80%,100%{opacity:0.2;}40%{opacity:1;}}
     .about-bar{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-top:14px;font-size:12px;color:var(--text2);line-height:1.7;text-align:center;}
     .cp-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);transition:all 0.15s;flex-shrink:0;}
     .cp-dot.filled{background:var(--blue);border-color:var(--blue);}
@@ -212,7 +196,7 @@
   <div class="splash-owner">Desarrollado por Gustavo Molina Zafra</div>
   <div class="splash-box">
     <div class="splash-box-title">Descargo de responsabilidad</div>
-    <div class="splash-text">Esta aplicación es una herramienta de <strong>apoyo personal</strong> para el registro de datos médicos propios. No constituye asesoramiento médico, diagnóstico ni prescripción de ningún tipo.<br><br>El Vademécum con IA tiene carácter <strong>orientativo</strong> y no reemplaza la consulta con un médico, farmacéutico u otro profesional sanitario cualificado.<br><br><strong>Consulta siempre a tu médico</strong> ante cualquier duda sobre tu salud o tratamiento.</div>
+    <div class="splash-text">Esta aplicación es una herramienta de <strong>apoyo personal</strong> para el registro de datos médicos propios. No constituye asesoramiento médico, diagnóstico ni prescripción de ningún tipo.<br><br><strong>Consulta siempre a tu médico</strong> ante cualquier duda sobre tu salud o tratamiento.</div>
   </div>
   <div class="splash-box">
     <div class="splash-box-title">Privacidad y propiedad</div>
@@ -389,22 +373,6 @@
     </div>
   </div>
 
-  <!-- VADEMÉCUM -->
-  <div class="section" id="sec-vademecum">
-    <div class="card">
-      <div class="card-title">Consultar medicamento con IA</div>
-      <div class="vad-search-row">
-        <input type="text" id="vad-input" placeholder="Ej: Metotrexato, Ibuprofeno..." onkeydown="if(event.key==='Enter')buscarMed()"/>
-        <button id="vad-btn" onclick="buscarMed()">Buscar</button>
-      </div>
-      <div id="vad-result"></div>
-    </div>
-    <div class="card" id="vad-history-card" style="display:none;">
-      <div class="card-title">Búsquedas recientes</div>
-      <div id="vad-history"></div>
-    </div>
-  </div>
-
   <!-- RESUMEN -->
   <div class="section" id="sec-resumen">
     <div class="card" style="border-left:3px solid var(--blue);">
@@ -526,7 +494,6 @@
   <div class="bottom-nav">
     <button class="nav-btn active" id="nav-evolucion" onclick="setSection('evolucion')"><span class="nav-icon">📈</span>Evolución</button>
     <button class="nav-btn" id="nav-tratamientos" onclick="setSection('tratamientos')"><span class="nav-icon">💊</span>Tratamientos</button>
-    <button class="nav-btn" id="nav-vademecum" onclick="setSection('vademecum')"><span class="nav-icon">💡</span>Vademécum</button>
     <button class="nav-btn" id="nav-informes" onclick="setSection('informes')"><span class="nav-icon">📁</span>Informes</button>
     <button class="nav-btn" id="nav-resumen" onclick="setSection('resumen')"><span class="nav-icon">🩺</span>Resumen</button>
     <button class="nav-btn" id="nav-ajustes" onclick="setSection('ajustes')"><span class="nav-icon">⚙️</span>Ajustes</button>
@@ -541,7 +508,7 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 const PIN_KEY='medi_pin',SPLASH_KEY='medi_splash_v3';
 let medTab='activo',filtroActual='todos',diasSel=[],chartInst=null,pinValue='';
-let cachedMeds=[],cachedLogs=[],cachedDocs=[],vadHistory=[],todosLosMeds=[];
+let cachedMeds=[],cachedLogs=[],cachedDocs=[],todosLosMeds=[];
 let deferredPrompt=null;
 
 // PWA INSTALL
@@ -569,7 +536,7 @@ async function sbGet(t,p=''){const r=await fetch(`${SB_URL}/rest/v1/${t}?${p}`,{
 async function sbPost(t,b){const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());}
 
 // SECTIONS
-function setSection(s){['evolucion','tratamientos','informes','vademecum','resumen','ajustes'].forEach(id=>{document.getElementById('sec-'+id).classList.remove('active');document.getElementById('nav-'+id).classList.remove('active');});document.getElementById('sec-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='tratamientos')cargarMeds();if(s==='informes')cargarDocs();if(s==='resumen')cargarResumen();}
+function setSection(s){['evolucion','tratamientos','informes','resumen','ajustes'].forEach(id=>{document.getElementById('sec-'+id).classList.remove('active');document.getElementById('nav-'+id).classList.remove('active');});document.getElementById('sec-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='tratamientos')cargarMeds();if(s==='informes')cargarDocs();if(s==='resumen')cargarResumen();}
 
 // CAMBIAR PIN (sección Ajustes)
 let apVals={a:'',n:''};let apFase='ingreso';let apPrimerNuevo='';
@@ -653,9 +620,8 @@ async function cargarDocs(){const el=document.getElementById('doc-list');el.inne
 async function guardarDoc(){const btn=document.getElementById('btn-doc'),desc=document.getElementById('d-desc').value;if(!desc){showToast('Agrega una descripción',true);return;}btn.disabled=true;btn.textContent='Guardando...';try{await sbPost('documentos',{descripcion:desc,nombre:document.getElementById('d-nombre').value||'documento',fecha:document.getElementById('d-fecha').value||null});document.getElementById('d-desc').value='';document.getElementById('d-nombre').value='';showToast('✓ Documento guardado');cargarDocs();}catch(e){showToast('Error al guardar',true);}btn.disabled=false;btn.textContent='Guardar documento';}
 
 // VADEMÉCUM
-async function buscarMed(){const input=document.getElementById('vad-input'),query=input.value.trim();if(!query){showToast('Escribe un medicamento',true);return;}const btn=document.getElementById('vad-btn'),result=document.getElementById('vad-result');btn.disabled=true;btn.textContent='Buscando...';result.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';try{const resp=await fetch('https://medibitagora.netlify.app/.netlify/functions/vademecum',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:`Eres un farmacéutico experto. Responde SIEMPRE en español con este formato usando **etiqueta:** valor:\n**Nombre:** nombre genérico y comercial\n**Grupo terapéutico:** categoría\n**Para qué sirve:** indicaciones principales\n**Dosis habitual:** dosis estándar adultos\n**Cómo tomarlo:** con/sin comida, frecuencia\n**Efectos secundarios:** los más frecuentes\n**Contraindicaciones:** cuándo NO usarlo\n**Interacciones:** medicamentos que no combinar\n**Consejo:** consejo práctico breve\nTermina con: "⚠️ Esta información es orientativa. Consulta siempre con tu médico o farmacéutico."`,messages:[{role:'user',content:`Información completa sobre: ${query}`}]})});const data=await resp.json();const text=data.content?.[0]?.text||'No se pudo obtener información.';const html=text.replace(/\*\*(.*?)\*\*/g,'<span class="vad-section">$1</span>').replace(/\n/g,'<br>');result.innerHTML=`<div class="vad-result">${html}<div class="vad-disclaimer">© 2025 Gustavo Molina Zafra · MediBitácora Pro · Solo orientativo</div></div>`;vadHistory.unshift({nombre:query,resumen:text.substring(0,80)+'…',html});if(vadHistory.length>5)vadHistory.pop();renderVadHistory();}catch(e){result.innerHTML='<div class="empty">Error al consultar. Intenta de nuevo.</div>';}btn.disabled=false;btn.textContent='Buscar';}
-function renderVadHistory(){if(!vadHistory.length)return;document.getElementById('vad-history-card').style.display='block';document.getElementById('vad-history').innerHTML=vadHistory.map((h,i)=>`<div class="vad-history-item" onclick="loadHistory(${i})"><div class="vad-history-name">${h.nombre}</div><div class="vad-history-sub">${h.resumen}</div></div>`).join('');}
-function loadHistory(i){document.getElementById('vad-result').innerHTML=`<div class="vad-result">${vadHistory[i].html}<div class="vad-disclaimer">© 2025 Gustavo Molina Zafra · MediBitácora Pro · Solo orientativo</div></div>`;document.getElementById('vad-input').value=vadHistory[i].nombre;}
+
+"><div class="vad-history-name">${h.nombre}</div><div class="vad-history-sub">${h.resumen}</div></div>`).join('');}
 
 // RESUMEN
 async function cargarResumen(){document.getElementById('res-fecha').textContent='Generado el '+new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});try{const meds=await sbGet('medicamentos','estado=eq.Activo&order=created_at.desc');cachedMeds=meds;document.getElementById('res-meds').innerHTML=meds.length?meds.map(m=>{const f=parseFrec(m.frecuencia||'');let frecText='';if(f.tipo==='diaria')frecText=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')frecText=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else frecText=f.texto||'';return`<div class="summary-med"><div class="dot dot-a"></div><div style="flex:1"><span style="font-size:14px;font-weight:600;">${m.nombre}</span> <span style="font-size:13px;color:var(--text2);">${m.dosis||''}</span>${frecText?`<div style="font-size:12px;color:var(--blue);margin-top:2px;">${frecText}</div>`:''}</div></div>`;}).join(''):'<div class="empty">Sin medicación activa.</div>';}catch(e){document.getElementById('res-meds').innerHTML='<div class="empty">Error.</div>';}try{const logs=await sbGet('registros','order=fecha.desc&limit=5');cachedLogs=logs.length?logs:cachedLogs;document.getElementById('res-logs').innerHTML=logs.length?logs.map(l=>`<div class="log-item"><div class="log-date">${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})}</div><div class="log-row"><div class="log-text">${l.estado} · ${(l.sintomas||'').substring(0,40)}${(l.sintomas||'').length>40?'…':''}</div><span class="chip">${l.dolor}/10</span></div></div>`).join(''):'<div class="empty">Sin registros aún.</div>';}catch(e){document.getElementById('res-logs').innerHTML='<div class="empty">Error.</div>';}}
