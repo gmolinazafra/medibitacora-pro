@@ -234,8 +234,8 @@
 <!-- ALARM -->
 <div class="alarm-overlay" id="alarmOverlay">
   <div class="alarm-box">
-    <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Medicamentos activos hoy</div>
-    <div style="font-size:14px;color:var(--text2);margin-bottom:14px;">Recuerda tomar tu medicación:</div>
+    <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Medicamentos de hoy</div>
+    <div style="font-size:14px;color:var(--text2);margin-bottom:14px;">Recuerda tomar tu medicación de hoy:</div>
     <div id="alarmList"></div>
     <button class="btn" style="margin-top:16px;" onclick="document.getElementById('alarmOverlay').classList.remove('show')">Entendido</button>
   </div>
@@ -262,7 +262,7 @@
   </div>
 
   <div class="alarm-banner" id="alarmBanner">
-    <span style="font-weight:600;">Medicamentos activos:</span> <span id="alarmBannerText"></span>
+    <span style="font-weight:600;">Medicamentos de hoy:</span> <span id="alarmBannerText"></span>
     <button onclick="document.getElementById('alarmOverlay').classList.add('show')" style="background:none;border:none;color:#92400E;font-size:13px;cursor:pointer;display:block;margin-top:3px;font-weight:600;">Ver recordatorio</button>
   </div>
 
@@ -624,7 +624,37 @@ async function guardarDoc(){
 async function cargarResumen(){document.getElementById('res-fecha').textContent='Generado el '+new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});try{const meds=await sbGet('medicamentos','estado=eq.Activo&order=created_at.desc');cachedMeds=meds;document.getElementById('res-meds').innerHTML=meds.length?meds.map(m=>{const f=parseFrec(m.frecuencia||'');let frecText='';if(f.tipo==='diaria')frecText=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')frecText=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else frecText=f.texto||'';return`<div class="summary-med"><div class="dot dot-a"></div><div style="flex:1"><span style="font-size:14px;font-weight:600;">${m.nombre}</span> <span style="font-size:13px;color:var(--text2);">${m.dosis||''}</span>${frecText?`<div style="font-size:12px;color:var(--blue);margin-top:2px;">${frecText}</div>`:''}</div></div>`;}).join(''):'<div class="empty">Sin medicación activa.</div>';}catch(e){document.getElementById('res-meds').innerHTML='<div class="empty">Error.</div>';}try{const logs=await sbGet('registros','order=fecha.desc&limit=5');cachedLogs=logs.length?logs:cachedLogs;document.getElementById('res-logs').innerHTML=logs.length?logs.map(l=>`<div class="log-item"><div class="log-date">${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})}</div><div class="log-row"><div class="log-text">${l.estado} · ${(l.sintomas||'').substring(0,40)}${(l.sintomas||'').length>40?'…':''}</div><span class="chip">${l.dolor}/10</span></div></div>`).join(''):'<div class="empty">Sin registros aún.</div>';}catch(e){document.getElementById('res-logs').innerHTML='<div class="empty">Error.</div>';}}
 
 // ALARM
-async function checkAlarm(){try{const meds=await sbGet('medicamentos','estado=eq.Activo&order=nombre.asc');if(!meds.length)return;document.getElementById('alarmBannerText').textContent=meds.map(m=>m.nombre).join(', ');document.getElementById('alarmBanner').classList.add('show');document.getElementById('alarmList').innerHTML=meds.map(m=>{const f=parseFrec(m.frecuencia||'');let h='';if(f.tipo==='diaria')h=(f.horas||[]).join(' · ');else if(f.tipo==='semanal')h=(f.dias||[]).join(' ')+(f.hora?' '+f.hora:'');return`<div class="alarm-med-row"><div class="dot dot-a"></div><div><div style="font-size:14px;font-weight:600;">${m.nombre}</div><div style="font-size:13px;color:var(--text2);">${m.dosis||''}${h?' · '+h:''}</div></div></div>`;}).join('');document.getElementById('alarmOverlay').classList.add('show');}catch(e){}}
+async function checkAlarm(){
+  try{
+    const meds=await sbGet('medicamentos','estado=eq.Activo&order=nombre.asc');
+    if(!meds.length)return;
+    const ahora=new Date();
+    const dias=['D','L','M','X','J','V','S'];
+    const diaHoy=dias[ahora.getDay()];
+
+    // Filtrar solo los que toca hoy
+    const medsHoy=meds.filter(m=>{
+      const f=parseFrec(m.frecuencia||'');
+      if(f.tipo==='diaria')return true;
+      if(f.tipo==='semanal')return (f.dias||[]).includes(diaHoy);
+      if(f.tipo==='otro')return true; // frecuencia libre siempre se muestra
+      return false;
+    });
+
+    if(!medsHoy.length)return; // Hoy no toca ningún medicamento
+
+    document.getElementById('alarmBannerText').textContent=medsHoy.map(m=>m.nombre).join(', ');
+    document.getElementById('alarmBanner').classList.add('show');
+    document.getElementById('alarmList').innerHTML=medsHoy.map(m=>{
+      const f=parseFrec(m.frecuencia||'');
+      let h='';
+      if(f.tipo==='diaria')h=(f.horas||[]).join(' · ');
+      else if(f.tipo==='semanal')h=f.hora||'';
+      return`<div class="alarm-med-row"><div class="dot dot-a"></div><div><div style="font-size:14px;font-weight:600;">${m.nombre}</div><div style="font-size:13px;color:var(--text2);">${m.dosis||''}${h?' · '+h:''}</div></div></div>`;
+    }).join('');
+    document.getElementById('alarmOverlay').classList.add('show');
+  }catch(e){}
+}
 
 // EMAIL
 function openEmail(to,subject,body){window.open(`mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);}
