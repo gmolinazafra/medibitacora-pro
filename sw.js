@@ -65,7 +65,7 @@ self.addEventListener('notificationclick', event => {
     event.waitUntil(clients.openWindow('/'));
   }
 });
-const CACHE_NAME_ASSETS = 'medibitacora-assets-v2';
+const CACHE_NAME_ASSETS = 'medibitacora-assets-v3';
 const ASSETS = [
   '/medibitacora-pro/',
   '/medibitacora-pro/index.html',
