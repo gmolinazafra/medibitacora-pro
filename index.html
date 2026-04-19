@@ -361,8 +361,19 @@
     <div class="card">
       <div class="card-title">Registrar documento</div>
       <label>Descripción</label><input type="text" id="d-desc" placeholder="Ej: Analítica sangre mayo 2025"/>
-      <label>Nombre archivo</label><input type="text" id="d-nombre" placeholder="Ej: analitica-mayo.pdf"/>
-      <label>Fecha</label><input type="date" id="d-fecha"/>
+      <label>Adjuntar archivo (PDF o imagen)</label>
+      <div id="upload-zone" style="border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;margin-bottom:10px;cursor:pointer;background:var(--bg2);" onclick="document.getElementById('d-archivo').click()">
+        <div style="font-size:22px;margin-bottom:4px;">📎</div>
+        <div style="font-size:13px;color:var(--text2);" id="upload-label">Toca para seleccionar archivo</div>
+      </div>
+      <input type="file" id="d-archivo" accept=".pdf,.jpg,.jpeg,.png,.gif" style="display:none;" onchange="archivoSeleccionado(this)"/>
+      <label>Fecha del documento</label><input type="date" id="d-fecha"/>
+      <div id="upload-progress" style="display:none;margin-bottom:10px;">
+        <div style="background:var(--bg2);border-radius:20px;height:6px;overflow:hidden;">
+          <div id="progress-bar" style="background:var(--blue);height:100%;width:0%;transition:width 0.3s;border-radius:20px;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);text-align:center;margin-top:4px;" id="progress-text">Subiendo...</div>
+      </div>
       <button class="btn" id="btn-doc" onclick="guardarDoc()">Guardar documento</button>
     </div>
     <div class="card"><div class="card-title">Archivos registrados</div><div id="doc-list"><div class="loader">Cargando...</div></div></div>
@@ -387,55 +398,6 @@
       <input type="email" id="email-res" placeholder="medico@ejemplo.com"/>
       <button class="btn btn-gray" style="margin-bottom:10px;" onclick="emailResumen()">Abrir correo con resumen</button>
       <button class="btn btn-green" style="margin-bottom:10px;" onclick="exportarPDF()">Exportar informe PDF</button>
-    </div>
-    <!-- CAMBIAR PIN -->
-    <div class="card" style="margin-top:12px;">
-      <div class="card-title">Seguridad — Cambiar PIN</div>
-      <div id="pin-step-actual">
-        <div style="font-size:14px;font-weight:500;text-align:center;margin-bottom:4px;">Paso 1 de 2</div>
-        <div style="font-size:13px;color:var(--text2);text-align:center;margin-bottom:12px;">Ingresa tu PIN actual</div>
-        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:14px;">
-          <div class="cp-dot" id="ca0"></div><div class="cp-dot" id="ca1"></div>
-          <div class="cp-dot" id="ca2"></div><div class="cp-dot" id="ca3"></div>
-        </div>
-        <div class="pin-change-grid">
-          <button class="pcb" onclick="cpPress('a','1')">1</button><button class="pcb" onclick="cpPress('a','2')">2</button><button class="pcb" onclick="cpPress('a','3')">3</button>
-          <button class="pcb" onclick="cpPress('a','4')">4</button><button class="pcb" onclick="cpPress('a','5')">5</button><button class="pcb" onclick="cpPress('a','6')">6</button>
-          <button class="pcb" onclick="cpPress('a','7')">7</button><button class="pcb" onclick="cpPress('a','8')">8</button><button class="pcb" onclick="cpPress('a','9')">9</button>
-          <button class="pcb" onclick="cpClear('a')" style="font-size:13px;">Borrar</button>
-          <button class="pcb" onclick="cpPress('a','0')">0</button>
-          <button class="pcb" onclick="cpVerificar()" style="font-size:13px;background:var(--blue-l);color:var(--blue);">OK</button>
-        </div>
-      </div>
-      <div id="pin-step-nuevo" style="display:none;">
-        <div style="font-size:14px;font-weight:500;text-align:center;margin-bottom:4px;">Paso 2 de 2</div>
-        <div style="font-size:13px;color:var(--text2);text-align:center;margin-bottom:12px;" id="cp-nuevo-label">Ingresa tu nuevo PIN</div>
-        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:14px;">
-          <div class="cp-dot" id="cn0"></div><div class="cp-dot" id="cn1"></div>
-          <div class="cp-dot" id="cn2"></div><div class="cp-dot" id="cn3"></div>
-        </div>
-        <div class="pin-change-grid">
-          <button class="pcb" onclick="cpPress('n','1')">1</button><button class="pcb" onclick="cpPress('n','2')">2</button><button class="pcb" onclick="cpPress('n','3')">3</button>
-          <button class="pcb" onclick="cpPress('n','4')">4</button><button class="pcb" onclick="cpPress('n','5')">5</button><button class="pcb" onclick="cpPress('n','6')">6</button>
-          <button class="pcb" onclick="cpPress('n','7')">7</button><button class="pcb" onclick="cpPress('n','8')">8</button><button class="pcb" onclick="cpPress('n','9')">9</button>
-          <button class="pcb" onclick="cpClear('n')" style="font-size:13px;">Borrar</button>
-          <button class="pcb" onclick="cpPress('n','0')">0</button>
-          <button class="pcb" onclick="cpConfirmar()" style="font-size:13px;background:var(--blue-l);color:var(--blue);">OK</button>
-        </div>
-        <button onclick="cpVolver()" style="width:100%;padding:10px;background:none;border:0.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;color:var(--text2);margin-top:4px;">Volver al paso 1</button>
-      </div>
-    </div>
-
-    <div class="about-bar">
-      <svg width="32" height="32" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:8px;">
-        <rect width="200" height="200" rx="44" fill="#185FA5"/>
-        <rect x="82" y="44" width="36" height="112" rx="8" fill="white"/>
-        <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
-      </svg><br>
-      <strong style="color:var(--text);">MediBitácora Pro v1.0</strong><br>
-      © 2025 Gustavo Molina Zafra · Todos los derechos reservados<br>
-      Uso personal y privado exclusivamente<br>
-      <span style="font-size:11px;">Esta app no constituye asesoramiento médico.</span>
     </div>
   </div>
 
@@ -476,6 +438,20 @@
         </div>
         <button onclick="apVolver()" style="width:100%;padding:10px;background:none;border:0.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;color:var(--text2);margin-top:4px;">Volver al paso 1</button>
       </div>
+    </div>
+
+    <div class="card" style="margin-top:10px;">
+      <div class="card-title">Actualizaciones</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Comprueba si hay una nueva versión de MediBitácora Pro disponible.</div>
+      <div id="update-status" style="font-size:13px;color:var(--text2);margin-bottom:10px;text-align:center;display:none;"></div>
+      <button class="btn btn-outline" onclick="comprobarActualizacion()">Comprobar actualizaciones</button>
+    </div>
+
+    <div class="card" style="margin-top:10px;">
+      <div class="card-title">Notificaciones</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Gestiona los recordatorios de medicamentos.</div>
+      <div id="notif-status" style="font-size:13px;margin-bottom:10px;text-align:center;"></div>
+      <button class="btn btn-outline" onclick="gestionarNotificaciones()">Gestionar notificaciones</button>
     </div>
 
     <div class="about-bar">
@@ -617,7 +593,29 @@ function renderMeds(){const el=document.getElementById('med-list');let data=filt
 
 // DOCS
 async function cargarDocs(){const el=document.getElementById('doc-list');el.innerHTML='<div class="loader">Cargando...</div>';try{const data=await sbGet('documentos','order=fecha.desc');cachedDocs=data;el.innerHTML=data.length?data.map(d=>`<div class="doc-item"><div class="doc-icon">${(d.nombre||'').endsWith('.pdf')?'📄':'🖼'}</div><div style="flex:1"><div class="med-name">${d.nombre||'Documento'}</div><div class="med-det">${d.descripcion||''}</div></div><div style="font-size:12px;color:var(--text2);flex-shrink:0;">${d.fecha?new Date(d.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'}):'—'}</div></div>`).join(''):'<div class="empty">Sin documentos registrados.</div>';}catch(e){el.innerHTML='<div class="empty">Error cargando.</div>';}}
-async function guardarDoc(){const btn=document.getElementById('btn-doc'),desc=document.getElementById('d-desc').value;if(!desc){showToast('Agrega una descripción',true);return;}btn.disabled=true;btn.textContent='Guardando...';try{await sbPost('documentos',{descripcion:desc,nombre:document.getElementById('d-nombre').value||'documento',fecha:document.getElementById('d-fecha').value||null});document.getElementById('d-desc').value='';document.getElementById('d-nombre').value='';showToast('✓ Documento guardado');cargarDocs();}catch(e){showToast('Error al guardar',true);}btn.disabled=false;btn.textContent='Guardar documento';}
+async function guardarDoc(){
+  const btn=document.getElementById('btn-doc'),desc=document.getElementById('d-desc').value;
+  const fileInput=document.getElementById('d-archivo');
+  const file=fileInput?fileInput.files?.[0]:null;
+  if(!desc){showToast('Agrega una descripción',true);return;}
+  btn.disabled=true;btn.textContent='Guardando...';
+  const nombreArchivo=file?file.name:'sin-archivo';
+  if(file){
+    document.getElementById('upload-progress').style.display='block';
+    document.getElementById('progress-bar').style.width='50%';
+    document.getElementById('progress-text').textContent='Registrando...';
+    await new Promise(r=>setTimeout(r,400));
+    document.getElementById('progress-bar').style.width='100%';
+  }
+  try{
+    await sbPost('documentos',{descripcion:desc,nombre:nombreArchivo,fecha:document.getElementById('d-fecha').value||null});
+    document.getElementById('d-desc').value='';
+    if(fileInput){fileInput.value='';document.getElementById('upload-label').textContent='Toca para seleccionar archivo';document.getElementById('upload-zone').style.borderColor='var(--border)';document.getElementById('upload-zone').style.background='var(--bg2)';}
+    if(document.getElementById('upload-progress'))document.getElementById('upload-progress').style.display='none';
+    showToast('✓ Documento guardado');cargarDocs();
+  }catch(e){showToast('Error al guardar',true);}
+  btn.disabled=false;btn.textContent='Guardar documento';
+}
 
 // RESUMEN
 async function cargarResumen(){document.getElementById('res-fecha').textContent='Generado el '+new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});try{const meds=await sbGet('medicamentos','estado=eq.Activo&order=created_at.desc');cachedMeds=meds;document.getElementById('res-meds').innerHTML=meds.length?meds.map(m=>{const f=parseFrec(m.frecuencia||'');let frecText='';if(f.tipo==='diaria')frecText=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')frecText=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else frecText=f.texto||'';return`<div class="summary-med"><div class="dot dot-a"></div><div style="flex:1"><span style="font-size:14px;font-weight:600;">${m.nombre}</span> <span style="font-size:13px;color:var(--text2);">${m.dosis||''}</span>${frecText?`<div style="font-size:12px;color:var(--blue);margin-top:2px;">${frecText}</div>`:''}</div></div>`;}).join(''):'<div class="empty">Sin medicación activa.</div>';}catch(e){document.getElementById('res-meds').innerHTML='<div class="empty">Error.</div>';}try{const logs=await sbGet('registros','order=fecha.desc&limit=5');cachedLogs=logs.length?logs:cachedLogs;document.getElementById('res-logs').innerHTML=logs.length?logs.map(l=>`<div class="log-item"><div class="log-date">${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})}</div><div class="log-row"><div class="log-text">${l.estado} · ${(l.sintomas||'').substring(0,40)}${(l.sintomas||'').length>40?'…':''}</div><span class="chip">${l.dolor}/10</span></div></div>`).join(''):'<div class="empty">Sin registros aún.</div>';}catch(e){document.getElementById('res-logs').innerHTML='<div class="empty">Error.</div>';}}
@@ -633,6 +631,39 @@ async function emailResumen(){const to=document.getElementById('email-res').valu
 
 // PDF
 async function exportarPDF(){showToast('Generando PDF...');try{let meds=cachedMeds.length?cachedMeds:await sbGet('medicamentos','estado=eq.Activo&order=nombre.asc');let logs=cachedLogs.length?cachedLogs:await sbGet('registros','order=fecha.desc&limit=5');const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});const ml=20,mr=190;let y=20;doc.setFillColor(24,95,165);doc.rect(0,0,210,38,'F');doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('MediBitácora Pro',ml,13);doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('Propietario: Gustavo Molina Zafra',ml,20);doc.text('Fecha: '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}),ml,26);doc.text('Informe de Evolución Médica',ml,32);y=46;doc.setFontSize(8);doc.setTextColor(130,130,130);const dl=doc.splitTextToSize('AVISO: Documento de uso personal y privado. No constituye asesoramiento médico.',mr-ml);doc.text(dl,ml,y);y+=dl.length*4+5;doc.setDrawColor(220,220,220);doc.line(ml,y,mr,y);y+=6;doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Medicación Activa',ml,y);y+=2;doc.setDrawColor(24,95,165);doc.line(ml,y,mr,y);y+=6;doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';doc.setFont('helvetica','bold');doc.text(m.nombre,ml,y);doc.setFont('helvetica','normal');doc.text(`${m.dosis||''} · ${fr}`,ml+4,y+5);doc.text(`Desde: ${m.fecha_inicio||'—'}`,ml+4,y+10);y+=16;});y+=4;doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Últimas Entradas de Evolución',ml,y);y+=2;doc.line(ml,y,mr,y);y+=6;doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);logs.forEach(l=>{const fd=new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});doc.setFont('helvetica','bold');doc.text(`${fd} — ${l.estado} — Dolor: ${l.dolor}/10`,ml,y);y+=5;doc.setFont('helvetica','normal');const ln=doc.splitTextToSize(`Síntomas: ${l.sintomas||'—'}`,mr-ml);doc.text(ln,ml+2,y);y+=ln.length*5;if(l.mejoria){const ln2=doc.splitTextToSize(`Mejoría: ${l.mejoria}`,mr-ml);doc.text(ln2,ml+2,y);y+=ln2.length*5;}y+=4;if(y>265){doc.addPage();y=20;}});doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('© 2025 Gustavo Molina Zafra · MediBitácora Pro v1.0 · Uso personal y privado · CONFIDENCIAL',ml,285);doc.save('medibitacora-GMZ.pdf');showToast('✓ PDF descargado');}catch(e){showToast('Error al generar PDF',true);}}
+
+// COMPROBAR ACTUALIZACIONES
+async function comprobarActualizacion(){
+  const el=document.getElementById('update-status');
+  el.style.display='block';el.style.color='var(--text2)';el.textContent='Comprobando...';
+  try{
+    if('serviceWorker' in navigator){const sw=await navigator.serviceWorker.ready;await sw.update();}
+    el.style.color='var(--green)';el.textContent='✓ Tienes la última versión instalada';
+  }catch(e){el.style.color='var(--text2)';el.textContent='No se pudo comprobar. Verifica tu conexión.';}
+}
+
+// GESTIONAR NOTIFICACIONES
+function gestionarNotificaciones(){
+  const el=document.getElementById('notif-status');
+  if(!('Notification' in window)){el.textContent='Tu navegador no soporta notificaciones.';el.style.color='var(--red)';return;}
+  if(Notification.permission==='granted'){
+    el.textContent='✓ Notificaciones activas';el.style.color='var(--green)';
+    programarTodasLasNotificaciones();showToast('✓ Notificaciones reprogramadas');
+  } else if(Notification.permission==='denied'){
+    el.textContent='⚠ Bloqueadas. Actívalas en ajustes del navegador.';el.style.color='var(--red)';
+  } else {pedirPermisoNotificaciones();}
+}
+
+// ARCHIVO EN INFORMES
+function archivoSeleccionado(input){
+  if(input.files&&input.files[0]){
+    const file=input.files[0];
+    document.getElementById('upload-label').textContent=`📄 ${file.name} (${(file.size/1024).toFixed(0)} KB)`;
+    document.getElementById('upload-zone').style.borderColor='var(--blue)';
+    document.getElementById('upload-zone').style.background='var(--blue-l)';
+    if(!document.getElementById('d-desc').value)document.getElementById('d-desc').value=file.name.replace(/\.[^/.]+$/,'');
+  }
+}
 
 // INIT
 function init(){const today=new Date().toISOString().split('T')[0];document.getElementById('r-fecha').value=today;document.getElementById('m-inicio').value=today;document.getElementById('d-fecha').value=today;actualizarHoras();sbGet('registros','limit=1').then(()=>{document.getElementById('hstatus').textContent='✓ Conectado · '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});cargarRegistros();setTimeout(checkAlarm,800);}).catch(()=>{document.getElementById('hstatus').textContent='⚠ Sin conexión';showToast('Sin conexión a internet',true);});}
