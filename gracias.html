@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#185FA5"/>
+<title>¡Gracias por tu compra! — MediBitácora Pro</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;color:#1a1a1a;min-height:100vh;}
+.wrap{max-width:540px;margin:0 auto;padding:24px 16px 60px;}
+.header{background:#185FA5;color:white;border-radius:16px;padding:28px 24px;text-align:center;margin-bottom:20px;}
+.header svg{margin-bottom:12px;}
+.header h1{font-size:22px;font-weight:700;margin-bottom:6px;}
+.header p{font-size:14px;opacity:0.85;}
+.success-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;margin-bottom:16px;}
+.card{background:white;border-radius:12px;padding:20px;margin-bottom:14px;border:0.5px solid rgba(0,0,0,0.08);}
+.card-title{font-size:11px;font-weight:700;color:#185FA5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;}
+.step{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;}
+.step:last-child{margin-bottom:0;}
+.step-num{width:32px;height:32px;border-radius:50%;background:#E6F1FB;color:#185FA5;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-text{flex:1;padding-top:4px;}
+.step-title{font-size:14px;font-weight:600;margin-bottom:3px;}
+.step-sub{font-size:13px;color:#666;line-height:1.5;}
+.btn-main{display:block;width:100%;padding:16px;background:#185FA5;color:white;text-align:center;border-radius:10px;font-size:16px;font-weight:700;text-decoration:none;margin-bottom:10px;}
+.btn-secondary{display:block;width:100%;padding:13px;background:none;border:1.5px solid #185FA5;color:#185FA5;text-align:center;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:10px;}
+.pin-highlight{background:#E6F1FB;border-radius:8px;padding:12px 16px;text-align:center;margin:10px 0;}
+.pin-highlight span{font-size:28px;font-weight:800;color:#185FA5;letter-spacing:6px;}
+.pin-highlight p{font-size:12px;color:#666;margin-top:4px;}
+.device-tabs{display:flex;gap:8px;margin-bottom:14px;}
+.dtab{flex:1;padding:8px;border-radius:8px;border:1.5px solid #e0e0e0;background:none;font-size:13px;cursor:pointer;color:#666;}
+.dtab.active{border-color:#185FA5;background:#E6F1FB;color:#185FA5;font-weight:600;}
+.device-content{display:none;}
+.device-content.active{display:block;}
+.os-step{font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;line-height:1.5;}
+.os-step:last-child{border-bottom:none;}
+.os-step strong{color:#185FA5;}
+.footer{text-align:center;font-size:12px;color:#888;margin-top:20px;line-height:1.8;}
+.footer a{color:#185FA5;text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <svg width="64" height="64" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" rx="44" fill="rgba(255,255,255,0.2)"/>
+      <rect x="82" y="44" width="36" height="112" rx="8" fill="white"/>
+      <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
+    </svg>
+    <div class="success-badge">✓ Pago completado</div>
+    <h1>¡Bienvenido a MediBitácora Pro!</h1>
+    <p>Tu compra ha sido procesada correctamente. Sigue los pasos para instalar tu app.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tu PIN de acceso</div>
+    <div class="pin-highlight">
+      <span>1234</span>
+      <p>Cámbialo en Ajustes una vez dentro de la app</p>
+    </div>
+    <div style="font-size:13px;color:#666;line-height:1.6;">El PIN protege el acceso a tus datos médicos. Solo tú puedes acceder a ellos — los datos se guardan <strong>únicamente en tu dispositivo</strong>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Acceder a la app</div>
+    <a href="https://gmolinazafra.github.io/medibitacora-pro/" class="btn-main">Abrir MediBitácora Pro →</a>
+    <div style="font-size:12px;color:#888;text-align:center;">Instálala en tu dispositivo siguiendo los pasos de abajo</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Instalar en tu dispositivo</div>
+    <div class="device-tabs">
+      <button class="dtab active" onclick="setDevice('android')">📱 Android</button>
+      <button class="dtab" onclick="setDevice('iphone')">🍎 iPhone</button>
+      <button class="dtab" onclick="setDevice('pc')">💻 PC</button>
+    </div>
+
+    <div class="device-content active" id="dev-android">
+      <div class="os-step">1. Abre <strong>Chrome</strong> y ve a la app pulsando el botón de arriba</div>
+      <div class="os-step">2. Toca los <strong>3 puntos</strong> (⋮) arriba a la derecha</div>
+      <div class="os-step">3. Toca <strong>"Añadir a pantalla de inicio"</strong></div>
+      <div class="os-step">4. Confirma tocando <strong>"Añadir"</strong></div>
+      <div class="os-step">5. El icono aparecerá en tu pantalla como una app normal ✓</div>
+    </div>
+
+    <div class="device-content" id="dev-iphone">
+      <div class="os-step">1. Abre <strong>Safari</strong> y ve a la app pulsando el botón de arriba</div>
+      <div class="os-step">2. Toca el botón de <strong>compartir</strong> (□↑) abajo en el centro</div>
+      <div class="os-step">3. Desplázate y toca <strong>"Añadir a pantalla de inicio"</strong></div>
+      <div class="os-step">4. Toca <strong>"Añadir"</strong> arriba a la derecha</div>
+      <div class="os-step">5. El icono aparecerá en tu pantalla de inicio ✓</div>
+    </div>
+
+    <div class="device-content" id="dev-pc">
+      <div class="os-step">1. Abre <strong>Chrome</strong> y ve a la app pulsando el botón de arriba</div>
+      <div class="os-step">2. Haz clic en el icono de <strong>instalar</strong> (⊕) en la barra de direcciones</div>
+      <div class="os-step">3. Haz clic en <strong>"Instalar"</strong> en el diálogo</div>
+      <div class="os-step">4. La app se abrirá como ventana independiente ✓</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Primeros pasos</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <div class="step-title">Acepta el descargo de responsabilidad</div>
+        <div class="step-sub">Lee y acepta las condiciones de uso para entrar.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <div class="step-title">Ingresa tu PIN: 1234</div>
+        <div class="step-sub">Es el PIN por defecto. Cámbialo en ⚙️ Ajustes.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <div class="step-title">Añade tus medicamentos</div>
+        <div class="step-sub">Ve a 💊 Tratamientos y añade tu medicación con frecuencia y horarios.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <div class="step-title">Activa las notificaciones</div>
+        <div class="step-sub">Acepta cuando la app te pida permiso para recordatorios.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-text">
+        <div class="step-title">Haz un backup periódico</div>
+        <div class="step-sub">En ⚙️ Ajustes → Backup puedes exportar tus datos para no perderlos.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">¿Necesitas ayuda?</div>
+    <div style="font-size:13px;color:#666;margin-bottom:14px;">Si tienes alguna duda sobre la instalación o el uso de la app, contacta con nosotros.</div>
+    <a href="mailto:628482475@telefonica.net?subject=Ayuda MediBitácora Pro" class="btn-secondary">✉️ Contactar por email</a>
+    <a href="https://wa.me/34628482475?text=Hola,%20he%20comprado%20MediBitácora%20Pro%20y%20necesito%20ayuda" class="btn-secondary" style="border-color:#25D366;color:#25D366;">💬 Contactar por WhatsApp</a>
+  </div>
+
+  <div class="footer">
+    <strong>MediBitácora Pro v2.0</strong><br>
+    © 2025 Gustavo Molina Zafra · Todos los derechos reservados<br>
+    Uso personal y privado exclusivamente<br>
+    <a href="https://gmolinazafra.github.io/medibitacora-pro/landing.html">Volver a la landing</a>
+  </div>
+
+</div>
+<script>
+function setDevice(dev){
+  document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.device-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('dev-'+dev).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
