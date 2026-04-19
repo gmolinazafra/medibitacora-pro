@@ -352,7 +352,8 @@
     <div class="card">
       <div class="card-title">Exportar historial por email</div>
       <label>Enviar a</label><input type="email" id="email-med" placeholder="medico@ejemplo.com"/>
-      <button class="btn btn-gray" onclick="emailMedicamentos()">Abrir correo con historial</button>
+      <button class="btn btn-gray" style="margin-bottom:8px;" onclick="emailMedicamentos()">Abrir correo con historial</button>
+      <button class="btn" style="background:#25D366;" onclick="whatsappMedicamentos()">Compartir por WhatsApp</button>
     </div>
   </div>
 
@@ -380,7 +381,8 @@
     <div class="card">
       <div class="card-title">Exportar informes por email</div>
       <label>Enviar a</label><input type="email" id="email-inf" placeholder="medico@ejemplo.com"/>
-      <button class="btn btn-gray" onclick="emailInformes()">Abrir correo con informes</button>
+      <button class="btn btn-gray" style="margin-bottom:8px;" onclick="emailInformes()">Abrir correo con informes</button>
+      <button class="btn" style="background:#25D366;" onclick="whatsappInformes()">Compartir por WhatsApp</button>
     </div>
   </div>
 
@@ -396,7 +398,8 @@
       <div class="divider"></div>
       <label>Enviar resumen a</label>
       <input type="email" id="email-res" placeholder="medico@ejemplo.com"/>
-      <button class="btn btn-gray" style="margin-bottom:10px;" onclick="emailResumen()">Abrir correo con resumen</button>
+      <button class="btn btn-gray" style="margin-bottom:8px;" onclick="emailResumen()">Abrir correo con resumen</button>
+      <button class="btn" style="background:#25D366;margin-bottom:10px;" onclick="whatsappResumen()">Compartir por WhatsApp</button>
       <button class="btn btn-green" style="margin-bottom:10px;" onclick="exportarPDF()">Exportar informe PDF</button>
     </div>
   </div>
@@ -631,6 +634,48 @@ async function emailResumen(){const to=document.getElementById('email-res').valu
 
 // PDF
 async function exportarPDF(){showToast('Generando PDF...');try{let meds=cachedMeds.length?cachedMeds:await sbGet('medicamentos','estado=eq.Activo&order=nombre.asc');let logs=cachedLogs.length?cachedLogs:await sbGet('registros','order=fecha.desc&limit=5');const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});const ml=20,mr=190;let y=20;doc.setFillColor(24,95,165);doc.rect(0,0,210,38,'F');doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('MediBitácora Pro',ml,13);doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('Propietario: Gustavo Molina Zafra',ml,20);doc.text('Fecha: '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}),ml,26);doc.text('Informe de Evolución Médica',ml,32);y=46;doc.setFontSize(8);doc.setTextColor(130,130,130);const dl=doc.splitTextToSize('AVISO: Documento de uso personal y privado. No constituye asesoramiento médico.',mr-ml);doc.text(dl,ml,y);y+=dl.length*4+5;doc.setDrawColor(220,220,220);doc.line(ml,y,mr,y);y+=6;doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Medicación Activa',ml,y);y+=2;doc.setDrawColor(24,95,165);doc.line(ml,y,mr,y);y+=6;doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';doc.setFont('helvetica','bold');doc.text(m.nombre,ml,y);doc.setFont('helvetica','normal');doc.text(`${m.dosis||''} · ${fr}`,ml+4,y+5);doc.text(`Desde: ${m.fecha_inicio||'—'}`,ml+4,y+10);y+=16;});y+=4;doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Últimas Entradas de Evolución',ml,y);y+=2;doc.line(ml,y,mr,y);y+=6;doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);logs.forEach(l=>{const fd=new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});doc.setFont('helvetica','bold');doc.text(`${fd} — ${l.estado} — Dolor: ${l.dolor}/10`,ml,y);y+=5;doc.setFont('helvetica','normal');const ln=doc.splitTextToSize(`Síntomas: ${l.sintomas||'—'}`,mr-ml);doc.text(ln,ml+2,y);y+=ln.length*5;if(l.mejoria){const ln2=doc.splitTextToSize(`Mejoría: ${l.mejoria}`,mr-ml);doc.text(ln2,ml+2,y);y+=ln2.length*5;}y+=4;if(y>265){doc.addPage();y=20;}});doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('© 2025 Gustavo Molina Zafra · MediBitácora Pro v1.0 · Uso personal y privado · CONFIDENCIAL',ml,285);doc.save('medibitacora-GMZ.pdf');showToast('✓ PDF descargado');}catch(e){showToast('Error al generar PDF',true);}}
+
+// WHATSAPP
+function openWhatsApp(texto){window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');}
+
+async function whatsappMedicamentos(){
+  try{
+    const todos=await sbGet('medicamentos','order=estado.asc,created_at.desc');
+    const fecha=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+    let b=`💊 *MediBitácora Pro — Medicamentos*\n_Gustavo Molina Zafra · ${fecha}_\n\n`;
+    const act=todos.filter(m=>m.estado==='Activo');
+    b+=`*MEDICACIÓN ACTIVA (${act.length})*\n`;
+    act.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'}\n  ${fr}\n`;});
+    b+=`\n_© 2025 Gustavo Molina Zafra · MediBitácora Pro_`;
+    openWhatsApp(b);showToast('✓ Abriendo WhatsApp...');
+  }catch(e){showToast('Error',true);}
+}
+
+async function whatsappInformes(){
+  try{
+    const docs=await sbGet('documentos','order=fecha.desc');
+    const fecha=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+    let b=`📁 *MediBitácora Pro — Informes*\n_Gustavo Molina Zafra · ${fecha}_\n\n`;
+    docs.forEach(d=>{const df=d.fecha?new Date(d.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}):'Sin fecha';b+=`• ${d.descripcion||'—'} (${df})\n`;});
+    b+=`\n_© 2025 Gustavo Molina Zafra · MediBitácora Pro_`;
+    openWhatsApp(b);showToast('✓ Abriendo WhatsApp...');
+  }catch(e){showToast('Error',true);}
+}
+
+async function whatsappResumen(){
+  try{
+    const meds=await sbGet('medicamentos','estado=eq.Activo&order=nombre.asc');
+    const logs=await sbGet('registros','order=fecha.desc&limit=5');
+    const fecha=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    let b=`🩺 *MediBitácora Pro — Resumen Médico*\n_Gustavo Molina Zafra · ${fecha}_\n\n`;
+    b+=`*MEDICACIÓN ACTIVA*\n`;
+    meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'} · ${fr}\n`;});
+    b+=`\n*ÚLTIMAS ENTRADAS*\n`;
+    logs.forEach(l=>{b+=`• ${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})} | ${l.estado} | Dolor: ${l.dolor}/10\n`;});
+    b+=`\n_Documento orientativo. No constituye diagnóstico médico._\n_© 2025 Gustavo Molina Zafra · MediBitácora Pro_`;
+    openWhatsApp(b);showToast('✓ Abriendo WhatsApp...');
+  }catch(e){showToast('Error',true);}
+}
 
 // COMPROBAR ACTUALIZACIONES
 async function comprobarActualizacion(){
