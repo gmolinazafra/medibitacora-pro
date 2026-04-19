@@ -89,7 +89,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.url.includes('supabase.co') || event.request.url.includes('anthropic.com')) {
+  if (event.request.url.includes('supabase.co') || 
+      event.request.url.includes('anthropic.com') ||
+      event.request.url.includes('workers.dev')) {
     event.respondWith(fetch(event.request));
     return;
   }
