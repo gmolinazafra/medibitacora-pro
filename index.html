@@ -357,35 +357,6 @@
     </div>
   </div>
 
-  <!-- INFORMES -->
-  <div class="section" id="sec-informes">
-    <div class="card">
-      <div class="card-title">Registrar documento</div>
-      <label>Descripción</label><input type="text" id="d-desc" placeholder="Ej: Analítica sangre mayo 2025"/>
-      <label>Adjuntar archivo (PDF o imagen)</label>
-      <div id="upload-zone" style="border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;margin-bottom:10px;cursor:pointer;background:var(--bg2);" onclick="document.getElementById('d-archivo').click()">
-        <div style="font-size:22px;margin-bottom:4px;">📎</div>
-        <div style="font-size:13px;color:var(--text2);" id="upload-label">Toca para seleccionar archivo</div>
-      </div>
-      <input type="file" id="d-archivo" accept=".pdf,.jpg,.jpeg,.png,.gif" style="display:none;" onchange="archivoSeleccionado(this)"/>
-      <label>Fecha del documento</label><input type="date" id="d-fecha"/>
-      <div id="upload-progress" style="display:none;margin-bottom:10px;">
-        <div style="background:var(--bg2);border-radius:20px;height:6px;overflow:hidden;">
-          <div id="progress-bar" style="background:var(--blue);height:100%;width:0%;transition:width 0.3s;border-radius:20px;"></div>
-        </div>
-        <div style="font-size:12px;color:var(--text2);text-align:center;margin-top:4px;" id="progress-text">Subiendo...</div>
-      </div>
-      <button class="btn" id="btn-doc" onclick="guardarDoc()">Guardar documento</button>
-    </div>
-    <div class="card"><div class="card-title">Archivos registrados</div><div id="doc-list"><div class="loader">Cargando...</div></div></div>
-    <div class="card">
-      <div class="card-title">Exportar informes por email</div>
-      <label>Enviar a</label><input type="email" id="email-inf" placeholder="medico@ejemplo.com"/>
-      <button class="btn btn-gray" style="margin-bottom:8px;" onclick="emailInformes()">Abrir correo con informes</button>
-      <button class="btn" style="background:#25D366;" onclick="whatsappInformes()">Compartir por WhatsApp</button>
-    </div>
-  </div>
-
   <!-- RESUMEN -->
   <div class="section" id="sec-resumen">
     <div class="card" style="border-left:3px solid var(--blue);">
