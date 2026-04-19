@@ -560,11 +560,102 @@ function cerrarModalFuera(e){if(e.target===document.getElementById('modal'))cerr
 
 // PAGO — conecta aquí tu Stripe, PayPal o Gumroad
 function irAPago(){
-  // Reemplaza esta URL con tu enlace de pago real (Stripe, Gumroad, PayPal, etc.)
   const urlPago = 'https://buy.stripe.com/00w3cn9sn6bPbsH3x94wM00';
-  // pago activado
   window.open(urlPago, '_blank');
 }
+
+// PÁGINA DE GRACIAS — se activa cuando Stripe redirige con ?gracias=1
+function setDevice(dev){
+  document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.device-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('dev-'+dev).classList.add('active');
+  event.target.classList.add('active');
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('gracias')==='1'){
+    document.body.innerHTML=`
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh;padding:20px 16px 60px;">
+    <div style="max-width:540px;margin:0 auto;">
+      <div style="background:#185FA5;color:white;border-radius:16px;padding:28px 24px;text-align:center;margin-bottom:20px;">
+        <svg width="64" height="64" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
+          <rect width="200" height="200" rx="44" fill="rgba(255,255,255,0.2)"/>
+          <rect x="82" y="44" width="36" height="112" rx="8" fill="white"/>
+          <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
+        </svg>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;margin-bottom:14px;">✓ Pago completado</div>
+        <h1 style="font-size:22px;font-weight:700;margin-bottom:8px;">¡Bienvenido a MediBitácora Pro!</h1>
+        <p style="font-size:14px;opacity:0.85;">Tu compra ha sido procesada correctamente. Sigue los pasos para instalar tu app.</p>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;margin-bottom:14px;border:0.5px solid rgba(0,0,0,0.08);">
+        <div style="font-size:11px;font-weight:700;color:#185FA5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Tu PIN de acceso</div>
+        <div style="background:#E6F1FB;border-radius:8px;padding:14px;text-align:center;margin-bottom:10px;">
+          <div style="font-size:32px;font-weight:800;color:#185FA5;letter-spacing:8px;">1234</div>
+          <div style="font-size:12px;color:#666;margin-top:4px;">Cámbialo en ⚙️ Ajustes una vez dentro</div>
+        </div>
+        <div style="font-size:13px;color:#666;line-height:1.6;">Tus datos se guardan <strong>únicamente en tu dispositivo</strong>. Nadie más puede acceder a ellos.</div>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;margin-bottom:14px;border:0.5px solid rgba(0,0,0,0.08);">
+        <div style="font-size:11px;font-weight:700;color:#185FA5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Acceder a la app</div>
+        <a href="https://gmolinazafra.github.io/medibitacora-pro/" style="display:block;width:100%;padding:16px;background:#185FA5;color:white;text-align:center;border-radius:10px;font-size:16px;font-weight:700;text-decoration:none;margin-bottom:8px;">Abrir MediBitácora Pro →</a>
+        <div style="font-size:12px;color:#888;text-align:center;">Instálala siguiendo los pasos de abajo</div>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;margin-bottom:14px;border:0.5px solid rgba(0,0,0,0.08);">
+        <div style="font-size:11px;font-weight:700;color:#185FA5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Instalar en tu dispositivo</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <button onclick="setDevice('android')" id="dtab-android" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #185FA5;background:#E6F1FB;color:#185FA5;font-weight:600;font-size:13px;cursor:pointer;">📱 Android</button>
+          <button onclick="setDevice('iphone')" id="dtab-iphone" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #e0e0e0;background:none;color:#666;font-size:13px;cursor:pointer;">🍎 iPhone</button>
+          <button onclick="setDevice('pc')" id="dtab-pc" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #e0e0e0;background:none;color:#666;font-size:13px;cursor:pointer;">💻 PC</button>
+        </div>
+        <div id="dev-android">
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">1. Abre <strong style="color:#185FA5;">Chrome</strong> y ve a la app pulsando el botón de arriba</div>
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">2. Toca los <strong style="color:#185FA5;">3 puntos</strong> (⋮) arriba a la derecha</div>
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">3. Toca <strong style="color:#185FA5;">"Añadir a pantalla de inicio"</strong></div>
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">4. Confirma tocando <strong style="color:#185FA5;">"Añadir"</strong></div>
+          <div style="font-size:13px;color:#444;padding:7px 0;">5. El icono aparecerá en tu pantalla como una app normal ✓</div>
+        </div>
+        <div id="dev-iphone" style="display:none;">
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">1. Abre <strong style="color:#185FA5;">Safari</strong> y ve a la app</div>
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">2. Toca el botón de <strong style="color:#185FA5;">compartir</strong> (□↑) abajo</div>
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">3. Toca <strong style="color:#185FA5;">"Añadir a pantalla de inicio"</strong></div>
+          <div style="font-size:13px;color:#444;padding:7px 0;">4. Toca <strong style="color:#185FA5;">"Añadir"</strong> arriba a la derecha ✓</div>
+        </div>
+        <div id="dev-pc" style="display:none;">
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">1. Abre <strong style="color:#185FA5;">Chrome</strong> y ve a la app</div>
+          <div style="font-size:13px;color:#444;padding:7px 0;border-bottom:0.5px solid #f0f0f0;">2. Haz clic en el icono <strong style="color:#185FA5;">⊕</strong> en la barra de direcciones</div>
+          <div style="font-size:13px;color:#444;padding:7px 0;">3. Haz clic en <strong style="color:#185FA5;">"Instalar"</strong> ✓</div>
+        </div>
+      </div>
+
+      <div style="background:white;border-radius:12px;padding:20px;margin-bottom:14px;border:0.5px solid rgba(0,0,0,0.08);">
+        <div style="font-size:11px;font-weight:700;color:#185FA5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">¿Necesitas ayuda?</div>
+        <a href="mailto:628482475@telefonica.net?subject=Ayuda MediBitácora Pro" style="display:block;width:100%;padding:13px;background:none;border:1.5px solid #185FA5;color:#185FA5;text-align:center;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:8px;">✉️ Contactar por email</a>
+        <a href="https://wa.me/34628482475?text=Hola,%20he%20comprado%20MediBitácora%20Pro%20y%20necesito%20ayuda" style="display:block;width:100%;padding:13px;background:none;border:1.5px solid #25D366;color:#25D366;text-align:center;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;">💬 Contactar por WhatsApp</a>
+      </div>
+
+      <div style="text-align:center;font-size:12px;color:#888;margin-top:20px;line-height:1.8;">
+        <strong>MediBitácora Pro v2.0</strong><br>
+        © 2025 Gustavo Molina Zafra · Todos los derechos reservados
+      </div>
+    </div>
+    </div>`;
+
+    // Función tabs para la página de gracias
+    window.setDevice=function(dev){
+      ['android','iphone','pc'].forEach(d=>{
+        document.getElementById('dev-'+d).style.display=d===dev?'block':'none';
+        document.getElementById('dtab-'+d).style.border=d===dev?'1.5px solid #185FA5':'1.5px solid #e0e0e0';
+        document.getElementById('dtab-'+d).style.background=d===dev?'#E6F1FB':'none';
+        document.getElementById('dtab-'+d).style.color=d===dev?'#185FA5':'#666';
+        document.getElementById('dtab-'+d).style.fontWeight=d===dev?'600':'normal';
+      });
+    };
+  }
+});
 
 // SCROLL ANIMATIONS
 const observer = new IntersectionObserver(entries => {
