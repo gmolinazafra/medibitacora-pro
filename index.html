@@ -757,20 +757,12 @@ async function comprobarActualizacion(){
       const reg=await navigator.serviceWorker.getRegistration();
       if(reg){
         await reg.update();
-        if(reg.waiting){
-          el.style.color='var(--green)';el.textContent='✓ Nueva versión encontrada. Aplicando...';
-          reg.waiting.postMessage({type:'SKIP_WAITING'});
-          setTimeout(()=>window.location.reload(),1000);
-        } else if(reg.installing){
-          el.style.color='var(--blue)';el.textContent='Descargando actualización...';
-          reg.installing.addEventListener('statechange',function(){
-            if(this.state==='installed'){
-              el.style.color='var(--green)';el.textContent='✓ Actualización lista. Recargando...';
-              setTimeout(()=>window.location.reload(),1000);
-            }
-          });
+        if(reg.waiting||reg.installing){
+          el.style.color='var(--green)';
+          el.textContent='✓ Nueva versión disponible. Cierra y abre la app para aplicarla.';
         } else {
-          el.style.color='var(--green)';el.textContent='✓ Ya tienes la última versión';
+          el.style.color='var(--green)';
+          el.textContent='✓ Ya tienes la última versión instalada';
         }
       }
     } else {
