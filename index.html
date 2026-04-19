@@ -757,17 +757,20 @@ async function guardarCita(){
   const medico=document.getElementById('cita-medico').value;
   if(!fecha||!medico){showToast('Completa fecha y médico',true);return;}
   btn.disabled=true;btn.textContent='Guardando...';
-  const horaVal=document.getElementById('cita-hora').value;
+  const horaVal=document.getElementById('cita-hora').value||null;
   try{
     await sbPost('citas',{
       fecha,
-      hora:horaVal?horaVal+':00':null,
+      hora:horaVal,
       medico,
       especialidad:document.getElementById('cita-esp').value||null,
       notas:document.getElementById('cita-notas').value||null,
       estado:document.getElementById('cita-estado').value
     });
-    document.getElementById('cita-medico').value='';document.getElementById('cita-esp').value='';document.getElementById('cita-notas').value='';document.getElementById('cita-hora').value='';
+    document.getElementById('cita-medico').value='';
+    document.getElementById('cita-esp').value='';
+    document.getElementById('cita-notas').value='';
+    document.getElementById('cita-hora').value='';
     showToast('✓ Cita guardada');cargarCitas();
   }catch(e){showToast('Error al guardar',true);}
   btn.disabled=false;btn.textContent='Guardar cita';
