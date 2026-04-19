@@ -357,6 +357,29 @@
     </div>
   </div>
 
+  <!-- EMERGENCIAS -->
+  <div class="section" id="sec-emergencias">
+    <div class="card" style="border-left:3px solid var(--red);">
+      <div class="card-title" style="color:var(--red);">Emergencias nacionales</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="tel:112" style="text-decoration:none;"><div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);border-radius:var(--radius-sm);"><div style="width:44px;height:44px;border-radius:50%;background:#FCEBEB;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🚨</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text);">Emergencias</div><div style="font-size:12px;color:var(--text2);">Policía, bomberos, ambulancia</div></div><div style="font-size:20px;font-weight:700;color:var(--red);">112</div></div></a>
+        <a href="tel:061" style="text-decoration:none;"><div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);border-radius:var(--radius-sm);"><div style="width:44px;height:44px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🏥</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text);">Urgencias sanitarias</div><div style="font-size:12px;color:var(--text2);">Emergencias médicas</div></div><div style="font-size:20px;font-weight:700;color:var(--blue);">061</div></div></a>
+        <a href="tel:024" style="text-decoration:none;"><div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);border-radius:var(--radius-sm);"><div style="width:44px;height:44px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">💚</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text);">Atención a conducta suicida</div><div style="font-size:12px;color:var(--text2);">Línea de crisis 24h</div></div><div style="font-size:20px;font-weight:700;color:var(--green);">024</div></div></a>
+        <a href="tel:016" style="text-decoration:none;"><div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);border-radius:var(--radius-sm);"><div style="width:44px;height:44px;border-radius:50%;background:#FFF3CD;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🛡️</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text);">Violencia de género</div><div style="font-size:12px;color:var(--text2);">Información y asesoramiento</div></div><div style="font-size:20px;font-weight:700;color:#92400E;">016</div></div></a>
+        <a href="tel:900202010" style="text-decoration:none;"><div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);border-radius:var(--radius-sm);"><div style="width:44px;height:44px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">💊</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text);">Info medicamentos</div><div style="font-size:12px;color:var(--text2);">AEMPS · Agencia del Medicamento</div></div><div style="font-size:15px;font-weight:700;color:var(--blue);">900 202 010</div></div></a>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <div class="card-title">Mis contactos personales</div>
+      <div id="contactos-list"><div class="empty">Sin contactos añadidos.</div></div>
+      <div style="margin-top:10px;">
+        <input type="text" id="cont-nombre" placeholder="Nombre (ej: Dr. García)"/>
+        <input type="tel" id="cont-tel" placeholder="Teléfono"/>
+        <button class="btn" onclick="agregarContacto()">Añadir contacto</button>
+      </div>
+    </div>
+  </div>
+
   <!-- RESUMEN -->
   <div class="section" id="sec-resumen">
     <div class="card" style="border-left:3px solid var(--blue);">
