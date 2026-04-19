@@ -751,10 +751,31 @@ async function whatsappResumen(){
 // COMPROBAR ACTUALIZACIONES
 async function comprobarActualizacion(){
   const el=document.getElementById('update-status');
-  el.style.display='block';el.style.color='var(--text2)';el.textContent='Comprobando...';
+  el.style.display='block';el.style.color='var(--text2)';el.textContent='Buscando actualización...';
   try{
-    if('serviceWorker' in navigator){const sw=await navigator.serviceWorker.ready;await sw.update();}
-    el.style.color='var(--green)';el.textContent='✓ Tienes la última versión instalada';
+    if('serviceWorker' in navigator){
+      const reg=await navigator.serviceWorker.getRegistration();
+      if(reg){
+        await reg.update();
+        if(reg.waiting){
+          el.style.color='var(--green)';el.textContent='✓ Nueva versión encontrada. Aplicando...';
+          reg.waiting.postMessage({type:'SKIP_WAITING'});
+          setTimeout(()=>window.location.reload(),1000);
+        } else if(reg.installing){
+          el.style.color='var(--blue)';el.textContent='Descargando actualización...';
+          reg.installing.addEventListener('statechange',function(){
+            if(this.state==='installed'){
+              el.style.color='var(--green)';el.textContent='✓ Actualización lista. Recargando...';
+              setTimeout(()=>window.location.reload(),1000);
+            }
+          });
+        } else {
+          el.style.color='var(--green)';el.textContent='✓ Ya tienes la última versión';
+        }
+      }
+    } else {
+      el.style.color='var(--text2)';el.textContent='No disponible en este navegador';
+    }
   }catch(e){el.style.color='var(--text2)';el.textContent='No se pudo comprobar. Verifica tu conexión.';}
 }
 

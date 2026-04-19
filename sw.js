@@ -2,6 +2,10 @@ const CACHE_NAME = 'medibitacora-v2';
 
 // Recibe mensajes desde la app para programar notificaciones
 self.addEventListener('message', event => {
+  if(event.data && event.data.type === 'SKIP_WAITING'){
+    self.skipWaiting();
+    return;
+  }
   if (event.data && event.data.type === 'PROGRAMAR_NOTIFICACIONES') {
     const meds = event.data.meds;
     programarNotificaciones(meds);
