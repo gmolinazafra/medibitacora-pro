@@ -460,6 +460,18 @@ textarea{min-height:60px;resize:vertical;}
     </div>
   </div>
 
+
+  <!-- MODAL VER/EDITAR -->
+  <div id="modalDetalle" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;z-index:300;padding:0;" onclick="if(event.target===this)cerrarModal()">
+    <div style="background:var(--bg);border-radius:16px 16px 0 0;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;padding:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:600;" id="modalTitulo">Detalle</div>
+        <button onclick="cerrarModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text2);">✕</button>
+      </div>
+      <div id="modalContenido"></div>
+    </div>
+  </div>
+
   <div class="bottom-nav">
     <button class="nav-btn active" id="nav-evolucion" onclick="setSection('evolucion')"><span class="nav-icon">📈</span>Evolución</button>
     <button class="nav-btn" id="nav-tratamientos" onclick="setSection('tratamientos')"><span class="nav-icon">💊</span>Tratamientos</button>
@@ -526,7 +538,18 @@ function cargarRegistros(){
   if(d)data=data.filter(r=>r.fecha>=d);
   if(h)data=data.filter(r=>r.fecha<=h);
   data=data.slice(0,60);cachedLogs=data;actualizarStats(data);renderChart(data);
-  el.innerHTML=data.length?data.map(l=>`<div class="log-item"><div class="log-row" style="margin-bottom:3px;"><div class="log-date" style="flex:1;">${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div><button onclick="borrarRegistro('${l.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text2);padding:2px 4px;">🗑️</button></div><div class="log-row"><div class="log-text">${l.estado} · ${(l.sintomas||'').substring(0,40)}${(l.sintomas||'').length>40?'…':''}</div><span class="chip">Dolor ${l.dolor}</span></div>${l.mejoria?`<div style="font-size:13px;color:var(--green);margin-top:3px;">+ ${l.mejoria}</div>`:''}</div>`).join(''):'<div class="empty">Sin registros aún.</div>';
+  el.innerHTML=data.length?data.map(l=>`<div class="log-item" style="cursor:pointer;" onclick="verRegistro('${l.id}')">
+    <div class="log-row" style="margin-bottom:3px;">
+      <div class="log-date" style="flex:1;">${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div>
+      <button onclick="event.stopPropagation();editarRegistro('${l.id}')" style="background:none;border:none;cursor:pointer;font-size:15px;color:var(--text2);padding:2px;">✏️</button>
+      <button onclick="event.stopPropagation();borrarRegistro('${l.id}')" style="background:none;border:none;cursor:pointer;font-size:15px;color:var(--text2);padding:2px 4px;">🗑️</button>
+    </div>
+    <div class="log-row">
+      <div class="log-text">${l.estado} · ${(l.sintomas||'').substring(0,40)}${(l.sintomas||'').length>40?'…':''}</div>
+      <span class="chip">Dolor ${l.dolor}</span>
+    </div>
+    ${l.mejoria?`<div style="font-size:13px;color:var(--green);margin-top:3px;">+ ${l.mejoria}</div>`:''}
+  </div>`).join(''):'<div class="empty">Sin registros aún.</div>';
 }
 function actualizarStats(data){document.getElementById('st-total').textContent=data.length;document.getElementById('st-avg').textContent=data.length?(data.reduce((s,l)=>s+l.dolor,0)/data.length).toFixed(1):'—';}
 function renderChart(data){
@@ -535,6 +558,82 @@ function renderChart(data){
   if(chartInst)chartInst.destroy();
   chartInst=new Chart(ctx,{type:'line',data:{labels:sorted.map(l=>new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})),datasets:[{data:sorted.map(l=>l.dolor),borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.08)',fill:true,tension:0.4,pointBackgroundColor:'#185FA5',pointRadius:4,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:10,ticks:{stepSize:2,font:{size:11},color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{font:{size:10},color:'#888',maxRotation:30},grid:{display:false}}}}});
 }
+function cerrarModal(){document.getElementById('modalDetalle').style.display='none';}
+
+function verRegistro(id){
+  const l=DB.get('registros').find(r=>r.id===id);if(!l)return;
+  document.getElementById('modalTitulo').textContent=new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('modalContenido').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:14px;font-weight:600;">${l.estado}</span>
+      <span class="chip">Dolor ${l.dolor}/10</span>
+    </div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:600;">SÍNTOMAS</div>
+    <div style="font-size:14px;line-height:1.7;margin-bottom:12px;">${l.sintomas||'—'}</div>
+    ${l.mejoria?`<div style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:600;">MEJORÍA</div><div style="font-size:14px;line-height:1.7;color:var(--green);margin-bottom:12px;">${l.mejoria}</div>`:''}
+    <button class="btn" onclick="cerrarModal();editarRegistro('${id}')">✏️ Editar registro</button>
+  `;
+  document.getElementById('modalDetalle').style.display='flex';
+}
+
+function editarRegistro(id){
+  const l=DB.get('registros').find(r=>r.id===id);if(!l)return;
+  document.getElementById('r-fecha').value=l.fecha||'';
+  document.getElementById('r-estado').value=l.estado||'Bueno';
+  document.getElementById('r-sint').value=l.sintomas||'';
+  document.getElementById('r-dolor').value=l.dolor||5;
+  document.getElementById('pval').textContent=l.dolor||5;
+  document.getElementById('r-mejor').value=l.mejoria||'';
+  const btn=document.getElementById('btn-reg');
+  btn.textContent='Actualizar registro';
+  btn.onclick=()=>{
+    DB.update('registros',id,{fecha:document.getElementById('r-fecha').value,estado:document.getElementById('r-estado').value,sintomas:document.getElementById('r-sint').value,dolor:parseInt(document.getElementById('r-dolor').value),mejoria:document.getElementById('r-mejor').value});
+    document.getElementById('r-sint').value='';document.getElementById('r-mejor').value='';
+    btn.textContent='Guardar registro';btn.onclick=guardarRegistro;
+    showToast('✓ Registro actualizado');cargarRegistros();
+  };
+  setSection('evolucion');window.scrollTo(0,0);showToast('Edita y pulsa Actualizar');
+}
+
+function verCita(id){
+  const c=DB.get('citas').find(r=>r.id===id);if(!c)return;
+  const eC={Pendiente:'#92400E',Confirmada:'#3B6D11',Completada:'#185FA5',Cancelada:'#888'};
+  const eB={Pendiente:'#FFF3CD',Confirmada:'#EAF3DE',Completada:'#E6F1FB',Cancelada:'#f5f5f5'};
+  document.getElementById('modalTitulo').textContent='Detalle de cita';
+  document.getElementById('modalContenido').innerHTML=`
+    <div style="margin-bottom:12px;">
+      <div style="font-size:16px;font-weight:600;margin-bottom:2px;">${c.medico}</div>
+      <div style="font-size:13px;color:var(--text2);">${c.especialidad||''}</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div style="font-size:14px;color:var(--blue);font-weight:500;">${new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}${c.hora?' · '+c.hora:''}</div>
+      <span style="font-size:12px;padding:3px 10px;border-radius:20px;background:${eB[c.estado]||'#f5f5f5'};color:${eC[c.estado]||'#888'};">${c.estado}</span>
+    </div>
+    ${c.notas?`<div style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:600;">NOTAS</div><div style="font-size:14px;line-height:1.7;margin-bottom:12px;">${c.notas}</div>`:''}
+    <button class="btn" onclick="cerrarModal();editarCita('${id}')">✏️ Editar cita</button>
+  `;
+  document.getElementById('modalDetalle').style.display='flex';
+}
+
+function editarCita(id){
+  const c=DB.get('citas').find(r=>r.id===id);if(!c)return;
+  document.getElementById('cita-medico').value=c.medico||'';
+  document.getElementById('cita-esp').value=c.especialidad||'';
+  document.getElementById('cita-fecha').value=c.fecha||'';
+  document.getElementById('cita-hora').value=c.hora||'';
+  document.getElementById('cita-notas').value=c.notas||'';
+  document.getElementById('cita-estado').value=c.estado||'Pendiente';
+  const btn=document.querySelector('#sec-citas .btn');
+  btn.textContent='Actualizar cita';
+  btn.onclick=()=>{
+    DB.update('citas',id,{medico:document.getElementById('cita-medico').value,especialidad:document.getElementById('cita-esp').value,fecha:document.getElementById('cita-fecha').value,hora:document.getElementById('cita-hora').value||null,notas:document.getElementById('cita-notas').value||null,estado:document.getElementById('cita-estado').value});
+    document.getElementById('cita-medico').value='';document.getElementById('cita-esp').value='';document.getElementById('cita-notas').value='';document.getElementById('cita-hora').value='';
+    btn.textContent='Guardar cita';btn.onclick=guardarCita;
+    showToast('✓ Cita actualizada');cargarCitas();
+  };
+  setSection('citas');window.scrollTo(0,0);showToast('Edita y pulsa Actualizar');
+}
+
 function guardarRegistro(){
   const fecha=document.getElementById('r-fecha').value,sint=document.getElementById('r-sint').value;
   if(!fecha||!sint){showToast('Completa fecha y síntomas',true);return;}
@@ -603,7 +702,24 @@ function cargarCitas(){
   if(!data.length){el.innerHTML='<div class="empty">Sin citas registradas.</div>';return;}
   const eC={Pendiente:'#92400E',Confirmada:'#3B6D11',Completada:'#185FA5',Cancelada:'#888'};
   const eB={Pendiente:'#FFF3CD',Confirmada:'#EAF3DE',Completada:'#E6F1FB',Cancelada:'#f5f5f5'};
-  el.innerHTML=data.map(c=>`<div class="med-item"><div class="med-header"><div style="width:44px;height:44px;border-radius:10px;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📅</div><div style="flex:1;margin-left:10px;"><div class="med-name">${c.medico}</div><div class="med-det">${c.especialidad||''}</div><div class="med-det" style="color:var(--blue);font-weight:500;">${new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}${c.hora?' · '+c.hora:''}</div>${c.notas?`<div class="med-det" style="font-style:italic;">${c.notas}</div>`:''}</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;"><span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${eB[c.estado]||'#f5f5f5'};color:${eC[c.estado]||'#888'};">${c.estado}</span><button onclick="borrarCita('${c.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;">🗑️</button></div></div></div>`).join('');
+  el.innerHTML=data.map(c=>`<div class="med-item" style="cursor:pointer;" onclick="verCita('${c.id}')">
+    <div class="med-header">
+      <div style="width:44px;height:44px;border-radius:10px;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📅</div>
+      <div style="flex:1;margin-left:10px;">
+        <div class="med-name">${c.medico}</div>
+        <div class="med-det">${c.especialidad||''}</div>
+        <div class="med-det" style="color:var(--blue);font-weight:500;">${new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}${c.hora?' · '+c.hora:''}</div>
+        ${c.notas?`<div class="med-det" style="font-style:italic;">${c.notas.substring(0,40)}${c.notas.length>40?'…':''}</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${eB[c.estado]||'#f5f5f5'};color:${eC[c.estado]||'#888'};">${c.estado}</span>
+        <div style="display:flex;gap:4px;">
+          <button onclick="event.stopPropagation();editarCita('${c.id}')" style="background:none;border:none;cursor:pointer;font-size:15px;">✏️</button>
+          <button onclick="event.stopPropagation();borrarCita('${c.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </div>`).join('');
 }
 function borrarCita(id){if(!confirm('¿Borrar esta cita?'))return;DB.delete('citas',id);showToast('✓ Cita eliminada');cargarCitas();}
 
@@ -700,7 +816,7 @@ function exportarPDF(){
     meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';doc.setFont('helvetica','bold');doc.text(m.nombre,ml,y);doc.setFont('helvetica','normal');doc.text(`${m.dosis||''} · ${fr}`,ml+4,y+5);doc.text(`Desde: ${m.fecha_inicio||'—'}`,ml+4,y+10);y+=16;});
     y+=4;doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Últimas Entradas de Evolución',ml,y);y+=2;doc.line(ml,y,mr,y);y+=6;
     doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);
-    logs.forEach(l=>{const fd=new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});doc.setFont('helvetica','bold');doc.text(`${fd} — ${l.estado} — Dolor: ${l.dolor}/10`,ml,y);y+=5;doc.setFont('helvetica','normal');const ln=doc.splitTextToSize(`Síntomas: ${l.sintomas||'—'}`,mr-ml);doc.text(ln,ml+2,y);y+=ln.length*5;if(l.mejoria){const ln2=doc.splitTextToSize(`Mejoría: ${l.mejoria}`,mr-ml);doc.text(ln2,ml+2,y);y+=ln2.length*5;}y+=4;if(y>265){doc.addPage();y=20;}});
+    logs.forEach(l=>{const fd=new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});doc.setFont('helvetica','bold');doc.text(`${fd} — ${l.estado} — Dolor: ${l.dolor}/10`,ml,y);y+=5;doc.setFont('helvetica','normal');const ln=doc.splitTextToSize(`Síntomas: ${l.sintomas||'—'}`,mr-ml-4);doc.text(ln,ml+2,y);y+=ln.length*5;if(l.mejoria){const ln2=doc.splitTextToSize(`Mejoría: ${l.mejoria}`,mr-ml-4);doc.text(ln2,ml+2,y);y+=ln2.length*5;}y+=4;if(y>265){doc.addPage();y=20;}});
     doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('© 2025 Gustavo Molina Zafra · MediBitácora Pro v2.0 · Uso personal y privado · CONFIDENCIAL',ml,285);
     doc.save('medibitacora-GMZ.pdf');showToast('✓ PDF descargado');
   }catch(e){showToast('Error al generar PDF',true);}
