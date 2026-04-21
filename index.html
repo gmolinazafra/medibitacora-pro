@@ -171,7 +171,7 @@ textarea{min-height:60px;resize:vertical;}
   </div>
   <div class="splash-box">
     <div class="splash-box-title">Privacidad y propiedad</div>
-    <div class="splash-text">Los datos se guardan <strong>únicamente en tu dispositivo</strong>. Nadie más puede acceder a ellos. Acceso protegido mediante PIN personal.<br><br>© 2025 Gustavo Molina Zafra · Todos los derechos reservados.</div>
+    <div class="splash-text">Los datos se guardan <strong>únicamente en tu dispositivo</strong>. Nadie más puede acceder a ellos. Acceso protegido mediante PIN personal.<br><br>Desarrollado por Gustavo Molina Zafra · © 2025 · Todos los derechos reservados.</div>
   </div>
   <div class="splash-copy">MediBitácora Pro · Uso personal y privado exclusivamente</div>
   <button class="splash-btn" onclick="aceptarDescargo()">He leído y acepto · Continuar</button>
@@ -266,6 +266,65 @@ textarea{min-height:60px;resize:vertical;}
       <div class="filter-row"><input type="date" id="f-desde"/><input type="date" id="f-hasta"/></div>
       <button class="btn btn-outline" style="margin-bottom:10px;" onclick="cargarRegistros()">Filtrar</button>
       <div id="log-list"><div class="empty">Sin registros aún.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Constantes vitales</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Rellena solo lo que midas ese día. Todos los campos son opcionales.</div>
+      <label>Fecha</label><input type="date" id="cv-fecha"/>
+      <label>Hora</label><input type="time" id="cv-hora"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label>Tensión sistólica (mmHg)</label>
+          <input type="number" id="cv-tension-sis" placeholder="Ej. 120" min="40" max="300" inputmode="numeric"/>
+        </div>
+        <div>
+          <label>Tensión diastólica (mmHg)</label>
+          <input type="number" id="cv-tension-dia" placeholder="Ej. 80" min="30" max="200" inputmode="numeric"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label>Pulso (lpm)</label>
+          <input type="number" id="cv-pulso" placeholder="Ej. 72" min="30" max="250" inputmode="numeric"/>
+        </div>
+        <div>
+          <label>SpO₂ (%)</label>
+          <input type="number" id="cv-spo2" placeholder="Ej. 98" min="50" max="100" inputmode="numeric"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label>Glucosa (mg/dL)</label>
+          <input type="number" id="cv-glucosa" placeholder="Ej. 95" min="20" max="600" inputmode="numeric"/>
+        </div>
+        <div>
+          <label>Peso (kg)</label>
+          <input type="number" id="cv-peso" placeholder="Ej. 72.5" min="10" max="400" step="0.1" inputmode="decimal"/>
+        </div>
+      </div>
+      <label>Temperatura (°C)</label>
+      <input type="number" id="cv-temperatura" placeholder="Ej. 36.6" min="30" max="45" step="0.1" inputmode="decimal"/>
+      <label>Notas</label>
+      <textarea id="cv-notas" placeholder="Ej. tras caminar 20 min, en ayunas..."></textarea>
+      <button class="btn" onclick="guardarConstante()">Guardar medición</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Evolución de constantes</div>
+      <label>Constante a visualizar</label>
+      <select id="cv-grafica-tipo" onchange="renderGraficaConstantes()">
+        <option value="tension">Tensión arterial (sis / dia)</option>
+        <option value="glucosa">Glucosa</option>
+        <option value="peso">Peso</option>
+        <option value="pulso">Pulso</option>
+        <option value="spo2">SpO₂</option>
+        <option value="temperatura">Temperatura</option>
+      </select>
+      <div class="chart-wrap" style="height:180px;"><canvas id="constantesChart"></canvas></div>
+      <div id="cv-empty" style="font-size:12px;color:var(--text2);font-style:italic;text-align:center;margin-top:8px;display:none;">Sin mediciones para esta constante.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Últimas mediciones</div>
+      <div id="cv-list"><div class="empty">Sin mediciones registradas.</div></div>
     </div>
   </div>
 
@@ -393,6 +452,35 @@ textarea{min-height:60px;resize:vertical;}
   <!-- AJUSTES -->
   <div class="section" id="sec-ajustes">
     <div class="card">
+      <div class="card-title">Datos del paciente</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Estos datos aparecerán en el informe clínico PDF. Se guardan solo en tu dispositivo.</div>
+      <label>Nombre completo</label>
+      <input type="text" id="pac-nombre" placeholder="Nombre y apellidos" autocomplete="off"/>
+      <label>Fecha de nacimiento</label>
+      <input type="date" id="pac-nacimiento"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label>Grupo sanguíneo</label>
+          <select id="pac-sangre">
+            <option value="">—</option>
+            <option>0−</option><option>0+</option>
+            <option>A−</option><option>A+</option>
+            <option>B−</option><option>B+</option>
+            <option>AB−</option><option>AB+</option>
+          </select>
+        </div>
+        <div>
+          <label>Nº Seg. Social</label>
+          <input type="text" id="pac-segsocial" placeholder="Opcional" autocomplete="off"/>
+        </div>
+      </div>
+      <label>Alergias conocidas</label>
+      <textarea id="pac-alergias" placeholder="Ej. Penicilina, AINEs, frutos secos..."></textarea>
+      <label>Antecedentes médicos relevantes</label>
+      <textarea id="pac-antecedentes" placeholder="Enfermedades crónicas, cirugías previas, etc."></textarea>
+      <button class="btn" onclick="guardarPaciente()">Guardar datos del paciente</button>
+    </div>
+    <div class="card" style="margin-top:10px;">
       <div class="card-title">Seguridad — Cambiar PIN</div>
       <div id="ajustes-step-actual">
         <div style="font-size:14px;font-weight:500;text-align:center;margin-bottom:4px;">Paso 1 de 2</div>
@@ -429,6 +517,17 @@ textarea{min-height:60px;resize:vertical;}
       </div>
     </div>
     <div class="card" style="margin-top:10px;">
+      <div class="card-title">Cifrado de datos médicos</div>
+      <div id="cifrado-status" style="font-size:13px;margin-bottom:10px;padding:8px 10px;border-radius:8px;"></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5;">
+        Cifra tus datos médicos con una clave derivada de tu PIN (AES-256). Si alguien accede al almacenamiento del navegador, los datos no serán legibles.
+      </div>
+      <div id="cifrado-warning" style="display:none;font-size:12px;background:#FFF3CD;color:#92400E;padding:10px;border-radius:8px;margin-bottom:12px;line-height:1.5;">
+        ⚠️ <strong>Importante:</strong> si olvidas el PIN <strong>perderás todos tus datos</strong> de forma irrecuperable. Haz un backup antes de activar el cifrado.
+      </div>
+      <button class="btn btn-outline" id="btn-cifrado-toggle" onclick="toggleCifrado()">Activar cifrado</button>
+    </div>
+    <div class="card" style="margin-top:10px;">
       <div class="card-title">Backup de datos</div>
       <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Exporta tus datos o impórtalos en otro dispositivo.</div>
       <button class="btn btn-green" style="margin-bottom:8px;" onclick="exportarBackup()">Exportar backup</button>
@@ -440,6 +539,17 @@ textarea{min-height:60px;resize:vertical;}
       <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Gestiona los recordatorios de medicamentos.</div>
       <div id="notif-status" style="font-size:13px;margin-bottom:10px;text-align:center;"></div>
       <button class="btn btn-outline" onclick="gestionarNotificaciones()">Gestionar notificaciones</button>
+      <div style="margin-top:14px;">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Próximas tomas</div>
+        <div id="proximas-tomas"><div style="font-size:12px;color:var(--text2);font-style:italic;">Carga al activar notificaciones.</div></div>
+      </div>
+      <div style="margin-top:14px;">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Últimas tomas registradas</div>
+        <div id="tomas-registradas"><div style="font-size:12px;color:var(--text2);font-style:italic;">Sin tomas registradas aún.</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-top:12px;line-height:1.5;">
+        ℹ️ Para avisos con la app cerrada, instálala como aplicación: <strong>Android/Chrome</strong> → menú → "Instalar app". <strong>iOS</strong> → Safari → Compartir → "Añadir a pantalla de inicio". Con la PWA instalada los recordatorios persisten aunque cierres la app.
+      </div>
     </div>
     <div class="card" style="margin-top:10px;">
       <div class="card-title">Actualizaciones</div>
@@ -454,7 +564,8 @@ textarea{min-height:60px;resize:vertical;}
         <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
       </svg><br>
       <strong style="color:var(--text);">MediBitácora Pro v2.0</strong><br>
-      © 2025 Gustavo Molina Zafra · Todos los derechos reservados<br>
+      Desarrollado por Gustavo Molina Zafra<br>
+      © 2025 · Todos los derechos reservados<br>
       Uso personal y privado exclusivamente<br>
       <span style="font-size:11px;">Esta app no constituye asesoramiento médico.</span>
     </div>
@@ -485,9 +596,166 @@ textarea{min-height:60px;resize:vertical;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+// ═══════════════════════════════════════════════════════════════════
+// CIFRADO WEB CRYPTO (AES-GCM 256 con clave derivada del PIN via PBKDF2)
+// ═══════════════════════════════════════════════════════════════════
+const ENC_FLAG='medi_cifrado_activo';        // '1' si el cifrado está activado
+const ENC_SALT='medi_cifrado_salt';          // base64 del salt PBKDF2
+const ENC_VERIFY='medi_cifrado_verify';      // blob cifrado para verificar PIN
+const ENC_TABLAS=['registros','medicamentos','citas','contactos','paciente','tomas','constantes'];
+let _cryptoKey=null;         // CryptoKey en memoria tras desbloquear
+let _dbCache={};             // caché en memoria de los datos descifrados
+
+function _b64e(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)));}
+function _b64d(str){return Uint8Array.from(atob(str),c=>c.charCodeAt(0));}
+function _rand(n){return crypto.getRandomValues(new Uint8Array(n));}
+
+async function _deriveKey(pin){
+  const salt=_b64d(localStorage.getItem(ENC_SALT)||'');
+  const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2',salt,iterations:100000,hash:'SHA-256'},
+    material,
+    {name:'AES-GCM',length:256},
+    false,['encrypt','decrypt']
+  );
+}
+
+async function _encrypt(plaintext,key){
+  const iv=_rand(12);
+  const data=new TextEncoder().encode(plaintext);
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,data);
+  return JSON.stringify({iv:_b64e(iv),ct:_b64e(ct),v:1});
+}
+
+async function _decrypt(blobStr,key){
+  const blob=JSON.parse(blobStr);
+  const iv=_b64d(blob.iv),ct=_b64d(blob.ct);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+  return new TextDecoder().decode(pt);
+}
+
+function cifradoActivado(){return localStorage.getItem(ENC_FLAG)==='1';}
+
+/**
+ * Activa el cifrado: genera salt, deriva clave desde el PIN actual,
+ * cifra los datos existentes, crea un blob de verificación.
+ * Pide backup previo por seguridad.
+ */
+async function activarCifrado(pin){
+  if(cifradoActivado())throw new Error('Ya activado');
+  // Generar salt nuevo
+  const salt=_rand(16);
+  localStorage.setItem(ENC_SALT,_b64e(salt));
+  // Derivar clave
+  const key=await _deriveKey(pin);
+  // Blob de verificación (para detectar PIN incorrecto al desbloquear)
+  const verify=await _encrypt('VERIFY_OK_'+Date.now(),key);
+  localStorage.setItem(ENC_VERIFY,verify);
+  // Cifrar cada tabla existente
+  for(const t of ENC_TABLAS){
+    const raw=localStorage.getItem('medi_'+t);
+    if(raw===null)continue;
+    const cif=await _encrypt(raw,key);
+    localStorage.setItem('medi_'+t,cif);
+  }
+  localStorage.setItem(ENC_FLAG,'1');
+  _cryptoKey=key;
+  // Precargar caché en memoria
+  _dbCache={};
+  for(const t of ENC_TABLAS){
+    const raw=localStorage.getItem('medi_'+t);
+    if(raw){try{_dbCache[t]=JSON.parse(await _decrypt(raw,key));}catch(e){}}
+  }
+}
+
+/**
+ * Desactiva el cifrado: descifra todo y vuelve a guardarlo en claro.
+ */
+async function desactivarCifrado(){
+  if(!cifradoActivado()||!_cryptoKey)throw new Error('No activado o sin clave');
+  for(const t of ENC_TABLAS){
+    const raw=localStorage.getItem('medi_'+t);
+    if(!raw)continue;
+    try{
+      const plano=await _decrypt(raw,_cryptoKey);
+      localStorage.setItem('medi_'+t,plano);
+    }catch(e){}
+  }
+  localStorage.removeItem(ENC_FLAG);
+  localStorage.removeItem(ENC_SALT);
+  localStorage.removeItem(ENC_VERIFY);
+  _cryptoKey=null;
+  _dbCache={};
+}
+
+/**
+ * Desbloquea el cifrado verificando el PIN. Si es correcto, carga el caché en memoria.
+ * Devuelve true si el PIN es correcto, false si no.
+ */
+async function desbloquearCifrado(pin){
+  if(!cifradoActivado())return true; // No hay cifrado, nada que desbloquear
+  try{
+    const key=await _deriveKey(pin);
+    const verify=localStorage.getItem(ENC_VERIFY);
+    if(!verify)return false;
+    const plano=await _decrypt(verify,key);
+    if(!plano.startsWith('VERIFY_OK_'))return false;
+    _cryptoKey=key;
+    // Precargar caché
+    _dbCache={};
+    for(const t of ENC_TABLAS){
+      const raw=localStorage.getItem('medi_'+t);
+      if(raw){try{_dbCache[t]=JSON.parse(await _decrypt(raw,key));}catch(e){}}
+    }
+    return true;
+  }catch(e){return false;}
+}
+
+/**
+ * Re-cifra todas las tablas con una nueva clave (tras cambiar PIN con cifrado activo).
+ */
+async function reCifrarTodo(pinNuevo){
+  if(!cifradoActivado())return;
+  const salt=_rand(16);
+  localStorage.setItem(ENC_SALT,_b64e(salt));
+  const nuevaClave=await _deriveKey(pinNuevo);
+  const verify=await _encrypt('VERIFY_OK_'+Date.now(),nuevaClave);
+  localStorage.setItem(ENC_VERIFY,verify);
+  // Recoger datos actuales (ya en caché tras desbloqueo previo)
+  for(const t of ENC_TABLAS){
+    if(_dbCache[t]!==undefined){
+      const cif=await _encrypt(JSON.stringify(_dbCache[t]),nuevaClave);
+      localStorage.setItem('medi_'+t,cif);
+    }
+  }
+  _cryptoKey=nuevaClave;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DB — Capa de persistencia con soporte transparente para cifrado
+// ═══════════════════════════════════════════════════════════════════
+// Cuando el cifrado está activo, usa _dbCache (ya descifrado en memoria)
+// y persiste cifrando en cada escritura. El modelo es fire-and-forget:
+// las escrituras a disco son async pero la UI no espera.
 const DB={
-  get(t){try{return JSON.parse(localStorage.getItem('medi_'+t)||'[]');}catch(e){return[];}},
-  save(t,d){localStorage.setItem('medi_'+t,JSON.stringify(d));},
+  get(t){
+    if(cifradoActivado()&&_cryptoKey){
+      return _dbCache[t]?JSON.parse(JSON.stringify(_dbCache[t])):[];
+    }
+    try{return JSON.parse(localStorage.getItem('medi_'+t)||'[]');}catch(e){return[];}
+  },
+  save(t,d){
+    if(cifradoActivado()&&_cryptoKey){
+      _dbCache[t]=d;
+      // Persistir cifrado en segundo plano (no bloquea)
+      _encrypt(JSON.stringify(d),_cryptoKey)
+        .then(blob=>localStorage.setItem('medi_'+t,blob))
+        .catch(err=>console.error('[DB] Error cifrando',t,err));
+      return;
+    }
+    localStorage.setItem('medi_'+t,JSON.stringify(d));
+  },
   insert(t,obj){const d=DB.get(t);obj.id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);obj.created_at=new Date().toISOString();d.push(obj);DB.save(t,d);return obj;},
   delete(t,id){DB.save(t,DB.get(t).filter(r=>r.id!==id));},
   update(t,id,ch){DB.save(t,DB.get(t).map(r=>r.id===id?{...r,...ch}:r));},
@@ -499,7 +767,48 @@ let cachedMeds=[],cachedLogs=[],todosLosMeds=[];
 let apVals={a:'',n:''},apFase='ingreso',apPrimerNuevo='';
 let deferredPrompt=null;
 
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/medibitacora-pro/sw.js',{scope:'/medibitacora-pro/'}).catch(()=>{});}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/medibitacora-pro/sw.js',{scope:'/medibitacora-pro/'}).catch(()=>{});
+  // Escuchar mensajes del SW (p.ej. cuando se pulsa "Tomado" en una notificación)
+  navigator.serviceWorker.addEventListener('message',e=>{
+    if(e.data&&e.data.type==='MARCAR_TOMA'){
+      registrarToma(e.data.medId,e.data.hora);
+    }
+  });
+}
+
+// Si la app se abre desde una notificación con ?toma=ID, registrar la toma
+(function(){
+  const p=new URLSearchParams(location.search);
+  const medId=p.get('toma'),hora=p.get('hora');
+  if(medId){
+    // Esperar a que la app esté desbloqueada antes de registrar
+    window._tomaPendiente={medId,hora};
+    // Limpiar URL para que no se repita al recargar
+    history.replaceState({},'',location.pathname);
+  }
+})();
+
+function registrarToma(medId,hora){
+  if(!medId)return;
+  const meds=DB.get('medicamentos');
+  const med=meds.find(m=>m.id===medId);
+  if(!med){showToast('Medicamento no encontrado',true);return;}
+  const tomas=DB.get('tomas');
+  tomas.push({
+    id:Date.now().toString(36),
+    medId,
+    medNombre:med.nombre,
+    horaProgramada:hora||'',
+    fechaToma:new Date().toISOString()
+  });
+  // Mantener solo los últimos 90 días
+  const limite=Date.now()-90*86400000;
+  const tomasLimpias=tomas.filter(t=>new Date(t.fechaToma).getTime()>=limite);
+  DB.save('tomas',tomasLimpias);
+  showToast(`✓ ${med.nombre} registrado como tomado`);
+  if(document.getElementById('tomas-registradas'))renderTomasRegistradas();
+}
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
 
 function showToast(msg,err=false){const t=document.getElementById('toastEl');t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
@@ -510,13 +819,47 @@ function getPin(){return localStorage.getItem(PIN_KEY)||'1234';}
 function pinPress(d){if(pinValue.length>=4)return;pinValue+=d;updateDots();}
 function pinClear(){pinValue=pinValue.slice(0,-1);updateDots();}
 function updateDots(){for(let i=0;i<4;i++){const e=document.getElementById('d'+i);e.classList.remove('filled','error');if(i<pinValue.length)e.classList.add('filled');}}
-function pinSubmit(){
+async function pinSubmit(){
   if(pinValue.length<4){showToast('Ingresa 4 dígitos',true);return;}
-  if(pinValue===getPin()){unlockApp();}
+  if(pinValue===getPin()){
+    // Si el cifrado está activo, desbloquear antes de entrar
+    if(cifradoActivado()){
+      const ok=await desbloquearCifrado(pinValue);
+      if(!ok){
+        pinValue='';for(let i=0;i<4;i++){const e=document.getElementById('d'+i);e.classList.remove('filled');e.classList.add('error');}
+        setTimeout(()=>{for(let i=0;i<4;i++)document.getElementById('d'+i).classList.remove('error');},700);
+        showToast('Error al descifrar datos',true);
+        return;
+      }
+    }
+    unlockApp();
+  }
   else{pinValue='';for(let i=0;i<4;i++){const e=document.getElementById('d'+i);e.classList.remove('filled');e.classList.add('error');}setTimeout(()=>{for(let i=0;i<4;i++)document.getElementById('d'+i).classList.remove('error');},700);showToast('PIN incorrecto',true);}
 }
-function unlockApp(){document.getElementById('pinScreen').style.display='none';document.getElementById('mainApp').style.display='block';init();mostrarBannerNotificaciones();}
-function lockApp(){document.getElementById('mainApp').style.display='none';pinValue='';updateDots();document.getElementById('pinTitle').textContent='App bloqueada';document.getElementById('pinSub').textContent='Ingresa tu PIN para continuar';document.getElementById('pinHint').textContent='';document.getElementById('pinScreen').style.display='flex';}
+function unlockApp(){
+  document.getElementById('pinScreen').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+  init();
+  mostrarBannerNotificaciones();
+  // Si vino una toma pendiente desde una notificación, registrarla
+  if(window._tomaPendiente){
+    registrarToma(window._tomaPendiente.medId,window._tomaPendiente.hora);
+    window._tomaPendiente=null;
+  }
+}
+function lockApp(){
+  document.getElementById('mainApp').style.display='none';
+  pinValue='';updateDots();
+  document.getElementById('pinTitle').textContent='App bloqueada';
+  document.getElementById('pinSub').textContent='Ingresa tu PIN para continuar';
+  document.getElementById('pinHint').textContent='';
+  document.getElementById('pinScreen').style.display='flex';
+  // Si el cifrado está activo, limpiar la clave en memoria al bloquear
+  if(cifradoActivado()){
+    _cryptoKey=null;
+    _dbCache={};
+  }
+}
 
 function setSection(s){
   ['evolucion','tratamientos','citas','emergencias','resumen','ajustes'].forEach(id=>{
@@ -529,6 +872,7 @@ function setSection(s){
   if(s==='citas')cargarCitas();
   if(s==='emergencias')cargarContactos();
   if(s==='resumen')cargarResumen();
+  if(s==='ajustes'){renderProximasTomas();renderTomasRegistradas();actualizarEstadoCifrado();}
 }
 
 function cargarRegistros(){
@@ -643,6 +987,158 @@ function guardarRegistro(){
 }
 function borrarRegistro(id){if(!confirm('¿Borrar este registro?'))return;DB.delete('registros',id);showToast('✓ Eliminado');cargarRegistros();}
 
+// ———————— Constantes vitales ————————
+const CV_META={
+  tension_sis:{label:'Tensión sistólica',unit:'mmHg',color:'#185FA5',normal:[90,140]},
+  tension_dia:{label:'Tensión diastólica',unit:'mmHg',color:'#A32D2D',normal:[60,90]},
+  glucosa:{label:'Glucosa',unit:'mg/dL',color:'#1D9E75',normal:[70,140]},
+  peso:{label:'Peso',unit:'kg',color:'#B56717',normal:null},
+  pulso:{label:'Pulso',unit:'lpm',color:'#C74375',normal:[60,100]},
+  spo2:{label:'SpO₂',unit:'%',color:'#4A6CA8',normal:[95,100]},
+  temperatura:{label:'Temperatura',unit:'°C',color:'#D97706',normal:[35.5,37.5]}
+};
+
+function guardarConstante(){
+  const fecha=document.getElementById('cv-fecha').value;
+  if(!fecha){showToast('Selecciona una fecha',true);return;}
+  const leerNum=(id,dec=false)=>{
+    const v=document.getElementById(id).value.trim();
+    if(!v)return null;
+    const n=dec?parseFloat(v):parseInt(v,10);
+    return isNaN(n)?null:n;
+  };
+  const obj={
+    fecha,
+    hora:document.getElementById('cv-hora').value||null,
+    tension_sis:leerNum('cv-tension-sis'),
+    tension_dia:leerNum('cv-tension-dia'),
+    pulso:leerNum('cv-pulso'),
+    spo2:leerNum('cv-spo2'),
+    glucosa:leerNum('cv-glucosa'),
+    peso:leerNum('cv-peso',true),
+    temperatura:leerNum('cv-temperatura',true),
+    notas:document.getElementById('cv-notas').value.trim()||null
+  };
+  // Debe tener al menos un valor además de la fecha
+  const camposMedicion=['tension_sis','tension_dia','pulso','spo2','glucosa','peso','temperatura'];
+  if(!camposMedicion.some(k=>obj[k]!==null)){
+    showToast('Introduce al menos una medición',true);return;
+  }
+  DB.insert('constantes',obj);
+  showToast('✓ Medición guardada');
+  resetFormConstante();
+  cargarConstantes();
+}
+
+function resetFormConstante(){
+  ['cv-tension-sis','cv-tension-dia','cv-pulso','cv-spo2','cv-glucosa','cv-peso','cv-temperatura','cv-notas'].forEach(id=>document.getElementById(id).value='');
+  // Fecha y hora por defecto: ahora
+  const hoy=new Date();
+  document.getElementById('cv-fecha').value=hoy.toISOString().split('T')[0];
+  document.getElementById('cv-hora').value=`${String(hoy.getHours()).padStart(2,'0')}:${String(hoy.getMinutes()).padStart(2,'0')}`;
+}
+
+function cargarConstantes(){
+  renderListaConstantes();
+  renderGraficaConstantes();
+}
+
+function renderListaConstantes(){
+  const el=document.getElementById('cv-list');if(!el)return;
+  const items=DB.get('constantes').sort((a,b)=>{
+    const fa=a.fecha+(a.hora?'T'+a.hora:'T00:00');
+    const fb=b.fecha+(b.hora?'T'+b.hora:'T00:00');
+    return fb.localeCompare(fa);
+  }).slice(0,15);
+  if(!items.length){el.innerHTML='<div class="empty">Sin mediciones registradas.</div>';return;}
+  el.innerHTML=items.map(c=>{
+    const chips=[];
+    if(c.tension_sis!=null&&c.tension_dia!=null)chips.push(`TA ${c.tension_sis}/${c.tension_dia}`);
+    else if(c.tension_sis!=null)chips.push(`TA sis ${c.tension_sis}`);
+    else if(c.tension_dia!=null)chips.push(`TA dia ${c.tension_dia}`);
+    if(c.pulso!=null)chips.push(`♥ ${c.pulso} lpm`);
+    if(c.glucosa!=null)chips.push(`Gluc ${c.glucosa} mg/dL`);
+    if(c.peso!=null)chips.push(`${c.peso} kg`);
+    if(c.spo2!=null)chips.push(`SpO₂ ${c.spo2}%`);
+    if(c.temperatura!=null)chips.push(`${c.temperatura}°C`);
+    const f=new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
+    return `<div style="padding:10px 0;border-bottom:0.5px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <div style="font-size:13px;color:var(--text2);">${f}${c.hora?' · '+c.hora:''}</div>
+        <button onclick="borrarConstante('${c.id}')" style="background:none;border:none;color:var(--red);font-size:12px;cursor:pointer;padding:2px 6px;">Borrar</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${c.notas?'4px':'0'};">
+        ${chips.map(t=>`<span style="font-size:12px;padding:3px 8px;background:var(--bg2);border-radius:12px;color:var(--text);">${t}</span>`).join('')}
+      </div>
+      ${c.notas?`<div style="font-size:12px;color:var(--text2);font-style:italic;">${c.notas}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+let _cvChart=null;
+function renderGraficaConstantes(){
+  const el=document.getElementById('constantesChart');
+  const emptyEl=document.getElementById('cv-empty');
+  if(!el)return;
+  const tipo=document.getElementById('cv-grafica-tipo').value;
+  // últimos 30 registros con al menos un valor del tipo
+  const data=DB.get('constantes').sort((a,b)=>{
+    const fa=a.fecha+(a.hora?'T'+a.hora:'T00:00');
+    const fb=b.fecha+(b.hora?'T'+b.hora:'T00:00');
+    return fa.localeCompare(fb);
+  }).slice(-30);
+
+  const campos=tipo==='tension'?['tension_sis','tension_dia']:[tipo];
+  const puntos=data.filter(d=>campos.some(c=>d[c]!=null));
+
+  if(_cvChart){try{_cvChart.destroy();}catch(e){}_cvChart=null;}
+  if(!puntos.length){
+    el.style.display='none';
+    emptyEl.style.display='block';
+    return;
+  }
+  el.style.display='block';
+  emptyEl.style.display='none';
+
+  const labels=puntos.map(p=>{
+    const d=new Date(p.fecha+'T12:00');
+    return d.toLocaleDateString('es-ES',{day:'numeric',month:'short'});
+  });
+
+  const datasets=campos.filter(c=>puntos.some(p=>p[c]!=null)).map(c=>({
+    label:CV_META[c].label,
+    data:puntos.map(p=>p[c]??null),
+    borderColor:CV_META[c].color,
+    backgroundColor:CV_META[c].color+'20',
+    tension:0.3,
+    spanGaps:true,
+    pointRadius:3,
+    borderWidth:2
+  }));
+
+  _cvChart=new Chart(el,{
+    type:'line',
+    data:{labels,datasets},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{legend:{display:datasets.length>1,position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+      scales:{
+        y:{beginAtZero:false,ticks:{font:{size:10}}},
+        x:{ticks:{font:{size:10},maxRotation:0,autoSkip:true,maxTicksLimit:6}}
+      }
+    }
+  });
+}
+
+function borrarConstante(id){
+  if(!confirm('¿Borrar esta medición?'))return;
+  DB.delete('constantes',id);
+  showToast('✓ Medición borrada');
+  cargarConstantes();
+}
+
+
 function cambiarFrec(){const v=document.getElementById('m-freq-tipo').value;['diaria','semanal','otro'].forEach(s=>document.getElementById('freq-'+s).classList.remove('active'));if(v)document.getElementById('freq-'+v).classList.add('active');if(v==='diaria')actualizarHoras();}
 function actualizarHoras(){const n=parseInt(document.getElementById('m-veces').value)||1;const defaults=['08:00','14:00','22:00'];const c=document.getElementById('horas-container');c.innerHTML='';for(let i=0;i<n;i++){const inp=document.createElement('input');inp.type='time';inp.value=defaults[i];inp.className='hora-input';c.appendChild(inp);}}
 function toggleDia(btn,dia){btn.classList.toggle('sel');if(btn.classList.contains('sel')){if(!diasSel.includes(dia))diasSel.push(dia);}else diasSel=diasSel.filter(d=>d!==dia);}
@@ -672,7 +1168,7 @@ function guardarMed(){
   resetFormMed();showToast('✓ Medicamento guardado');cargarMeds();
   if(Notification.permission==='granted')programarTodasLasNotificaciones();
 }
-function borrarMed(id){if(!confirm('¿Borrar este medicamento?'))return;DB.delete('medicamentos',id);showToast('✓ Eliminado');cargarMeds();}
+function borrarMed(id){if(!confirm('¿Borrar este medicamento?'))return;DB.delete('medicamentos',id);showToast('✓ Eliminado');cargarMeds();if(Notification.permission==='granted')programarTodasLasNotificaciones();}
 function editarMed(id){
   const med=todosLosMeds.find(m=>m.id===id);if(!med)return;
   document.getElementById('m-nombre').value=med.nombre||'';document.getElementById('m-dosis').value=med.dosis||'';
@@ -687,6 +1183,7 @@ function actualizarMed(id){
   const nombre=document.getElementById('m-nombre').value.trim();if(!nombre){showToast('Escribe el nombre',true);return;}
   DB.update('medicamentos',id,{nombre,dosis:document.getElementById('m-dosis').value,frecuencia:buildFrecStr(),fecha_inicio:document.getElementById('m-inicio').value||null,fecha_fin:document.getElementById('m-fin').value||null,estado:document.getElementById('m-estado').value});
   showToast('✓ Actualizado');resetFormMed();cargarMeds();
+  if(Notification.permission==='granted')programarTodasLasNotificaciones();
 }
 
 function guardarCita(){
@@ -761,69 +1258,388 @@ function openEmail(to,subject,body){window.open(`mailto:${to}?subject=${encodeUR
 function emailMedicamentos(){
   const to=document.getElementById('email-med').value;if(!to){showToast('Escribe el email',true);return;}
   const todos=DB.get('medicamentos'),fecha=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
-  let b=`MEDIBITÁCORA PRO — Historial de Medicamentos\nPropietario: Gustavo Molina Zafra\nFecha: ${fecha}\n${'─'.repeat(50)}\n\n`;
+  const pac=getPaciente();const nombrePac=pac.nombre||'Sin datos registrados';
+  let b=`MEDIBITÁCORA PRO — Historial de Medicamentos\nPaciente: ${nombrePac}\nFecha: ${fecha}\n${'─'.repeat(50)}\n\n`;
   const act=todos.filter(m=>m.estado==='Activo'),fin=todos.filter(m=>m.estado==='Finalizado');
   b+=`MEDICACIÓN ACTIVA (${act.length})\n${'─'.repeat(30)}\n`;
   act.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre}\n  Dosis: ${m.dosis||'—'}\n  Frecuencia: ${fr||'—'}\n  Inicio: ${m.fecha_inicio||'—'}\n\n`;});
   b+=`HISTORIAL (${fin.length})\n${'─'.repeat(30)}\n`;
   fin.forEach(m=>{b+=`• ${m.nombre} — ${m.dosis||'—'} — ${m.fecha_inicio||'—'} → ${m.fecha_fin||'—'}\n\n`;});
-  b+=`${'─'.repeat(50)}\n© 2025 Gustavo Molina Zafra · MediBitácora Pro · CONFIDENCIAL`;
+  b+=`${'─'.repeat(50)}\nMediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025 · CONFIDENCIAL`;
   openEmail(to,'MediBitácora Pro — Historial de Medicamentos',b);showToast('✓ Abriendo correo...');
 }
 function emailResumen(){
   const to=document.getElementById('email-res').value;if(!to){showToast('Escribe el email',true);return;}
   const meds=DB.query('medicamentos',{estado:'Activo'}),logs=DB.get('registros').sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,5);
   const fecha=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  let b=`MEDIBITÁCORA PRO — Resumen para Consulta\nPropietario: Gustavo Molina Zafra\nGenerado: ${fecha}\n${'─'.repeat(50)}\n\nMEDICACIÓN ACTIVA\n${'─'.repeat(30)}\n`;
+  const pac=getPaciente();const nombrePac=pac.nombre||'Sin datos registrados';
+  let b=`MEDIBITÁCORA PRO — Resumen para Consulta\nPaciente: ${nombrePac}\nGenerado: ${fecha}\n${'─'.repeat(50)}\n\nMEDICACIÓN ACTIVA\n${'─'.repeat(30)}\n`;
   meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'}\n  ${fr}\n  Desde: ${m.fecha_inicio||'—'}\n\n`;});
   b+=`ÚLTIMAS 5 ENTRADAS\n${'─'.repeat(30)}\n`;
   logs.forEach(l=>{b+=`${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})} | ${l.estado} | Dolor: ${l.dolor}/10\nSíntomas: ${l.sintomas||'—'}\n${l.mejoria?'Mejoría: '+l.mejoria+'\n':''}\n`;});
-  b+=`${'─'.repeat(50)}\nAVISO: No constituye diagnóstico médico.\n© 2025 Gustavo Molina Zafra · MediBitácora Pro · CONFIDENCIAL`;
+  b+=`${'─'.repeat(50)}\nAVISO: No constituye diagnóstico médico.\nMediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025 · CONFIDENCIAL`;
   openEmail(to,'MediBitácora Pro — Resumen para Consulta',b);showToast('✓ Abriendo correo...');
 }
 
 function openWA(t){window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank');}
 function whatsappMedicamentos(){
   const todos=DB.get('medicamentos'),fecha=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
-  let b=`💊 *MediBitácora Pro — Medicamentos*\n_Gustavo Molina Zafra · ${fecha}_\n\n*MEDICACIÓN ACTIVA*\n`;
+  const pac=getPaciente();const nombrePac=pac.nombre||'Sin datos registrados';
+  let b=`💊 *MediBitácora Pro — Medicamentos*\n_${nombrePac} · ${fecha}_\n\n*MEDICACIÓN ACTIVA*\n`;
   todos.filter(m=>m.estado==='Activo').forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'} · ${fr}\n`;});
-  b+=`\n_© 2025 Gustavo Molina Zafra · MediBitácora Pro_`;
+  b+=`\n_MediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025_`;
   openWA(b);showToast('✓ Abriendo WhatsApp...');
 }
 function whatsappResumen(){
   const meds=DB.query('medicamentos',{estado:'Activo'}),logs=DB.get('registros').sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,5);
   const fecha=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  let b=`🩺 *MediBitácora Pro — Resumen Médico*\n_Gustavo Molina Zafra · ${fecha}_\n\n*MEDICACIÓN ACTIVA*\n`;
+  const pac=getPaciente();const nombrePac=pac.nombre||'Sin datos registrados';
+  let b=`🩺 *MediBitácora Pro — Resumen Médico*\n_${nombrePac} · ${fecha}_\n\n*MEDICACIÓN ACTIVA*\n`;
   meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'} · ${fr}\n`;});
   b+=`\n*ÚLTIMAS ENTRADAS*\n`;
   logs.forEach(l=>{b+=`• ${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})} | ${l.estado} | Dolor: ${l.dolor}/10\n`;});
-  b+=`\n_No constituye diagnóstico médico._\n_© 2025 Gustavo Molina Zafra · MediBitácora Pro_`;
+  b+=`\n_No constituye diagnóstico médico._\n_MediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025_`;
   openWA(b);showToast('✓ Abriendo WhatsApp...');
 }
 
 function exportarPDF(){
-  showToast('Generando PDF...');
+  showToast('Generando informe clínico...');
   try{
-    const meds=cachedMeds.length?cachedMeds:DB.query('medicamentos',{estado:'Activo'});
-    const logs=cachedLogs.length?cachedLogs:DB.get('registros').sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,5);
-    const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});const ml=20,mr=190;let y=20;
-    doc.setFillColor(24,95,165);doc.rect(0,0,210,38,'F');doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('MediBitácora Pro',ml,13);
-    doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('Propietario: Gustavo Molina Zafra',ml,20);doc.text('Fecha: '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}),ml,26);doc.text('Informe de Evolución Médica',ml,32);y=46;
-    doc.setFontSize(8);doc.setTextColor(130,130,130);const dl=doc.splitTextToSize('AVISO: Documento de uso personal y privado. No constituye asesoramiento médico.',mr-ml);doc.text(dl,ml,y);y+=dl.length*4+5;
-    doc.setDrawColor(220,220,220);doc.line(ml,y,mr,y);y+=6;
-    doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Medicación Activa',ml,y);y+=2;doc.setDrawColor(24,95,165);doc.line(ml,y,mr,y);y+=6;
-    doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);
-    meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';doc.setFont('helvetica','bold');doc.text(m.nombre,ml,y);doc.setFont('helvetica','normal');doc.text(`${m.dosis||''} · ${fr}`,ml+4,y+5);doc.text(`Desde: ${m.fecha_inicio||'—'}`,ml+4,y+10);y+=16;});
-    y+=4;doc.setTextColor(24,95,165);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text('Últimas Entradas de Evolución',ml,y);y+=2;doc.line(ml,y,mr,y);y+=6;
-    doc.setTextColor(50,50,50);doc.setFont('helvetica','normal');doc.setFontSize(10);
-    logs.forEach(l=>{const fd=new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});doc.setFont('helvetica','bold');doc.text(`${fd} — ${l.estado} — Dolor: ${l.dolor}/10`,ml,y);y+=5;doc.setFont('helvetica','normal');const ln=doc.splitTextToSize(`Síntomas: ${l.sintomas||'—'}`,mr-ml-4);doc.text(ln,ml+2,y);y+=ln.length*5;if(l.mejoria){const ln2=doc.splitTextToSize(`Mejoría: ${l.mejoria}`,mr-ml-4);doc.text(ln2,ml+2,y);y+=ln2.length*5;}y+=4;if(y>265){doc.addPage();y=20;}});
-    doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('© 2025 Gustavo Molina Zafra · MediBitácora Pro v2.0 · Uso personal y privado · CONFIDENCIAL',ml,285);
-    doc.save('medibitacora-GMZ.pdf');showToast('✓ PDF descargado');
-  }catch(e){showToast('Error al generar PDF',true);}
+    // ——— Datos ———
+    const pac=getPaciente();
+    const meds=DB.query('medicamentos',{estado:'Activo'}).sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''));
+    const logsAll=DB.get('registros').sort((a,b)=>b.fecha.localeCompare(a.fecha));
+    const logs=logsAll.slice(0,5);
+    const citas=DB.get('citas').filter(c=>c.estado!=='Cancelada'&&c.estado!=='Completada'&&new Date(c.fecha)>=new Date(new Date().toDateString())).sort((a,b)=>a.fecha.localeCompare(b.fecha)).slice(0,4);
+    const constantes=DB.get('constantes').sort((a,b)=>{
+      const fa=a.fecha+(a.hora?'T'+a.hora:'T00:00');
+      const fb=b.fecha+(b.hora?'T'+b.hora:'T00:00');
+      return fb.localeCompare(fa);
+    }).slice(0,8);
+    const alergias=(pac.alergias||'').trim();
+    const antecedentes=(pac.antecedentes||'').trim();
+    const paciente=(pac.nombre||'Sin datos registrados').trim();
+    const edad=edadDesde(pac.nacimiento);
+
+    // ——— Setup jsPDF ———
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({unit:'mm',format:'a4'});
+    const PW=210,PH=297,ML=18,MR=192,CW=MR-ML;
+    let y=20;
+
+    // Paleta editorial sobria
+    const INK=[17,17,17],MUTE=[107,107,107],SOFT=[51,51,51],RULE=[212,212,212],RULE_S=[236,236,236],ACCENT=[138,30,30],ALERT_BG=[253,245,245];
+
+    // ——— Utilidades ———
+    const MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const fmtFecha=iso=>{if(!iso)return'—';const d=new Date(iso+(iso.length===10?'T12:00':''));if(isNaN(d))return iso;return `${String(d.getDate()).padStart(2,'0')} / ${String(d.getMonth()+1).padStart(2,'0')} / ${d.getFullYear()}`;};
+    const diaMes=iso=>{const d=new Date(iso+(iso.length===10?'T12:00':''));return{day:String(d.getDate()).padStart(2,'0'),month:MESES[d.getMonth()]};};
+    const setColor=c=>doc.setTextColor(c[0],c[1],c[2]);
+    const setDraw=c=>doc.setDrawColor(c[0],c[1],c[2]);
+    const setFill=c=>doc.setFillColor(c[0],c[1],c[2]);
+    const checkPage=(need)=>{if(y+need>PH-22){footer();doc.addPage();y=20;}};
+    const frecTxt=m=>{const f=parseFrec(m.frecuencia||'');if(f.tipo==='diaria')return`${f.veces||1}× día · `+(f.horas||[]).join(' · ');if(f.tipo==='semanal')return(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');return f.texto||'—';};
+
+    // ——— Pie de página (reusable) ———
+    const footer=()=>{
+      setDraw(RULE);doc.setLineWidth(0.2);doc.line(ML,PH-16,MR,PH-16);
+      doc.setFont('helvetica','normal');doc.setFontSize(7);setColor(MUTE);
+      doc.text('MEDIBITÁCORA PRO · V2.0',ML,PH-11);
+      doc.text('DOCUMENTO PRIVADO DEL PACIENTE',PW/2,PH-11,{align:'center'});
+      doc.text(`PÁG. ${doc.internal.getNumberOfPages()}`,MR,PH-11,{align:'right'});
+      doc.setFontSize(7.5);doc.setFont('helvetica','italic');
+      const disc=doc.splitTextToSize('Informe generado automáticamente a partir de los registros personales del paciente. De carácter informativo, no constituye un documento médico oficial ni sustituye la valoración profesional.',CW);
+      doc.text(disc,ML,PH-7);
+    };
+
+    // ——— CABECERA ———
+    setFill(INK);doc.rect(ML,y,CW,0.6,'F');y+=0; // línea superior (decorativa)
+    setColor(MUTE);doc.setFont('helvetica','bold');doc.setFontSize(7.5);
+    doc.text('MEDIBITÁCORA PRO · INFORME CLÍNICO',ML,y+4);
+
+    // Título grande en 2 pesos
+    setColor(INK);doc.setFont('helvetica','normal');doc.setFontSize(26);
+    doc.text('Resumen ',ML,y+15);
+    const wResumen=doc.getTextWidth('Resumen ');
+    doc.setFont('helvetica','bold');
+    doc.text('para consulta',ML+wResumen,y+15);
+
+    // Meta a la derecha
+    doc.setFont('courier','normal');doc.setFontSize(8.5);setColor(SOFT);
+    const hoy=new Date();
+    const fEmision=`${String(hoy.getDate()).padStart(2,'0')} · ${String(hoy.getMonth()+1).padStart(2,'0')} · ${hoy.getFullYear()}`;
+    const ref=`MB-${String(hoy.getMonth()+1).padStart(2,'0')}${String(hoy.getFullYear()).slice(-2)}-${String(Math.floor(Math.random()*900)+100)}`;
+    doc.text('EMITIDO',MR,y+4,{align:'right'});
+    doc.setFont('courier','bold');doc.text(fEmision,MR,y+9,{align:'right'});
+    doc.setFont('courier','normal');doc.text('REF.',MR,y+13,{align:'right'});
+    doc.setFont('courier','bold');doc.text(ref,MR,y+17,{align:'right'});
+
+    y+=20;
+    setDraw(INK);doc.setLineWidth(0.6);doc.line(ML,y,MR,y);
+    y+=8;
+
+    // ——— FICHA DE PACIENTE (grid 4 cols, 2 filas + extras) ———
+    const fichaW=CW,colW=fichaW/4,fichaH=30;
+    setDraw(RULE);doc.setLineWidth(0.2);
+    doc.rect(ML,y,fichaW,fichaH);
+    // divisores horizontales y verticales
+    doc.line(ML,y+fichaH/3,MR,y+fichaH/3);
+    doc.line(ML,y+(fichaH/3)*2,MR,y+(fichaH/3)*2);
+    // fila 1: nombre (span 2) · nacimiento · edad
+    doc.line(ML+colW*2,y,ML+colW*2,y+fichaH/3);
+    doc.line(ML+colW*3,y,ML+colW*3,y+fichaH/3);
+    // fila 2: grupo sang · nº SS · contacto emergencia (span 2)
+    doc.line(ML+colW,y+fichaH/3,ML+colW,y+(fichaH/3)*2);
+    doc.line(ML+colW*2,y+fichaH/3,ML+colW*2,y+(fichaH/3)*2);
+    // fila 3: registros · periodo · tratamientos · citas
+    doc.line(ML+colW,y+(fichaH/3)*2,ML+colW,y+fichaH);
+    doc.line(ML+colW*2,y+(fichaH/3)*2,ML+colW*2,y+fichaH);
+    doc.line(ML+colW*3,y+(fichaH/3)*2,ML+colW*3,y+fichaH);
+
+    const cell=(col,row,label,value)=>{
+      const cx=ML+col*colW+3,cy=y+row*(fichaH/3)+4.5;
+      doc.setFont('helvetica','bold');doc.setFontSize(6.5);setColor(MUTE);
+      doc.text(label.toUpperCase(),cx,cy);
+      doc.setFont('helvetica','normal');doc.setFontSize(10);setColor(INK);
+      const v=doc.splitTextToSize(value||'—',colW*(col===0&&row===0?2:1)-6);
+      doc.text(v[0]||'—',cx,cy+4.5);
+    };
+    // Fila 1
+    cell(0,0,'Paciente',paciente);
+    cell(2,0,'Fecha nac.',pac.nacimiento?fmtFecha(pac.nacimiento):'—');
+    cell(3,0,'Edad',edad!=null?`${edad} años`:'—');
+    // Fila 2
+    cell(0,1,'Grupo sang.',pac.sangre||'—');
+    cell(1,1,'Nº Seg. Social',pac.segsocial||'—');
+    const cto=DB.get('contactos')[0];
+    const ctoTxt=cto?cto.nombre+(cto.tel?' · '+cto.tel:''):'—';
+    // contacto emergencia ocupa col 2 y 3
+    {const cx=ML+2*colW+3,cy=y+(fichaH/3)+4.5;
+     doc.setFont('helvetica','bold');doc.setFontSize(6.5);setColor(MUTE);
+     doc.text('CONTACTO EMERGENCIA',cx,cy);
+     doc.setFont('helvetica','normal');doc.setFontSize(10);setColor(INK);
+     const v=doc.splitTextToSize(ctoTxt,colW*2-6);
+     doc.text(v[0]||'—',cx,cy+4.5);}
+    // Fila 3 (métricas)
+    cell(0,2,'Registros',String(logsAll.length));
+    cell(1,2,'Periodo',logsAll.length?`${fmtFecha(logsAll[logsAll.length-1].fecha)} — hoy`:'—');
+    cell(2,2,'Tratamientos',String(meds.length));
+    cell(3,2,'Citas pendientes',String(citas.length));
+    y+=fichaH+10;
+
+    // ——— ALERGIAS Y ANTECEDENTES ———
+    const sectionTitle=(txt,count)=>{
+      checkPage(14);
+      doc.setFont('helvetica','bold');doc.setFontSize(8);setColor(INK);
+      doc.text(txt.toUpperCase(),ML,y);
+      if(count!=null){doc.setFont('courier','normal');doc.setFontSize(8);setColor(MUTE);doc.text(count,MR,y,{align:'right'});}
+      y+=2;setDraw(INK);doc.setLineWidth(0.4);doc.line(ML,y,MR,y);y+=6;
+    };
+
+    sectionTitle('Alergias y antecedentes relevantes');
+    if(alergias){
+      doc.setFont('helvetica','normal');doc.setFontSize(10);
+      const al=doc.splitTextToSize(alergias,CW-30);
+      const ah=Math.max(10,al.length*4.5+4);
+      checkPage(ah+4);
+      setFill(ALERT_BG);doc.rect(ML,y,CW,ah,'F');
+      setFill(ACCENT);doc.rect(ML,y,0.8,ah,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(ACCENT);
+      doc.text('ALERGIAS',ML+4,y+5);
+      doc.setFont('helvetica','normal');doc.setFontSize(10);setColor(INK);
+      doc.text(al,ML+28,y+5);
+      y+=ah+3;
+    }else{
+      doc.setFont('helvetica','italic');doc.setFontSize(9.5);setColor(MUTE);
+      doc.text('Sin alergias registradas.',ML,y);y+=6;
+    }
+    if(antecedentes){
+      doc.setFont('helvetica','normal');doc.setFontSize(10);setColor(INK);
+      const ant=doc.splitTextToSize(antecedentes,CW);
+      checkPage(ant.length*4.5+3);
+      doc.text(ant,ML,y+3);y+=ant.length*4.5+3;
+    }
+    y+=6;
+
+    // ——— MEDICACIÓN ACTIVA ———
+    checkPage(20);
+    sectionTitle('Medicación activa',`${meds.length} tratamiento${meds.length===1?'':'s'}`);
+
+    // cabecera tabla
+    doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+    doc.text('MEDICAMENTO',ML,y);
+    doc.text('DOSIS',ML+CW*0.42,y);
+    doc.text('PAUTA',ML+CW*0.60,y);
+    doc.text('INICIO',ML+CW*0.85,y);
+    y+=2;setDraw(RULE);doc.setLineWidth(0.3);doc.line(ML,y,MR,y);y+=4;
+
+    if(meds.length===0){
+      doc.setFont('helvetica','italic');doc.setFontSize(9.5);setColor(MUTE);
+      doc.text('Sin medicación activa.',ML,y);y+=8;
+    }else{
+      meds.forEach(m=>{
+        doc.setFont('helvetica','normal');doc.setFontSize(9);
+        const pauta=doc.splitTextToSize(frecTxt(m),CW*0.23);
+        const rowH=Math.max(9,pauta.length*4+4);
+        checkPage(rowH);
+        doc.setFont('helvetica','bold');doc.setFontSize(10);setColor(INK);
+        doc.text(m.nombre||'—',ML,y);
+        doc.setFont('courier','normal');doc.setFontSize(9);setColor(SOFT);
+        doc.text(m.dosis||'—',ML+CW*0.42,y);
+        doc.setFont('helvetica','normal');doc.setFontSize(9);setColor(INK);
+        doc.text(pauta.slice(0,2),ML+CW*0.60,y);
+        doc.setFont('courier','normal');doc.setFontSize(8.5);setColor(SOFT);
+        doc.text(m.fecha_inicio?fmtFecha(m.fecha_inicio):'—',ML+CW*0.85,y);
+        y+=rowH-3;
+        setDraw(RULE_S);doc.setLineWidth(0.2);doc.line(ML,y,MR,y);y+=3;
+      });
+    }
+    y+=5;
+
+    // ——— GRÁFICA DE EVOLUCIÓN ———
+    const puntos=logsAll.filter(l=>typeof l.dolor==='number').slice(0,30).reverse();
+    if(puntos.length>=2){
+      checkPage(55);
+      sectionTitle('Evolución del dolor · últimos registros');
+      const gW=CW,gH=40,padL=10,padR=4,padT=3,padB=3;
+      const innerW=gW-padL-padR,innerH=gH-padT-padB;
+      setDraw(RULE);doc.setLineWidth(0.2);doc.rect(ML,y,gW,gH);
+      // rejilla horizontal
+      setDraw(RULE_S);
+      [10,7,4,1].forEach(v=>{
+        const yy=y+padT+innerH-(v/10)*innerH;
+        doc.line(ML+padL,yy,ML+gW-padR,yy);
+        doc.setFont('courier','normal');doc.setFontSize(6.5);setColor(MUTE);
+        doc.text(String(v),ML+padL-2,yy+1.2,{align:'right'});
+      });
+      // línea de datos
+      const step=innerW/(puntos.length-1);
+      setDraw(INK);doc.setLineWidth(0.4);
+      for(let i=0;i<puntos.length-1;i++){
+        const x1=ML+padL+i*step,y1=y+padT+innerH-(puntos[i].dolor/10)*innerH;
+        const x2=ML+padL+(i+1)*step,y2=y+padT+innerH-(puntos[i+1].dolor/10)*innerH;
+        doc.line(x1,y1,x2,y2);
+      }
+      // media
+      const media=puntos.reduce((a,b)=>a+b.dolor,0)/puntos.length;
+      const ym=y+padT+innerH-(media/10)*innerH;
+      setDraw(ACCENT);doc.setLineWidth(0.3);doc.setLineDashPattern([0.8,0.8],0);
+      doc.line(ML+padL,ym,ML+gW-padR,ym);doc.setLineDashPattern([],0);
+      doc.setFont('helvetica','bold');doc.setFontSize(6.5);setColor(ACCENT);
+      doc.text(`MEDIA ${media.toFixed(1)}`,ML+gW-padR-1,ym-1,{align:'right'});
+      y+=gH+3;
+      // caption
+      const tend=(puntos[puntos.length-1].dolor-puntos[0].dolor).toFixed(1);
+      const signo=tend>0?'+':'';
+      doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+      doc.text('ESCALA EVA · 0 SIN DOLOR — 10 MÁXIMO',ML,y);
+      doc.text(`${puntos.length} REGISTROS · TENDENCIA ${signo}${tend} PTS`,MR,y,{align:'right'});
+      y+=8;
+    }
+
+    // ——— BITÁCORA RECIENTE ———
+    if(logs.length){
+      checkPage(20);
+      sectionTitle('Últimas entradas de bitácora',`${logs.length} más recientes`);
+      logs.forEach(l=>{
+        const notaTxt=l.sintomas||l.mejoria||'';
+        const notaLines=notaTxt?doc.splitTextToSize(notaTxt,CW-45):[''];
+        const rowH=Math.max(14,notaLines.length*4+8);
+        checkPage(rowH);
+        const {day,month}=diaMes(l.fecha);
+
+        // Fecha (izq): día grande + mes
+        doc.setFont('helvetica','bold');doc.setFontSize(20);setColor(INK);
+        doc.text(day,ML,y+6);
+        doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+        doc.text(month.toUpperCase(),ML,y+10);
+
+        // Contenido (centro)
+        doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+        doc.text((l.estado||'—').toUpperCase(),ML+18,y+3);
+        doc.setFont('helvetica','normal');doc.setFontSize(9.5);setColor(INK);
+        doc.text(notaLines,ML+18,y+8);
+
+        // Dolor (dcha): número grande
+        doc.setFont('helvetica','bold');doc.setFontSize(18);setColor(INK);
+        doc.text(String(l.dolor??'—'),MR-10,y+6,{align:'right'});
+        doc.setFont('helvetica','normal');doc.setFontSize(8);setColor(MUTE);
+        doc.text('/10',MR,y+6,{align:'right'});
+        doc.setFont('helvetica','bold');doc.setFontSize(7);
+        doc.text('DOLOR',MR,y+10,{align:'right'});
+
+        y+=rowH;
+        setDraw(RULE_S);doc.setLineWidth(0.2);doc.line(ML,y-2,MR,y-2);
+      });
+      y+=4;
+    }
+
+    // ——— CONSTANTES VITALES ———
+    if(constantes.length){
+      checkPage(30);
+      sectionTitle('Últimas constantes vitales',`${constantes.length} mediciones`);
+      // Cabecera de tabla
+      doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+      doc.text('FECHA',ML,y);
+      doc.text('TA (mmHg)',ML+CW*0.22,y);
+      doc.text('PULSO',ML+CW*0.42,y);
+      doc.text('GLUCOSA',ML+CW*0.55,y);
+      doc.text('PESO',ML+CW*0.70,y);
+      doc.text('SpO₂',ML+CW*0.82,y);
+      doc.text('Tª',ML+CW*0.92,y);
+      y+=2;setDraw(RULE);doc.setLineWidth(0.3);doc.line(ML,y,MR,y);y+=4;
+      constantes.forEach(c=>{
+        const rowH=8;checkPage(rowH+2);
+        doc.setFont('courier','normal');doc.setFontSize(8.5);setColor(SOFT);
+        const fd=new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short'});
+        doc.text(fd+(c.hora?' '+c.hora:''),ML,y);
+        doc.setFont('helvetica','normal');doc.setFontSize(9);setColor(INK);
+        const ta=(c.tension_sis!=null||c.tension_dia!=null)?`${c.tension_sis??'—'}/${c.tension_dia??'—'}`:'—';
+        doc.text(ta,ML+CW*0.22,y);
+        doc.text(c.pulso!=null?String(c.pulso):'—',ML+CW*0.42,y);
+        doc.text(c.glucosa!=null?String(c.glucosa):'—',ML+CW*0.55,y);
+        doc.text(c.peso!=null?String(c.peso):'—',ML+CW*0.70,y);
+        doc.text(c.spo2!=null?String(c.spo2)+'%':'—',ML+CW*0.82,y);
+        doc.text(c.temperatura!=null?String(c.temperatura):'—',ML+CW*0.92,y);
+        y+=rowH-3;
+        setDraw(RULE_S);doc.setLineWidth(0.2);doc.line(ML,y,MR,y);y+=3;
+      });
+      y+=3;
+    }
+
+    // ——— PRÓXIMAS CITAS ———
+    if(citas.length){
+      checkPage(30);
+      sectionTitle('Próximas citas médicas');
+      const cw=(CW-4)/2,ch=22;
+      citas.forEach((c,i)=>{
+        const col=i%2,row=Math.floor(i/2);
+        if(col===0&&i>0){y+=ch+3;checkPage(ch+3);}
+        const cx=ML+col*(cw+4);
+        setDraw(RULE);doc.setLineWidth(0.2);doc.rect(cx,y,cw,ch);
+        doc.setFont('courier','normal');doc.setFontSize(8);setColor(SOFT);
+        doc.text(fmtFecha(c.fecha)+(c.hora?' — '+c.hora:''),cx+3,y+5);
+        doc.setFont('helvetica','bold');doc.setFontSize(10);setColor(INK);
+        const mlines=doc.splitTextToSize(c.medico||'—',cw-6);
+        doc.text(mlines[0],cx+3,y+10);
+        if(c.especialidad){doc.setFont('helvetica','italic');doc.setFontSize(9);setColor(MUTE);doc.text(c.especialidad,cx+3,y+14);}
+        if(c.notas){doc.setFont('helvetica','normal');doc.setFontSize(8);setColor(SOFT);const nl=doc.splitTextToSize(c.notas,cw-6);doc.text(nl[0],cx+3,y+19);}
+      });
+      y+=ch+6;
+    }
+
+    // Pie en la última página
+    footer();
+
+    const fechaArchivo=new Date().toISOString().slice(0,10);
+    doc.save(`informe-clinico-${fechaArchivo}.pdf`);
+    showToast('✓ Informe clínico descargado');
+  }catch(e){console.error(e);showToast('Error al generar PDF',true);}
 }
 
 function exportarBackup(){
-  const backup={version:'2.0',fecha:new Date().toISOString(),propietario:'Gustavo Molina Zafra',registros:DB.get('registros'),medicamentos:DB.get('medicamentos'),citas:DB.get('citas'),contactos:DB.get('contactos')};
+  const pac=getPaciente();
+  const backup={version:'2.2',fecha:new Date().toISOString(),desarrollador:'Gustavo Molina Zafra',paciente:pac.nombre||'Sin datos registrados',datos_paciente:pac,registros:DB.get('registros'),medicamentos:DB.get('medicamentos'),citas:DB.get('citas'),contactos:DB.get('contactos'),tomas:DB.get('tomas'),constantes:DB.get('constantes')};
   const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`medibitacora-backup-${new Date().toISOString().split('T')[0]}.json`;a.click();URL.revokeObjectURL(url);
   showToast('✓ Backup exportado');
@@ -840,10 +1656,119 @@ function importarBackup(input){
       if(backup.medicamentos)DB.save('medicamentos',backup.medicamentos);
       if(backup.citas)DB.save('citas',backup.citas);
       if(backup.contactos)DB.save('contactos',backup.contactos);
+      if(backup.datos_paciente)_savePaciente(backup.datos_paciente);
+      if(backup.tomas)DB.save('tomas',backup.tomas);
+      if(backup.constantes)DB.save('constantes',backup.constantes);
       showToast('✓ Backup importado');cargarRegistros();
     }catch(err){showToast('Error al importar',true);}
   };
   reader.readAsText(file);input.value='';
+}
+
+// ———————— Datos del paciente ————————
+// Se guarda como objeto en la tabla 'paciente' (DB compatible con cifrado)
+function getPaciente(){
+  if(cifradoActivado()&&_cryptoKey){
+    return _dbCache.paciente&&!Array.isArray(_dbCache.paciente)?JSON.parse(JSON.stringify(_dbCache.paciente)):{};
+  }
+  try{
+    const raw=localStorage.getItem('medi_paciente');
+    if(!raw)return{};
+    const obj=JSON.parse(raw);
+    return Array.isArray(obj)?{}:obj;
+  }catch(e){return{};}
+}
+function _savePaciente(p){
+  if(cifradoActivado()&&_cryptoKey){
+    _dbCache.paciente=p;
+    _encrypt(JSON.stringify(p),_cryptoKey)
+      .then(blob=>localStorage.setItem('medi_paciente',blob))
+      .catch(err=>console.error('[DB] Error cifrando paciente',err));
+    return;
+  }
+  localStorage.setItem('medi_paciente',JSON.stringify(p));
+}
+function guardarPaciente(){
+  const p={
+    nombre:document.getElementById('pac-nombre').value.trim(),
+    nacimiento:document.getElementById('pac-nacimiento').value||null,
+    sangre:document.getElementById('pac-sangre').value||null,
+    segsocial:document.getElementById('pac-segsocial').value.trim(),
+    alergias:document.getElementById('pac-alergias').value.trim(),
+    antecedentes:document.getElementById('pac-antecedentes').value.trim()
+  };
+  _savePaciente(p);
+  showToast('✓ Datos del paciente guardados');
+}
+function cargarPaciente(){
+  const p=getPaciente();
+  const map={'pac-nombre':'nombre','pac-nacimiento':'nacimiento','pac-sangre':'sangre','pac-segsocial':'segsocial','pac-alergias':'alergias','pac-antecedentes':'antecedentes'};
+  for(const id in map){const el=document.getElementById(id);if(el)el.value=p[map[id]]||'';}
+}
+function edadDesde(iso){
+  if(!iso)return null;
+  const n=new Date(iso),hoy=new Date();
+  let edad=hoy.getFullYear()-n.getFullYear();
+  const m=hoy.getMonth()-n.getMonth();
+  if(m<0||(m===0&&hoy.getDate()<n.getDate()))edad--;
+  return edad;
+}
+
+// ———————— Notificaciones ————————
+// ———————— UI de cifrado ————————
+function actualizarEstadoCifrado(){
+  const status=document.getElementById('cifrado-status');
+  const btn=document.getElementById('btn-cifrado-toggle');
+  const warn=document.getElementById('cifrado-warning');
+  if(!status||!btn)return;
+  if(cifradoActivado()){
+    status.textContent='🔐 Cifrado activo — tus datos están protegidos';
+    status.style.background='#EAF3DE';
+    status.style.color='#1D9E75';
+    btn.textContent='Desactivar cifrado';
+    btn.className='btn btn-outline';
+    warn.style.display='none';
+  }else{
+    status.textContent='🔓 Cifrado desactivado — los datos se guardan en claro';
+    status.style.background='var(--bg2)';
+    status.style.color='var(--text2)';
+    btn.textContent='Activar cifrado';
+    btn.className='btn';
+    warn.style.display='block';
+  }
+}
+
+async function toggleCifrado(){
+  const btn=document.getElementById('btn-cifrado-toggle');
+  if(cifradoActivado()){
+    // Desactivar
+    if(!confirm('¿Desactivar el cifrado? Tus datos se guardarán en claro en este dispositivo.'))return;
+    btn.disabled=true;btn.textContent='Descifrando...';
+    try{
+      await desactivarCifrado();
+      showToast('✓ Cifrado desactivado');
+    }catch(e){showToast('Error al desactivar',true);}
+    finally{btn.disabled=false;actualizarEstadoCifrado();}
+  }else{
+    // Activar
+    const confirmacion=confirm(
+      '¿Activar cifrado de datos?\n\n'+
+      '• Los datos se cifrarán con tu PIN actual.\n'+
+      '• Si olvidas el PIN, perderás los datos de forma irrecuperable.\n'+
+      '• Te recomendamos HACER UN BACKUP antes de continuar.\n\n'+
+      '¿Has hecho backup y quieres continuar?'
+    );
+    if(!confirmacion)return;
+    const pin=prompt('Confirma tu PIN actual para activar el cifrado:');
+    if(!pin)return;
+    if(pin!==getPin()){showToast('PIN incorrecto',true);return;}
+    btn.disabled=true;btn.textContent='Cifrando...';
+    try{
+      await activarCifrado(pin);
+      showToast('✓ Cifrado activado');
+    }catch(e){console.error(e);showToast('Error al cifrar',true);}
+    finally{btn.disabled=false;actualizarEstadoCifrado();}
+  }
 }
 
 async function pedirPermisoNotificaciones(){
@@ -854,20 +1779,134 @@ async function pedirPermisoNotificaciones(){
 }
 async function programarTodasLasNotificaciones(){
   if(Notification.permission!=='granted')return;
-  const meds=DB.query('medicamentos',{estado:'Activo'});if(!meds.length)return;
-  if('serviceWorker' in navigator){try{const sw=await navigator.serviceWorker.ready;sw.active.postMessage({type:'PROGRAMAR_NOTIFICACIONES',meds});}catch(e){}}
+  const meds=DB.query('medicamentos',{estado:'Activo'});
+  // Enviar al Service Worker para programar con showTrigger (persiste con app cerrada en Android/Chrome)
+  if('serviceWorker' in navigator){try{const sw=await navigator.serviceWorker.ready;sw.active?.postMessage({type:'PROGRAMAR_NOTIFICACIONES',meds});}catch(e){}}
+  // Intervalo en primer plano (30s). Cubre el caso de navegadores sin showTrigger
   if(window._notifInterval)clearInterval(window._notifInterval);
-  window._notifInterval=setInterval(()=>comprobarHoraMeds(meds),60000);
-  comprobarHoraMeds(meds);showToast(`✓ ${meds.length} medicamento(s) con recordatorio`);
+  window._notifInterval=setInterval(()=>comprobarHoraMeds(),30000);
+  // Resincronizar al volver al foreground
+  if(!window._notifVisListener){
+    window._notifVisListener=true;
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)comprobarHoraMeds(true);});
+    window.addEventListener('focus',()=>comprobarHoraMeds(true));
+  }
+  comprobarHoraMeds();
+  renderProximasTomas();
+  if(meds.length){
+    const persistente='showTrigger' in Notification.prototype;
+    showToast(persistente?`✓ ${meds.length} medicamento(s) · recordatorios persistentes`:`✓ ${meds.length} medicamento(s) con recordatorio`);
+  }
 }
-function comprobarHoraMeds(meds){
+function comprobarHoraMeds(catchUp=false){
   if(Notification.permission!=='granted')return;
-  const ahora=new Date(),horaActual=`${String(ahora.getHours()).padStart(2,'0')}:${String(ahora.getMinutes()).padStart(2,'0')}`,dias=['D','L','M','X','J','V','S'],diaActual=dias[ahora.getDay()];
+  const meds=DB.query('medicamentos',{estado:'Activo'});if(!meds.length)return;
+  const ahora=new Date();
+  const dias=['D','L','M','X','J','V','S'],diaActual=dias[ahora.getDay()];
+  // Ventana de tolerancia: si venimos de estar en segundo plano (catchUp), aceptamos tomas de los últimos 15 min
+  const ventanaMin=catchUp?15:2;
   meds.forEach(med=>{
-    try{const f=parseFrec(med.frecuencia||'');let ok=false;if(f.tipo==='diaria')ok=(f.horas||[]).includes(horaActual);else if(f.tipo==='semanal')ok=(f.dias||[]).includes(diaActual)&&f.hora===horaActual;
-      if(ok){const key=`notif_${med.nombre}_${horaActual}_${ahora.toDateString()}`;if(sessionStorage.getItem(key))return;sessionStorage.setItem(key,'1');new Notification('💊 MediBitácora Pro',{body:`Hora de tomar ${med.nombre}${med.dosis?' · '+med.dosis:''}`,icon:'/medibitacora-pro/icon-192.png',tag:key,requireInteraction:true});}
+    try{
+      const f=parseFrec(med.frecuencia||'');
+      let horasMed=[];
+      if(f.tipo==='diaria')horasMed=f.horas||[];
+      else if(f.tipo==='semanal'&&(f.dias||[]).includes(diaActual))horasMed=f.hora?[f.hora]:[];
+      horasMed.forEach(hMed=>{
+        const [hh,mm]=hMed.split(':').map(Number);
+        const hora=new Date(ahora);hora.setHours(hh,mm,0,0);
+        const diffMin=(ahora-hora)/60000;
+        // Notificar si estamos entre 0 y ventanaMin minutos DESPUÉS de la hora programada
+        if(diffMin>=0&&diffMin<=ventanaMin){
+          const fechaKey=ahora.toISOString().slice(0,10);
+          const key=`notif_${med.id||med.nombre}_${hMed}_${fechaKey}`;
+          if(localStorage.getItem(key))return;
+          localStorage.setItem(key,'1');
+          try{
+            new Notification('💊 Hora de tu medicación',{
+              body:`${med.nombre}${med.dosis?' · '+med.dosis:''}`,
+              icon:'icon-192.png',
+              badge:'icon-192.png',
+              tag:key,
+              requireInteraction:true,
+              silent:false,
+              vibrate:[200,100,200]
+            });
+          }catch(e){}
+          // Limpieza: guardar solo claves del último mes para no crecer indefinidamente
+          limpiarNotifsAntiguas();
+        }
+      });
     }catch(e){}
   });
+  renderProximasTomas();
+}
+function limpiarNotifsAntiguas(){
+  const hace7d=Date.now()-7*86400000;
+  for(let i=localStorage.length-1;i>=0;i--){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith('notif_')){
+      const partes=k.split('_');const fecha=partes[partes.length-1];
+      if(fecha.length===10){const t=new Date(fecha).getTime();if(t&&t<hace7d)localStorage.removeItem(k);}
+    }
+  }
+}
+function renderProximasTomas(){
+  const el=document.getElementById('proximas-tomas');if(!el)return;
+  const meds=DB.query('medicamentos',{estado:'Activo'});
+  if(!meds.length){el.innerHTML='<div style="font-size:12px;color:var(--text2);font-style:italic;">Sin medicación activa.</div>';return;}
+  const ahora=new Date();const dias=['D','L','M','X','J','V','S'];
+  const tomas=[];
+  meds.forEach(med=>{
+    try{
+      const f=parseFrec(med.frecuencia||'');
+      const candidatas=[];
+      if(f.tipo==='diaria'){(f.horas||[]).forEach(h=>candidatas.push({dia:null,hora:h}));}
+      else if(f.tipo==='semanal'){(f.dias||[]).forEach(d=>{if(f.hora)candidatas.push({dia:d,hora:f.hora});});}
+      candidatas.forEach(c=>{
+        const [hh,mm]=c.hora.split(':').map(Number);
+        // calcular próxima ocurrencia de esta toma
+        for(let offset=0;offset<8;offset++){
+          const fecha=new Date(ahora);fecha.setDate(fecha.getDate()+offset);fecha.setHours(hh,mm,0,0);
+          if(fecha<=ahora)continue;
+          if(c.dia&&dias[fecha.getDay()]!==c.dia)continue;
+          tomas.push({med,fecha});break;
+        }
+      });
+    }catch(e){}
+  });
+  tomas.sort((a,b)=>a.fecha-b.fecha);
+  const prox=tomas.slice(0,5);
+  if(!prox.length){el.innerHTML='<div style="font-size:12px;color:var(--text2);font-style:italic;">Sin próximas tomas programadas.</div>';return;}
+  el.innerHTML=prox.map(t=>{
+    const ms=t.fecha-ahora;const horas=Math.floor(ms/3600000);const mins=Math.floor((ms%3600000)/60000);
+    let cuando;
+    if(horas===0)cuando=`en ${mins} min`;
+    else if(horas<24)cuando=`en ${horas}h ${mins}m`;
+    else cuando=t.fecha.toLocaleDateString('es-ES',{weekday:'short',day:'numeric'})+' '+t.fecha.toTimeString().slice(0,5);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;">
+      <div style="font-family:monospace;font-size:11px;color:var(--blue);min-width:56px;">${t.fecha.toTimeString().slice(0,5)}</div>
+      <div style="flex:1;"><strong>${t.med.nombre}</strong>${t.med.dosis?` <span style="color:var(--text2);">· ${t.med.dosis}</span>`:''}</div>
+      <div style="font-size:11px;color:var(--text2);">${cuando}</div>
+    </div>`;
+  }).join('');
+}
+function renderTomasRegistradas(){
+  const el=document.getElementById('tomas-registradas');if(!el)return;
+  const tomas=DB.get('tomas').slice(-8).reverse();
+  if(!tomas.length){el.innerHTML='<div style="font-size:12px;color:var(--text2);font-style:italic;">Sin tomas registradas aún.</div>';return;}
+  el.innerHTML=tomas.map(t=>{
+    const f=new Date(t.fechaToma);
+    const hoy=new Date();const ayer=new Date(hoy);ayer.setDate(ayer.getDate()-1);
+    let etiqueta;
+    if(f.toDateString()===hoy.toDateString())etiqueta=`Hoy ${f.toTimeString().slice(0,5)}`;
+    else if(f.toDateString()===ayer.toDateString())etiqueta=`Ayer ${f.toTimeString().slice(0,5)}`;
+    else etiqueta=f.toLocaleDateString('es-ES',{day:'numeric',month:'short'})+' '+f.toTimeString().slice(0,5);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px;">
+      <div style="color:var(--green);font-size:14px;">✓</div>
+      <div style="flex:1;"><strong>${t.medNombre}</strong>${t.horaProgramada?` <span style="color:var(--text2);font-size:11px;">· prog. ${t.horaProgramada}</span>`:''}</div>
+      <div style="font-size:11px;color:var(--text2);">${etiqueta}</div>
+    </div>`;
+  }).join('');
 }
 function mostrarBannerNotificaciones(){
   if(!('Notification' in window))return;
@@ -897,10 +1936,21 @@ function apVerificar(){
   if(apVals2.a===getPin()){apSD('aa','ok');setTimeout(()=>{document.getElementById('ajustes-step-actual').style.display='none';document.getElementById('ajustes-step-nuevo').style.display='block';apFase2='ingreso';apPrimerNuevo2='';document.getElementById('ap-nuevo-label').textContent='Ingresa tu nuevo PIN';apVals2.n='';apUD('n');},400);}
   else{apSD('aa','error');apVals2.a='';setTimeout(()=>apUD('a'),700);showToast('PIN incorrecto',true);}
 }
-function apConfirmar(){
+async function apConfirmar(){
   if(apVals2.n.length<4){showToast('Ingresa 4 dígitos',true);return;}
   if(apFase2==='ingreso'){apPrimerNuevo2=apVals2.n;apVals2.n='';apUD('n');document.getElementById('ap-nuevo-label').textContent='Confirma tu nuevo PIN';apFase2='confirmar';showToast('Repite el nuevo PIN');}
-  else{if(apVals2.n===apPrimerNuevo2){localStorage.setItem(PIN_KEY,apPrimerNuevo2);apSD('an','ok');showToast('✓ PIN cambiado');setTimeout(()=>{document.getElementById('ajustes-step-nuevo').style.display='none';document.getElementById('ajustes-step-actual').style.display='block';apVals2={a:'',n:''};apUD('a');apUD('n');apFase2='ingreso';apPrimerNuevo2='';},1800);}else{apSD('an','error');apVals2.n='';setTimeout(()=>apUD('n'),700);apFase2='ingreso';document.getElementById('ap-nuevo-label').textContent='No coinciden. Ingresa el nuevo PIN';showToast('Los PINs no coinciden',true);}}
+  else{
+    if(apVals2.n===apPrimerNuevo2){
+      // Si el cifrado está activo, re-cifrar con la nueva clave
+      if(cifradoActivado()){
+        try{await reCifrarTodo(apPrimerNuevo2);}
+        catch(e){showToast('Error al re-cifrar datos',true);return;}
+      }
+      localStorage.setItem(PIN_KEY,apPrimerNuevo2);
+      apSD('an','ok');showToast('✓ PIN cambiado');
+      setTimeout(()=>{document.getElementById('ajustes-step-nuevo').style.display='none';document.getElementById('ajustes-step-actual').style.display='block';apVals2={a:'',n:''};apUD('a');apUD('n');apFase2='ingreso';apPrimerNuevo2='';},1800);
+    }else{apSD('an','error');apVals2.n='';setTimeout(()=>apUD('n'),700);apFase2='ingreso';document.getElementById('ap-nuevo-label').textContent='No coinciden. Ingresa el nuevo PIN';showToast('Los PINs no coinciden',true);}
+  }
 }
 function apVolver(){document.getElementById('ajustes-step-nuevo').style.display='none';document.getElementById('ajustes-step-actual').style.display='block';apVals2={a:'',n:''};apUD('a');apUD('n');apFase2='ingreso';apPrimerNuevo2='';}
 
@@ -909,7 +1959,11 @@ function init(){
   document.getElementById('r-fecha').value=today;document.getElementById('m-inicio').value=today;document.getElementById('cita-fecha').value=today;
   actualizarHoras();
   document.getElementById('hstatus').textContent='✓ '+new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
-  cargarRegistros();setTimeout(checkAlarm,800);
+  cargarPaciente();
+  resetFormConstante();
+  cargarRegistros();
+  cargarConstantes();
+  setTimeout(checkAlarm,800);
 }
 
 window.addEventListener('load',()=>{if(localStorage.getItem(SPLASH_KEY)){document.getElementById('splash').style.display='none';mostrarPin();}});
