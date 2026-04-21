@@ -243,6 +243,11 @@ textarea{min-height:60px;resize:vertical;}
       <div class="stat-card"><div class="stat-label">Registros</div><div class="stat-val" id="st-total">0</div></div>
       <div class="stat-card"><div class="stat-label">Dolor promedio</div><div class="stat-val" id="st-avg">—</div></div>
     </div>
+    <div class="card" id="dashboard-constantes" style="display:none;">
+      <div class="card-title">Últimas constantes</div>
+      <div id="dashboard-items" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;"></div>
+      <div id="dashboard-fecha" style="font-size:11px;color:var(--text2);margin-top:8px;text-align:right;"></div>
+    </div>
     <div class="card">
       <div class="card-title">Tendencia del dolor — 30 días</div>
       <div class="chart-wrap"><canvas id="painChart"></canvas></div>
@@ -304,9 +309,35 @@ textarea{min-height:60px;resize:vertical;}
       </div>
       <label>Temperatura (°C)</label>
       <input type="number" id="cv-temperatura" placeholder="Ej. 36.6" min="30" max="45" step="0.1" inputmode="decimal"/>
+      <details style="margin:10px 0;">
+        <summary style="font-size:13px;color:var(--text2);cursor:pointer;padding:6px 0;">🧪 Perfil lipídico (colesterol)</summary>
+        <div style="padding-top:6px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label>Colesterol total (mg/dL)</label>
+              <input type="number" id="cv-col-total" placeholder="Ej. 180" min="50" max="500" inputmode="numeric"/>
+            </div>
+            <div>
+              <label>LDL "malo" (mg/dL)</label>
+              <input type="number" id="cv-col-ldl" placeholder="Ej. 100" min="20" max="400" inputmode="numeric"/>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label>HDL "bueno" (mg/dL)</label>
+              <input type="number" id="cv-col-hdl" placeholder="Ej. 55" min="10" max="150" inputmode="numeric"/>
+            </div>
+            <div>
+              <label>Triglicéridos (mg/dL)</label>
+              <input type="number" id="cv-trigliceridos" placeholder="Ej. 120" min="20" max="1000" inputmode="numeric"/>
+            </div>
+          </div>
+        </div>
+      </details>
       <label>Notas</label>
       <textarea id="cv-notas" placeholder="Ej. tras caminar 20 min, en ayunas..."></textarea>
-      <button class="btn" onclick="guardarConstante()">Guardar medición</button>
+      <button class="btn" id="btn-cv" onclick="guardarConstante()">Guardar medición</button>
+      <button class="btn btn-outline" id="btn-cv-cancel" style="margin-top:6px;display:none;" onclick="cancelarEdicionConstante()">Cancelar edición</button>
     </div>
     <div class="card">
       <div class="card-title">Evolución de constantes</div>
@@ -318,6 +349,8 @@ textarea{min-height:60px;resize:vertical;}
         <option value="pulso">Pulso</option>
         <option value="spo2">SpO₂</option>
         <option value="temperatura">Temperatura</option>
+        <option value="colesterol">Perfil lipídico (Total / LDL / HDL)</option>
+        <option value="trigliceridos">Triglicéridos</option>
       </select>
       <div class="chart-wrap" style="height:180px;"><canvas id="constantesChart"></canvas></div>
       <div id="cv-empty" style="font-size:12px;color:var(--text2);font-style:italic;text-align:center;margin-top:8px;display:none;">Sin mediciones para esta constante.</div>
@@ -378,7 +411,9 @@ textarea{min-height:60px;resize:vertical;}
       <button class="fchip" onclick="setFiltro(this,'semanal')">Semanales</button>
       <button class="fchip" onclick="setFiltro(this,'otro')">Otros</button>
     </div>
-    <div class="card"><div id="med-list"><div class="empty">Sin medicamentos.</div></div></div>
+    <div class="card"><div id="med-list"><div class="empty">Sin medicamentos.</div></div>
+      <button class="btn btn-outline" style="margin-top:10px;font-size:13px;" onclick="exportarSoloMedicacion()">📅 Exportar tomas al calendario</button>
+    </div>
     <div class="card">
       <div class="card-title">Exportar por email</div>
       <label>Enviar a</label><input type="email" id="email-med" placeholder="medico@ejemplo.com"/>
@@ -406,6 +441,7 @@ textarea{min-height:60px;resize:vertical;}
     <div class="card">
       <div class="card-title">Mis citas</div>
       <div id="citas-list"><div class="empty">Sin citas registradas.</div></div>
+      <button class="btn btn-outline" style="margin-top:10px;font-size:13px;" onclick="exportarSoloCitas()">📅 Exportar citas al calendario</button>
     </div>
   </div>
 
@@ -549,6 +585,20 @@ textarea{min-height:60px;resize:vertical;}
       </div>
       <div style="font-size:11px;color:var(--text2);margin-top:12px;line-height:1.5;">
         ℹ️ Para avisos con la app cerrada, instálala como aplicación: <strong>Android/Chrome</strong> → menú → "Instalar app". <strong>iOS</strong> → Safari → Compartir → "Añadir a pantalla de inicio". Con la PWA instalada los recordatorios persisten aunque cierres la app.
+      </div>
+      <div style="margin-top:16px;padding-top:14px;border-top:0.5px solid var(--border);">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Alternativa recomendada · Calendario del móvil</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;">
+          Los calendarios del teléfono (Google Calendar, Apple Calendar, Outlook) tienen notificaciones nativas muy fiables. Exporta tus citas y tomas y se sincronizarán con avisos garantizados.
+        </div>
+        <button class="btn btn-green" style="margin-bottom:6px;" onclick="exportarCalendarios()">📅 Exportar todo al calendario</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <button class="btn btn-outline" style="font-size:13px;padding:10px;" onclick="exportarSoloCitas()">Solo citas</button>
+          <button class="btn btn-outline" style="font-size:13px;padding:10px;" onclick="exportarSoloMedicacion()">Solo medicación</button>
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-top:8px;line-height:1.5;">
+          Se descarga un archivo <code>.ics</code>. Ábrelo desde el móvil y elige tu app de calendario. Las citas tendrán recordatorios a 1 día y 1 hora antes, y las tomas a la hora exacta.
+        </div>
       </div>
     </div>
     <div class="card" style="margin-top:10px;">
@@ -995,8 +1045,14 @@ const CV_META={
   peso:{label:'Peso',unit:'kg',color:'#B56717',normal:null},
   pulso:{label:'Pulso',unit:'lpm',color:'#C74375',normal:[60,100]},
   spo2:{label:'SpO₂',unit:'%',color:'#4A6CA8',normal:[95,100]},
-  temperatura:{label:'Temperatura',unit:'°C',color:'#D97706',normal:[35.5,37.5]}
+  temperatura:{label:'Temperatura',unit:'°C',color:'#D97706',normal:[35.5,37.5]},
+  col_total:{label:'Colesterol total',unit:'mg/dL',color:'#6B3FA0',normal:[0,200]},
+  col_ldl:{label:'LDL (malo)',unit:'mg/dL',color:'#B02A37',normal:[0,100]},
+  col_hdl:{label:'HDL (bueno)',unit:'mg/dL',color:'#2E7D32',normal:[40,999]},
+  trigliceridos:{label:'Triglicéridos',unit:'mg/dL',color:'#E88B00',normal:[0,150]}
 };
+
+let _editandoConstanteId=null;
 
 function guardarConstante(){
   const fecha=document.getElementById('cv-fecha').value;
@@ -1017,30 +1073,136 @@ function guardarConstante(){
     glucosa:leerNum('cv-glucosa'),
     peso:leerNum('cv-peso',true),
     temperatura:leerNum('cv-temperatura',true),
+    col_total:leerNum('cv-col-total'),
+    col_ldl:leerNum('cv-col-ldl'),
+    col_hdl:leerNum('cv-col-hdl'),
+    trigliceridos:leerNum('cv-trigliceridos'),
     notas:document.getElementById('cv-notas').value.trim()||null
   };
   // Debe tener al menos un valor además de la fecha
-  const camposMedicion=['tension_sis','tension_dia','pulso','spo2','glucosa','peso','temperatura'];
+  const camposMedicion=['tension_sis','tension_dia','pulso','spo2','glucosa','peso','temperatura','col_total','col_ldl','col_hdl','trigliceridos'];
   if(!camposMedicion.some(k=>obj[k]!==null)){
     showToast('Introduce al menos una medición',true);return;
   }
-  DB.insert('constantes',obj);
-  showToast('✓ Medición guardada');
+  if(_editandoConstanteId){
+    DB.update('constantes',_editandoConstanteId,obj);
+    showToast('✓ Medición actualizada');
+    _editandoConstanteId=null;
+  }else{
+    DB.insert('constantes',obj);
+    showToast('✓ Medición guardada');
+  }
   resetFormConstante();
   cargarConstantes();
 }
 
+function editarConstante(id){
+  const c=DB.get('constantes').find(r=>r.id===id);
+  if(!c){showToast('Medición no encontrada',true);return;}
+  _editandoConstanteId=id;
+  const map={
+    'cv-fecha':'fecha','cv-hora':'hora',
+    'cv-tension-sis':'tension_sis','cv-tension-dia':'tension_dia',
+    'cv-pulso':'pulso','cv-spo2':'spo2',
+    'cv-glucosa':'glucosa','cv-peso':'peso','cv-temperatura':'temperatura',
+    'cv-col-total':'col_total','cv-col-ldl':'col_ldl','cv-col-hdl':'col_hdl','cv-trigliceridos':'trigliceridos',
+    'cv-notas':'notas'
+  };
+  for(const id in map){
+    const el=document.getElementById(id);
+    if(el)el.value=c[map[id]]??'';
+  }
+  document.getElementById('btn-cv').textContent='Actualizar medición';
+  document.getElementById('btn-cv-cancel').style.display='block';
+  // Abrir el panel de colesterol si tiene valores
+  if(c.col_total!=null||c.col_ldl!=null||c.col_hdl!=null||c.trigliceridos!=null){
+    const det=document.querySelector('#sec-evolucion details');
+    if(det)det.open=true;
+  }
+  // Scroll hacia el formulario
+  document.getElementById('cv-fecha').scrollIntoView({behavior:'smooth',block:'center'});
+  showToast('Edita y pulsa Actualizar');
+}
+
+function cancelarEdicionConstante(){
+  _editandoConstanteId=null;
+  resetFormConstante();
+  document.getElementById('btn-cv').textContent='Guardar medición';
+  document.getElementById('btn-cv-cancel').style.display='none';
+}
+
 function resetFormConstante(){
-  ['cv-tension-sis','cv-tension-dia','cv-pulso','cv-spo2','cv-glucosa','cv-peso','cv-temperatura','cv-notas'].forEach(id=>document.getElementById(id).value='');
+  ['cv-tension-sis','cv-tension-dia','cv-pulso','cv-spo2','cv-glucosa','cv-peso','cv-temperatura','cv-col-total','cv-col-ldl','cv-col-hdl','cv-trigliceridos','cv-notas'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
   // Fecha y hora por defecto: ahora
   const hoy=new Date();
   document.getElementById('cv-fecha').value=hoy.toISOString().split('T')[0];
   document.getElementById('cv-hora').value=`${String(hoy.getHours()).padStart(2,'0')}:${String(hoy.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('btn-cv').textContent='Guardar medición';
+  document.getElementById('btn-cv-cancel').style.display='none';
+  // Cerrar panel de colesterol
+  const det=document.querySelector('#sec-evolucion details');
+  if(det)det.open=false;
 }
 
 function cargarConstantes(){
   renderListaConstantes();
   renderGraficaConstantes();
+  renderDashboardConstantes();
+}
+
+function renderDashboardConstantes(){
+  const card=document.getElementById('dashboard-constantes');
+  const cont=document.getElementById('dashboard-items');
+  const fechaEl=document.getElementById('dashboard-fecha');
+  if(!card||!cont)return;
+  // La última medición de cada constante (puede ser de registros distintos)
+  const todas=DB.get('constantes').sort((a,b)=>{
+    const fa=a.fecha+(a.hora?'T'+a.hora:'T00:00');
+    const fb=b.fecha+(b.hora?'T'+b.hora:'T00:00');
+    return fb.localeCompare(fa);
+  });
+  if(!todas.length){card.style.display='none';return;}
+  card.style.display='block';
+
+  const buscarUlt=campo=>todas.find(c=>c[campo]!=null);
+  const items=[];
+  const ultTAsis=buscarUlt('tension_sis'),ultTAdia=buscarUlt('tension_dia');
+  if(ultTAsis||ultTAdia){
+    const sis=ultTAsis?.tension_sis??'—',dia=ultTAdia?.tension_dia??'—';
+    const alerta=(ultTAsis?.tension_sis>140||ultTAdia?.tension_dia>90);
+    items.push({label:'Tensión',valor:`${sis}/${dia}`,unit:'mmHg',alerta});
+  }
+  const ultGluc=buscarUlt('glucosa');
+  if(ultGluc)items.push({label:'Glucosa',valor:ultGluc.glucosa,unit:'mg/dL',alerta:ultGluc.glucosa<70||ultGluc.glucosa>180});
+  const ultPeso=buscarUlt('peso');
+  if(ultPeso)items.push({label:'Peso',valor:ultPeso.peso,unit:'kg',alerta:false});
+  const ultPulso=buscarUlt('pulso');
+  if(ultPulso)items.push({label:'Pulso',valor:ultPulso.pulso,unit:'lpm',alerta:ultPulso.pulso<50||ultPulso.pulso>110});
+  const ultSpO2=buscarUlt('spo2');
+  if(ultSpO2)items.push({label:'SpO₂',valor:ultSpO2.spo2,unit:'%',alerta:ultSpO2.spo2<95});
+  const ultTemp=buscarUlt('temperatura');
+  if(ultTemp)items.push({label:'Temperatura',valor:ultTemp.temperatura,unit:'°C',alerta:ultTemp.temperatura>=38});
+  const ultColTot=buscarUlt('col_total');
+  if(ultColTot)items.push({label:'Col. total',valor:ultColTot.col_total,unit:'mg/dL',alerta:ultColTot.col_total>=240});
+  const ultLDL=buscarUlt('col_ldl');
+  if(ultLDL)items.push({label:'LDL',valor:ultLDL.col_ldl,unit:'mg/dL',alerta:ultLDL.col_ldl>=160});
+  const ultHDL=buscarUlt('col_hdl');
+  if(ultHDL)items.push({label:'HDL',valor:ultHDL.col_hdl,unit:'mg/dL',alerta:ultHDL.col_hdl<40});
+  const ultTG=buscarUlt('trigliceridos');
+  if(ultTG)items.push({label:'Triglicéridos',valor:ultTG.trigliceridos,unit:'mg/dL',alerta:ultTG.trigliceridos>=200});
+
+  cont.innerHTML=items.slice(0,8).map(it=>`
+    <div style="background:${it.alerta?'#FFF3CD':'var(--bg2)'};padding:10px;border-radius:8px;${it.alerta?'border-left:3px solid #A32D2D;':''}">
+      <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;">${it.label}</div>
+      <div style="font-size:18px;font-weight:700;color:${it.alerta?'#A32D2D':'var(--blue)'};margin-top:2px;">${it.valor} <span style="font-size:11px;font-weight:400;color:var(--text2);">${it.unit}</span></div>
+    </div>
+  `).join('');
+
+  // Fecha de la última medición general
+  const fr=new Date(todas[0].fecha+'T12:00');
+  fechaEl.textContent=`Última medición: ${fr.toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})}`;
 }
 
 function renderListaConstantes(){
@@ -1061,11 +1223,18 @@ function renderListaConstantes(){
     if(c.peso!=null)chips.push(`${c.peso} kg`);
     if(c.spo2!=null)chips.push(`SpO₂ ${c.spo2}%`);
     if(c.temperatura!=null)chips.push(`${c.temperatura}°C`);
+    if(c.col_total!=null)chips.push(`Col ${c.col_total}`);
+    if(c.col_ldl!=null)chips.push(`LDL ${c.col_ldl}`);
+    if(c.col_hdl!=null)chips.push(`HDL ${c.col_hdl}`);
+    if(c.trigliceridos!=null)chips.push(`TG ${c.trigliceridos}`);
     const f=new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
     return `<div style="padding:10px 0;border-bottom:0.5px solid var(--border);">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px;">
         <div style="font-size:13px;color:var(--text2);">${f}${c.hora?' · '+c.hora:''}</div>
-        <button onclick="borrarConstante('${c.id}')" style="background:none;border:none;color:var(--red);font-size:12px;cursor:pointer;padding:2px 6px;">Borrar</button>
+        <div style="display:flex;gap:4px;">
+          <button onclick="editarConstante('${c.id}')" style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:2px 6px;">Editar</button>
+          <button onclick="borrarConstante('${c.id}')" style="background:none;border:none;color:var(--red);font-size:12px;cursor:pointer;padding:2px 6px;">Borrar</button>
+        </div>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${c.notas?'4px':'0'};">
         ${chips.map(t=>`<span style="font-size:12px;padding:3px 8px;background:var(--bg2);border-radius:12px;color:var(--text);">${t}</span>`).join('')}
@@ -1088,7 +1257,9 @@ function renderGraficaConstantes(){
     return fa.localeCompare(fb);
   }).slice(-30);
 
-  const campos=tipo==='tension'?['tension_sis','tension_dia']:[tipo];
+  const campos=tipo==='tension'?['tension_sis','tension_dia']
+    :tipo==='colesterol'?['col_total','col_ldl','col_hdl']
+    :[tipo];
   const puntos=data.filter(d=>campos.some(c=>d[c]!=null));
 
   if(_cvChart){try{_cvChart.destroy();}catch(e){}_cvChart=null;}
@@ -1311,11 +1482,12 @@ function exportarPDF(){
     const logsAll=DB.get('registros').sort((a,b)=>b.fecha.localeCompare(a.fecha));
     const logs=logsAll.slice(0,5);
     const citas=DB.get('citas').filter(c=>c.estado!=='Cancelada'&&c.estado!=='Completada'&&new Date(c.fecha)>=new Date(new Date().toDateString())).sort((a,b)=>a.fecha.localeCompare(b.fecha)).slice(0,4);
-    const constantes=DB.get('constantes').sort((a,b)=>{
+    const constantesTodas=DB.get('constantes').sort((a,b)=>{
       const fa=a.fecha+(a.hora?'T'+a.hora:'T00:00');
       const fb=b.fecha+(b.hora?'T'+b.hora:'T00:00');
-      return fb.localeCompare(fa);
-    }).slice(0,8);
+      return fa.localeCompare(fb);
+    });
+    const constantes=constantesTodas.slice(-8).reverse();
     const alergias=(pac.alergias||'').trim();
     const antecedentes=(pac.antecedentes||'').trim();
     const paciente=(pac.nombre||'Sin datos registrados').trim();
@@ -1575,10 +1747,128 @@ function exportarPDF(){
     }
 
     // ——— CONSTANTES VITALES ———
+    // ——— CONSTANTES VITALES ———
     if(constantes.length){
       checkPage(30);
       sectionTitle('Últimas constantes vitales',`${constantes.length} mediciones`);
-      // Cabecera de tabla
+
+      // Alertas clínicas automáticas (solo descriptivas, basadas en última medición)
+      const ultima=constantesTodas[constantesTodas.length-1];
+      const alertas=[];
+      if(ultima){
+        if(ultima.tension_sis!=null&&ultima.tension_sis>140)alertas.push(`TA sistólica ${ultima.tension_sis} mmHg (referencia <140)`);
+        if(ultima.tension_dia!=null&&ultima.tension_dia>90)alertas.push(`TA diastólica ${ultima.tension_dia} mmHg (referencia <90)`);
+        if(ultima.glucosa!=null&&ultima.glucosa>180)alertas.push(`Glucosa ${ultima.glucosa} mg/dL (referencia <180 postprandial)`);
+        if(ultima.glucosa!=null&&ultima.glucosa<70)alertas.push(`Glucosa baja ${ultima.glucosa} mg/dL (hipoglucemia <70)`);
+        if(ultima.spo2!=null&&ultima.spo2<95)alertas.push(`SpO₂ ${ultima.spo2}% (referencia ≥95%)`);
+        if(ultima.temperatura!=null&&ultima.temperatura>=38)alertas.push(`Fiebre ${ultima.temperatura}°C`);
+      }
+      // Colesterol: buscar las últimas mediciones para cada parámetro (pueden estar en registros distintos)
+      const ultCampo=campo=>{for(let i=constantesTodas.length-1;i>=0;i--)if(constantesTodas[i][campo]!=null)return constantesTodas[i];return null;};
+      const ultCT=ultCampo('col_total'),ultLDL=ultCampo('col_ldl'),ultHDL=ultCampo('col_hdl'),ultTG=ultCampo('trigliceridos');
+      if(ultCT&&ultCT.col_total>=240)alertas.push(`Colesterol total ${ultCT.col_total} mg/dL (elevado ≥240)`);
+      if(ultLDL&&ultLDL.col_ldl>=160)alertas.push(`LDL ${ultLDL.col_ldl} mg/dL (elevado ≥160)`);
+      if(ultHDL&&ultHDL.col_hdl<40)alertas.push(`HDL ${ultHDL.col_hdl} mg/dL (bajo <40)`);
+      if(ultTG&&ultTG.trigliceridos>=200)alertas.push(`Triglicéridos ${ultTG.trigliceridos} mg/dL (elevados ≥200)`);
+      if(alertas.length){
+        doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(ACCENT);
+        doc.text('VALORES A REVISAR (última medición)',ML,y);y+=4;
+        doc.setFont('helvetica','normal');doc.setFontSize(9);setColor(INK);
+        alertas.forEach(a=>{
+          const lines=doc.splitTextToSize('· '+a,CW);
+          checkPage(lines.length*4+2);
+          doc.text(lines,ML,y);y+=lines.length*4+1;
+        });
+        y+=3;
+      }
+
+      // ——— MINI-GRÁFICAS por constante (solo si ≥2 mediciones) ———
+      const dibujarMini=(titulo,campos,unidad,colores,rangoNormal)=>{
+        const puntos=constantesTodas.filter(c=>campos.some(k=>c[k]!=null));
+        if(puntos.length<2)return;
+
+        const gH=28,gW=(CW-4)/2;
+        // reservamos dos mini-gráficas por fila
+        if(!dibujarMini._col){dibujarMini._col=0;dibujarMini._rowY=y;}
+        if(dibujarMini._col===0){checkPage(gH+10);dibujarMini._rowY=y;}
+        const xOff=ML+dibujarMini._col*(gW+4);
+        const yStart=dibujarMini._rowY;
+
+        // Caja y título
+        setDraw(RULE);doc.setLineWidth(0.2);doc.rect(xOff,yStart,gW,gH);
+        doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+        doc.text(titulo.toUpperCase(),xOff+3,yStart+4);
+        doc.setFont('courier','normal');setColor(SOFT);
+        // último valor (si existe)
+        const ult=puntos[puntos.length-1];
+        const ultStr=campos.map(k=>ult[k]??'—').join('/');
+        doc.text(ultStr+' '+unidad,xOff+gW-3,yStart+4,{align:'right'});
+
+        // Área de dibujo
+        const padL=4,padR=4,padT=7,padB=3;
+        const innerW=gW-padL-padR,innerH=gH-padT-padB;
+
+        // Escala Y: min y max de todos los valores
+        const todos=puntos.flatMap(p=>campos.map(k=>p[k]).filter(v=>v!=null));
+        let minV=Math.min(...todos),maxV=Math.max(...todos);
+        if(minV===maxV){minV-=1;maxV+=1;}
+        // margen visual
+        const range=maxV-minV;minV-=range*0.1;maxV+=range*0.1;
+
+        const toY=v=>yStart+padT+innerH-((v-minV)/(maxV-minV))*innerH;
+
+        // Banda de rango normal si existe
+        if(rangoNormal){
+          const [nMin,nMax]=rangoNormal;
+          const yMax=toY(Math.min(nMax,maxV)),yMin=toY(Math.max(nMin,minV));
+          if(yMin>yMax){
+            setFill([234,243,222]);doc.rect(xOff+padL,yMax,innerW,yMin-yMax,'F');
+          }
+        }
+
+        // Rejilla
+        setDraw(RULE_S);doc.setLineWidth(0.15);
+        for(let i=1;i<=3;i++){
+          const yy=yStart+padT+(innerH/4)*i;
+          doc.line(xOff+padL,yy,xOff+gW-padR,yy);
+        }
+
+        // Líneas por cada campo
+        campos.forEach((campo,idx)=>{
+          const c=colores[idx]||INK;
+          setDraw(c);doc.setLineWidth(0.5);
+          const step=innerW/(puntos.length-1);
+          let prevX=null,prevY=null;
+          puntos.forEach((p,i)=>{
+            if(p[campo]==null){prevX=null;return;}
+            const x=xOff+padL+i*step;
+            const py=toY(p[campo]);
+            if(prevX!==null){doc.line(prevX,prevY,x,py);}
+            prevX=x;prevY=py;
+          });
+        });
+
+        dibujarMini._col=(dibujarMini._col+1)%2;
+        if(dibujarMini._col===0)y=yStart+gH+4;
+      };
+
+      dibujarMini._col=0;
+      dibujarMini('Tensión arterial',['tension_sis','tension_dia'],'mmHg',[INK,ACCENT]);
+      dibujarMini('Glucosa',['glucosa'],'mg/dL',[[29,158,117]],[70,140]);
+      dibujarMini('Peso',['peso'],'kg',[[181,103,23]]);
+      dibujarMini('Pulso',['pulso'],'lpm',[[199,67,117]],[60,100]);
+      dibujarMini('SpO₂',['spo2'],'%',[[74,108,168]],[95,100]);
+      dibujarMini('Temperatura',['temperatura'],'°C',[[217,119,6]],[35.5,37.5]);
+      dibujarMini('Perfil lipídico',['col_total','col_ldl','col_hdl'],'mg/dL',[[107,63,160],[176,42,55],[46,125,50]]);
+      dibujarMini('Triglicéridos',['trigliceridos'],'mg/dL',[[232,139,0]],[0,150]);
+      // Si quedó una fila incompleta, cerrar la Y
+      if(dibujarMini._col===1)y=dibujarMini._rowY+28+4;
+
+      y+=4;
+
+      // ——— TABLA COMPACTA ———
+      doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+      doc.text('HISTÓRICO RECIENTE · 8 últimas mediciones',ML,y);y+=4;
       doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
       doc.text('FECHA',ML,y);
       doc.text('TA (mmHg)',ML+CW*0.22,y);
@@ -1605,6 +1895,36 @@ function exportarPDF(){
         setDraw(RULE_S);doc.setLineWidth(0.2);doc.line(ML,y,MR,y);y+=3;
       });
       y+=3;
+
+      // ——— TABLA DE PERFIL LIPÍDICO (solo si hay mediciones de colesterol) ———
+      const lipidos=constantesTodas.filter(c=>c.col_total!=null||c.col_ldl!=null||c.col_hdl!=null||c.trigliceridos!=null);
+      if(lipidos.length){
+        checkPage(30);
+        doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+        doc.text('PERFIL LIPÍDICO · '+lipidos.length+' determinacion'+(lipidos.length===1?'':'es'),ML,y);y+=4;
+        doc.setFont('helvetica','bold');doc.setFontSize(7);setColor(MUTE);
+        doc.text('FECHA',ML,y);
+        doc.text('TOTAL',ML+CW*0.30,y);
+        doc.text('LDL',ML+CW*0.48,y);
+        doc.text('HDL',ML+CW*0.64,y);
+        doc.text('TRIGLIC.',ML+CW*0.80,y);
+        y+=2;setDraw(RULE);doc.setLineWidth(0.3);doc.line(ML,y,MR,y);y+=4;
+        // Mostrar las últimas 8 determinaciones
+        lipidos.slice(-8).reverse().forEach(c=>{
+          const rowH=8;checkPage(rowH+2);
+          doc.setFont('courier','normal');doc.setFontSize(8.5);setColor(SOFT);
+          const fd=new Date(c.fecha+'T12:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});
+          doc.text(fd,ML,y);
+          doc.setFont('helvetica','normal');doc.setFontSize(9);setColor(INK);
+          doc.text(c.col_total!=null?String(c.col_total):'—',ML+CW*0.30,y);
+          doc.text(c.col_ldl!=null?String(c.col_ldl):'—',ML+CW*0.48,y);
+          doc.text(c.col_hdl!=null?String(c.col_hdl):'—',ML+CW*0.64,y);
+          doc.text(c.trigliceridos!=null?String(c.trigliceridos):'—',ML+CW*0.80,y);
+          y+=rowH-3;
+          setDraw(RULE_S);doc.setLineWidth(0.2);doc.line(ML,y,MR,y);y+=3;
+        });
+        y+=3;
+      }
     }
 
     // ——— PRÓXIMAS CITAS ———
@@ -1635,6 +1955,183 @@ function exportarPDF(){
     doc.save(`informe-clinico-${fechaArchivo}.pdf`);
     showToast('✓ Informe clínico descargado');
   }catch(e){console.error(e);showToast('Error al generar PDF',true);}
+}
+
+// ———————— Export a Google Calendar / iCalendar (.ics) ————————
+
+// Escapa texto para formato iCal (comas, puntos y coma, saltos de línea)
+function _icsEscape(s){
+  if(!s)return'';
+  return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n').replace(/\r/g,'');
+}
+
+// Formato UTC YYYYMMDDTHHMMSSZ
+function _icsFechaUTC(d){
+  const pad=n=>String(n).padStart(2,'0');
+  return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
+}
+
+// Formato local YYYYMMDDTHHMMSS (sin Z)
+function _icsFechaLocal(d){
+  const pad=n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+}
+
+function _icsUid(){
+  return `${Date.now()}-${Math.random().toString(36).substr(2,9)}@medibitacora.local`;
+}
+
+/**
+ * Construye un archivo .ics con:
+ *  - Todas las citas médicas pendientes (con recordatorios a 1 día y 1 hora).
+ *  - Las tomas de medicación activas como eventos recurrentes.
+ */
+function construirICS(opts={incluirCitas:true,incluirMedicacion:true}){
+  const ahora=new Date();
+  const stamp=_icsFechaUTC(ahora);
+  const lines=[
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//MediBitácora Pro//ES',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:MediBitácora Pro',
+    'X-WR-TIMEZONE:Europe/Madrid'
+  ];
+
+  // ——— CITAS MÉDICAS ———
+  if(opts.incluirCitas){
+    const citas=DB.get('citas').filter(c=>c.estado!=='Cancelada'&&c.estado!=='Completada');
+    citas.forEach(c=>{
+      if(!c.fecha)return;
+      const hora=c.hora||'09:00';
+      const inicio=new Date(`${c.fecha}T${hora}:00`);
+      if(isNaN(inicio))return;
+      const fin=new Date(inicio.getTime()+30*60000); // 30 min por defecto
+      const titulo=`🩺 ${c.medico||'Cita médica'}${c.especialidad?' · '+c.especialidad:''}`;
+      const desc=[c.especialidad?`Especialidad: ${c.especialidad}`:'',c.notas?`Notas: ${c.notas}`:'','','Generado por MediBitácora Pro'].filter(Boolean).join('\n');
+      lines.push('BEGIN:VEVENT');
+      lines.push(`UID:cita-${c.id}@medibitacora.local`);
+      lines.push(`DTSTAMP:${stamp}`);
+      lines.push(`DTSTART:${_icsFechaLocal(inicio)}`);
+      lines.push(`DTEND:${_icsFechaLocal(fin)}`);
+      lines.push(`SUMMARY:${_icsEscape(titulo)}`);
+      lines.push(`DESCRIPTION:${_icsEscape(desc)}`);
+      lines.push(`CATEGORIES:MediBitácora,Cita médica`);
+      lines.push(`STATUS:CONFIRMED`);
+      // Alarma 1 día antes
+      lines.push('BEGIN:VALARM');
+      lines.push('ACTION:DISPLAY');
+      lines.push(`DESCRIPTION:Recordatorio: ${_icsEscape(titulo)}`);
+      lines.push('TRIGGER:-P1D');
+      lines.push('END:VALARM');
+      // Alarma 1 hora antes
+      lines.push('BEGIN:VALARM');
+      lines.push('ACTION:DISPLAY');
+      lines.push(`DESCRIPTION:En 1 hora: ${_icsEscape(titulo)}`);
+      lines.push('TRIGGER:-PT1H');
+      lines.push('END:VALARM');
+      lines.push('END:VEVENT');
+    });
+  }
+
+  // ——— MEDICACIÓN (eventos recurrentes) ———
+  if(opts.incluirMedicacion){
+    const meds=DB.query('medicamentos',{estado:'Activo'});
+    meds.forEach(med=>{
+      let f;try{f=JSON.parse(med.frecuencia||'{}');}catch(e){return;}
+      const horas=[];const diasSemana=[];let rrule='';
+      if(f.tipo==='diaria'){
+        (f.horas||[]).forEach(h=>horas.push(h));
+        rrule='FREQ=DAILY';
+      }else if(f.tipo==='semanal'){
+        if(f.hora)horas.push(f.hora);
+        const mapDia={'L':'MO','M':'TU','X':'WE','J':'TH','V':'FR','S':'SA','D':'SU'};
+        (f.dias||[]).forEach(d=>{if(mapDia[d])diasSemana.push(mapDia[d]);});
+        if(diasSemana.length)rrule=`FREQ=WEEKLY;BYDAY=${diasSemana.join(',')}`;
+      }else return; // 'otro' no se puede expresar sin más info
+
+      // Un VEVENT por cada hora de toma
+      horas.forEach(hora=>{
+        const [hh,mm]=hora.split(':').map(Number);
+        if(isNaN(hh))return;
+        // Primera ocurrencia: hoy si aún no ha pasado, si no mañana
+        const inicio=new Date(ahora);
+        inicio.setHours(hh,mm,0,0);
+        if(inicio<=ahora)inicio.setDate(inicio.getDate()+1);
+        // Si es semanal, avanzar hasta el primer día válido
+        if(f.tipo==='semanal'&&diasSemana.length){
+          const dowJS=['SU','MO','TU','WE','TH','FR','SA'];
+          for(let i=0;i<7;i++){
+            if(diasSemana.includes(dowJS[inicio.getDay()]))break;
+            inicio.setDate(inicio.getDate()+1);
+          }
+        }
+        const fin=new Date(inicio.getTime()+15*60000); // 15 min
+        const titulo=`💊 ${med.nombre}${med.dosis?' · '+med.dosis:''}`;
+        const desc=`Toma programada de ${med.nombre}${med.dosis?' ('+med.dosis+')':''} a las ${hora}.\n\nGenerado por MediBitácora Pro`;
+
+        lines.push('BEGIN:VEVENT');
+        lines.push(`UID:med-${med.id}-${hora.replace(':','')}@medibitacora.local`);
+        lines.push(`DTSTAMP:${stamp}`);
+        lines.push(`DTSTART:${_icsFechaLocal(inicio)}`);
+        lines.push(`DTEND:${_icsFechaLocal(fin)}`);
+        lines.push(`RRULE:${rrule}`);
+        lines.push(`SUMMARY:${_icsEscape(titulo)}`);
+        lines.push(`DESCRIPTION:${_icsEscape(desc)}`);
+        lines.push(`CATEGORIES:MediBitácora,Medicación`);
+        lines.push('BEGIN:VALARM');
+        lines.push('ACTION:DISPLAY');
+        lines.push(`DESCRIPTION:Hora de tu medicación: ${_icsEscape(med.nombre)}`);
+        lines.push('TRIGGER:PT0M');
+        lines.push('END:VALARM');
+        lines.push('END:VEVENT');
+      });
+    });
+  }
+
+  lines.push('END:VCALENDAR');
+  // ICS requiere CRLF entre líneas y no más de 75 octetos por línea (el "folding"
+  // de líneas largas lo saltamos por simplicidad; la mayoría de apps lo toleran)
+  return lines.join('\r\n');
+}
+
+function exportarCalendarios(){
+  const citas=DB.get('citas').filter(c=>c.estado!=='Cancelada'&&c.estado!=='Completada').length;
+  const meds=DB.query('medicamentos',{estado:'Activo'}).length;
+  if(citas===0&&meds===0){
+    showToast('Sin citas ni medicación que exportar',true);
+    return;
+  }
+  const contenido=construirICS({incluirCitas:true,incluirMedicacion:true});
+  const blob=new Blob([contenido],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`medibitacora-calendario-${new Date().toISOString().split('T')[0]}.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`✓ Calendario exportado (${citas} citas, ${meds} medicamentos)`);
+}
+
+function exportarSoloCitas(){
+  const citas=DB.get('citas').filter(c=>c.estado!=='Cancelada'&&c.estado!=='Completada').length;
+  if(citas===0){showToast('Sin citas que exportar',true);return;}
+  const contenido=construirICS({incluirCitas:true,incluirMedicacion:false});
+  const blob=new Blob([contenido],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`medibitacora-citas-${new Date().toISOString().split('T')[0]}.ics`;a.click();URL.revokeObjectURL(url);
+  showToast(`✓ ${citas} cita(s) exportada(s)`);
+}
+
+function exportarSoloMedicacion(){
+  const meds=DB.query('medicamentos',{estado:'Activo'}).length;
+  if(meds===0){showToast('Sin medicación activa que exportar',true);return;}
+  const contenido=construirICS({incluirCitas:false,incluirMedicacion:true});
+  const blob=new Blob([contenido],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`medibitacora-medicacion-${new Date().toISOString().split('T')[0]}.ics`;a.click();URL.revokeObjectURL(url);
+  showToast(`✓ ${meds} medicamento(s) exportado(s)`);
 }
 
 function exportarBackup(){
