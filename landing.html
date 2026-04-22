@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="MediBitácora Pro — La app que pone orden en tu salud. Registra tus medicamentos, evolución y genera informes para tu médico."/>
+<meta name="description" content="MediBitácora Pro — Tu bitácora médica personal. Registra medicación, constantes vitales, genera informes para tu médico. Datos cifrados y privados en tu dispositivo."/>
 <title>MediBitácora Pro — Tu salud, bajo control</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -168,14 +168,6 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
 /* ANIMATIONS */
 .fade-up{opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
 .fade-up.visible{opacity:1;transform:translateY(0);}
-
-.faq-item{border-bottom:0.5px solid var(--border);padding:4px 0;}
-.faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 0;cursor:pointer;font-size:16px;font-weight:500;color:var(--text);gap:16px;}
-.faq-q:hover{color:var(--blue);}
-.faq-arrow{font-size:12px;color:var(--text2);transition:transform 0.3s;flex-shrink:0;}
-.faq-q.open .faq-arrow{transform:rotate(180deg);}
-.faq-a{display:none;font-size:14px;color:var(--text2);line-height:1.7;padding-bottom:16px;}
-.faq-a.show{display:block;}
 </style>
 </head>
 <body>
@@ -201,7 +193,7 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
     <div class="fade-up">
       <div class="hero-badge"><span class="hero-badge-dot"></span> App médica personal</div>
       <h1 class="hero-title">Tu salud,<br><span>bajo control</span></h1>
-      <p class="hero-sub">Registra tus medicamentos, sigue tu evolución día a día y genera informes profesionales para llevar a tu médico. Todo en tu bolsillo.</p>
+      <p class="hero-sub">Registra medicamentos, constantes vitales y tu evolución día a día. Genera informes profesionales para tu médico. Todo cifrado y guardado solo en tu dispositivo.</p>
       <div class="hero-actions">
         <a href="#comprar" class="btn-primary" onclick="abrirModal()">
           Obtener MediBitácora Pro
@@ -246,6 +238,19 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
               </div>
             </div>
             <div class="phone-card">
+              <div class="phone-card-title">Últimas constantes</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                <div style="background:#E6F1FB;border-radius:5px;padding:5px 7px;">
+                  <div style="font-size:7px;color:#666;text-transform:uppercase;letter-spacing:0.04em;">Tensión</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--blue);line-height:1;">126/82</div>
+                </div>
+                <div style="background:#E8F5E9;border-radius:5px;padding:5px 7px;">
+                  <div style="font-size:7px;color:#666;text-transform:uppercase;letter-spacing:0.04em;">Glucosa</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--green);line-height:1;">94</div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-card">
               <div class="phone-card-title">Medicación activa</div>
               <div class="phone-med"><div class="phone-med-dot"></div><span class="phone-med-name">Metotrexato</span><span class="phone-med-chip">Semanal · L</span></div>
               <div class="phone-med"><div class="phone-med-dot"></div><span class="phone-med-name">Fólico 5mg</span><span class="phone-med-chip">08:00</span></div>
@@ -253,10 +258,10 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
             </div>
           </div>
           <div class="phone-nav">
-            <div class="phone-nav-btn active"><span class="phone-nav-icon">📈</span>Evolución</div>
+            <div class="phone-nav-btn active"><span class="phone-nav-icon">📈</span>Evol.</div>
             <div class="phone-nav-btn"><span class="phone-nav-icon">💊</span>Trat.</div>
-            <div class="phone-nav-btn"><span class="phone-nav-icon">💡</span>Vadem.</div>
-            <div class="phone-nav-btn"><span class="phone-nav-icon">📁</span>Inf.</div>
+            <div class="phone-nav-btn"><span class="phone-nav-icon">📅</span>Citas</div>
+            <div class="phone-nav-btn"><span class="phone-nav-icon">🚨</span>Emerg.</div>
             <div class="phone-nav-btn"><span class="phone-nav-icon">🩺</span>Res.</div>
           </div>
         </div>
@@ -276,32 +281,42 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
     <div class="feature-card fade-up">
       <div class="feature-icon">📈</div>
       <div class="feature-title">Registro de evolución diaria</div>
-      <div class="feature-desc">Anota tu estado, síntomas y nivel de dolor cada día. Visualiza tu progreso en un gráfico de tendencia de los últimos 30 días. Ver y editar cada registro.</div>
+      <div class="feature-desc">Anota tu estado, síntomas y nivel de dolor cada día. Visualiza tu progreso en un gráfico de tendencia de los últimos 30 días.</div>
     </div>
     <div class="feature-card fade-up" style="transition-delay:0.1s;">
       <div class="feature-icon">💊</div>
       <div class="feature-title">Control de medicamentos</div>
-      <div class="feature-desc">Gestiona tu tratamiento con frecuencias diarias, semanales y horarios exactos. Recordatorios automáticos para no olvidar ninguna toma.</div>
+      <div class="feature-desc">Gestiona tu tratamiento actual e historial de medicamentos con frecuencias diarias, semanales y horarios exactos de toma.</div>
     </div>
     <div class="feature-card fade-up" style="transition-delay:0.2s;">
-      <div class="feature-icon">📅</div>
-      <div class="feature-title">Gestión de citas médicas</div>
-      <div class="feature-desc">Registra tus citas con médico, especialidad, fecha y hora. Controla el estado de cada cita: pendiente, confirmada, completada o cancelada.</div>
+      <div class="feature-icon">❤️</div>
+      <div class="feature-title">Constantes vitales</div>
+      <div class="feature-desc">Registra tensión arterial, glucosa, peso, pulso, SpO₂, temperatura y panel lipídico completo (colesterol, LDL, HDL, triglicéridos) con gráficas de evolución.</div>
     </div>
     <div class="feature-card fade-up" style="transition-delay:0.3s;">
-      <div class="feature-icon">🚨</div>
-      <div class="feature-title">Teléfonos de emergencia</div>
-      <div class="feature-desc">Acceso rápido a los números de emergencia nacionales (112, 061, 024, 016) y tus contactos médicos personales con llamada directa.</div>
+      <div class="feature-icon">🔐</div>
+      <div class="feature-title">Cifrado AES-256 opcional</div>
+      <div class="feature-desc">Protege tus datos médicos con cifrado de grado militar derivado de tu PIN. Ni siquiera con acceso físico al dispositivo pueden leerse sin tu clave.</div>
     </div>
     <div class="feature-card fade-up" style="transition-delay:0.4s;">
       <div class="feature-icon">🩺</div>
-      <div class="feature-title">Resumen para el médico</div>
-      <div class="feature-desc">Genera un informe profesional con tu medicación activa y evolución reciente. Exporta en PDF, envía por email o comparte por WhatsApp.</div>
+      <div class="feature-title">Informe clínico en PDF</div>
+      <div class="feature-desc">Genera un informe profesional con medicación activa, gráficas de evolución del dolor, constantes vitales y alertas clínicas. Lo compartes con tu médico en un toque.</div>
     </div>
     <div class="feature-card fade-up" style="transition-delay:0.5s;">
+      <div class="feature-icon">📅</div>
+      <div class="feature-title">Sincroniza con tu calendario</div>
+      <div class="feature-desc">Exporta citas médicas y horarios de medicación a Google Calendar, Apple Calendar u Outlook. Notificaciones fiables directamente desde tu calendario habitual.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.6s;">
+      <div class="feature-icon">📧</div>
+      <div class="feature-title">Comparte con tu médico</div>
+      <div class="feature-desc">Envía informes por email o WhatsApp en un clic. El resumen incluye tu medicación, evolución y constantes recientes en un formato claro y profesional.</div>
+    </div>
+    <div class="feature-card fade-up" style="transition-delay:0.7s;">
       <div class="feature-icon">🔒</div>
-      <div class="feature-title">Privacidad total con PIN</div>
-      <div class="feature-desc">Tus datos médicos protegidos con PIN de 4 dígitos. Todo se guarda únicamente en tu dispositivo — sin nube, sin servidores, sin terceros.</div>
+      <div class="feature-title">Tus datos, en tu dispositivo</div>
+      <div class="feature-desc">PIN de 4 dígitos en el arranque. Los datos nunca salen de tu móvil: sin servidores, sin nube, sin tracking. Exporta backup cifrado cuando quieras para cambiar de dispositivo.</div>
     </div>
   </div>
 </section>
@@ -313,27 +328,30 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
       <div class="section-label">Lo que dicen los usuarios</div>
       <h2 class="section-title">Pacientes que ya llevan<br>el control de su salud</h2>
     </div>
-      <div class="feature-card fade-up" style="border-left:3px solid var(--blue);">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Por fin una app que entiende lo que necesita alguien con una enfermedad crónica. Mi médico quedó impresionado con el informe que le llevé."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MR</div>
+          <div><div class="testimonial-name">María R.</div><div class="testimonial-role">Paciente con artritis reumatoide</div></div>
         </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Por fin una app que entiende lo que necesita alguien con enfermedad crónica. Llevo mis informes al médico y me ahorra mucho tiempo de explicaciones."</div>
-        <div style="font-size:12px;color:var(--text2);">Usuaria · Enfermedad reumática · Madrid</div>
       </div>
-      <div class="feature-card fade-up" style="border-left:3px solid var(--green);transition-delay:0.1s;">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
+      <div class="testimonial fade-up" style="transition-delay:0.1s;">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"El vademécum con IA es increíble. Antes tenía que buscar en mil webs para entender mis medicamentos. Ahora lo tengo todo en un sitio."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JL</div>
+          <div><div class="testimonial-name">José L.</div><div class="testimonial-role">Paciente con tratamiento oncológico</div></div>
         </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Tomo varios medicamentos al día y siempre me liaba con los horarios. Ahora tengo todo organizado y los recordatorios me han cambiado la vida."</div>
-        <div style="font-size:12px;color:var(--text2);">Usuario · Tratamiento crónico · Valencia</div>
       </div>
-      <div class="feature-card fade-up" style="border-left:3px solid #8B5CF6;transition-delay:0.2s;">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
+      <div class="testimonial fade-up" style="transition-delay:0.2s;">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Cuido a mi madre mayor y esta app ha cambiado todo. Tengo sus medicamentos organizados con horarios y nunca se nos olvida ninguna toma."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AC</div>
+          <div><div class="testimonial-name">Ana C.</div><div class="testimonial-role">Cuidadora familiar</div></div>
         </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Lo que más me gusta es que mis datos no van a ningún servidor. Son míos y solo míos. Y por menos de 3€ es una ganga comparado con otras apps de salud."</div>
-        <div style="font-size:12px;color:var(--text2);">Usuaria · Seguimiento médico · Barcelona</div>
-      </div>
       </div>
     </div>
   </div>
@@ -491,16 +509,16 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
       <div class="pricing-price"><sup>€</sup>2,99</div>
       <div class="pricing-period">Pago único · Tuyo para siempre</div>
       <ul class="pricing-features">
-        <li><div class="pricing-check">✓</div>Registro diario de evolución con gráfico</li>
-        <li><div class="pricing-check">✓</div>Control de medicamentos con recordatorios</li>
-        <li><div class="pricing-check">✓</div>Gestión de citas médicas</li>
-        <li><div class="pricing-check">✓</div>Teléfonos de emergencia + contactos personales</li>
-        <li><div class="pricing-check">✓</div>Resumen médico en PDF, email y WhatsApp</li>
-        <li><div class="pricing-check">✓</div>Datos 100% en tu dispositivo — sin nube</li>
-        <li><div class="pricing-check">✓</div>Backup y restauración de datos</li>
-        <li><div class="pricing-check">✓</div>Protección con PIN personal</li>
+        <li><div class="pricing-check">✓</div>Registro diario de evolución y dolor</li>
+        <li><div class="pricing-check">✓</div>Control de medicamentos con horarios</li>
+        <li><div class="pricing-check">✓</div>Constantes vitales y perfil lipídico</li>
+        <li><div class="pricing-check">✓</div>Cifrado AES-256 opcional</li>
+        <li><div class="pricing-check">✓</div>Informe clínico en PDF con gráficas</li>
+        <li><div class="pricing-check">✓</div>Envío por email y WhatsApp</li>
+        <li><div class="pricing-check">✓</div>Sincronización con tu calendario</li>
+        <li><div class="pricing-check">✓</div>Backup cifrado exportable</li>
         <li><div class="pricing-check">✓</div>Funciona en móvil, tablet y PC</li>
-        <li><div class="pricing-check">✓</div>Actualizaciones incluidas para siempre</li>
+        <li><div class="pricing-check">✓</div>Actualizaciones incluidas</li>
       </ul>
       <button class="btn-primary" style="width:100%;justify-content:center;font-size:17px;padding:18px;" onclick="abrirModal()">
         Obtener MediBitácora Pro · 2,99€
@@ -517,119 +535,6 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
     <p class="cta-sub">Únete a los pacientes que ya llevan su salud de forma organizada y profesional.</p>
     <button class="btn-white" onclick="abrirModal()">Empezar ahora · 2,99€</button>
     <div class="cta-guarantee">Pago único · Sin suscripciones · Acceso inmediato</div>
-  </div>
-</section>
-
-
-<!-- TESTIMONIOS -->
-<section class="section" style="background:#f8fafc;">
-  <div class="container">
-    <div class="section-tag fade-up">Opiniones</div>
-    <h2 class="section-title fade-up">Lo que dicen nuestros usuarios</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px;">
-      <div class="feature-card fade-up" style="border-left:3px solid var(--blue);">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
-        </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Por fin una app que entiende lo que necesita alguien con enfermedad crónica. Llevo mis informes al médico y me ahorra mucho tiempo de explicaciones."</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:38px;height:38px;border-radius:50%;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--blue);">MR</div>
-          <div>
-                  <div class="feature-card fade-up" style="border-left:3px solid var(--blue);">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
-        </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Por fin una app que entiende lo que necesita alguien con enfermedad crónica. Llevo mis informes al médico y me ahorra mucho tiempo de explicaciones."</div>
-        <div style="font-size:12px;color:var(--text2);">Usuaria · Enfermedad reumática · Madrid</div>
-      </div>
-      <div class="feature-card fade-up" style="border-left:3px solid var(--green);transition-delay:0.1s;">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
-        </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Tomo varios medicamentos al día y siempre me liaba con los horarios. Ahora tengo todo organizado y los recordatorios me han cambiado la vida."</div>
-        <div style="font-size:12px;color:var(--text2);">Usuario · Tratamiento crónico · Valencia</div>
-      </div>
-      <div class="feature-card fade-up" style="border-left:3px solid #8B5CF6;transition-delay:0.2s;">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
-        </div>
-        <div style="font-size:15px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;">"Lo que más me gusta es que mis datos no van a ningún servidor. Son míos y solo míos. Y por menos de 3€ es una ganga comparado con otras apps de salud."</div>
-        <div style="font-size:12px;color:var(--text2);">Usuaria · Seguimiento médico · Barcelona</div>
-      </div>
-        </div>
-      </div>
-      <div class="feature-card fade-up" style="border-left:3px solid #8B5CF6;transition-delay:0.2s;">
-        <div style="display:flex;gap:4px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:16px;">★★★★★</span>
-        </div>
-    </div>
-  </div>
-</section>
-
-<!-- GARANTIA -->
-<section class="section" style="background:var(--blue);color:white;text-align:center;">
-  <div class="container">
-    <div style="max-width:560px;margin:0 auto;">
-      <div style="font-size:48px;margin-bottom:16px;">🛡️</div>
-      <h2 style="font-size:28px;font-weight:700;margin-bottom:12px;">Garantía de devolución 30 días</h2>
-      <p style="font-size:16px;opacity:0.85;line-height:1.7;margin-bottom:24px;">Si por cualquier motivo no estás satisfecho con MediBitácora Pro, te devolvemos el importe completo sin preguntas. Sin letra pequeña.</p>
-      <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);border-radius:12px;padding:14px 24px;">
-        <div style="font-size:22px;">✓</div>
-        <div style="font-size:14px;text-align:left;"><strong>Sin riesgo</strong><br><span style="opacity:0.85;">Escríbenos en los primeros 30 días y te reembolsamos</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section">
-  <div class="container">
-    <div class="section-tag fade-up">Preguntas frecuentes</div>
-    <h2 class="section-title fade-up">Todo lo que necesitas saber</h2>
-    <div style="max-width:680px;margin:48px auto 0;">
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>¿Dónde se guardan mis datos?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-a">Tus datos se guardan únicamente en tu dispositivo (móvil, tablet o PC). No se envían a ningún servidor ni nube. Solo tú tienes acceso a ellos.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>¿Qué pasa si cambio de móvil?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-a">La app incluye una función de backup que exporta todos tus datos en un archivo JSON. Puedes importarlo en tu nuevo dispositivo y recuperar todo en segundos.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>¿Funciona sin internet?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-a">Sí. Una vez instalada como app en tu dispositivo, funciona completamente sin conexión. Tus datos siempre disponibles.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>¿Es un pago único o una suscripción?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-a">Es un pago único de 2,99€. Sin suscripciones, sin renovaciones automáticas, sin cargos ocultos. Pagas una vez y la app es tuya para siempre, incluyendo todas las actualizaciones futuras.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>¿En qué dispositivos funciona?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-a">Funciona en cualquier dispositivo con navegador: Android, iPhone, iPad, PC con Windows o Mac. Se instala como una app nativa desde el navegador sin necesidad de App Store ni Google Play.</div>
-      </div>
-      <div class="faq-item fade-up">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>¿Puedo pedir la devolución?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-a">Sí. Si en los primeros 30 días no estás satisfecho, escríbenos y te reembolsamos el importe completo sin preguntas.</div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -662,24 +567,17 @@ footer{background:var(--blue-d);color:white;padding:32px 24px;text-align:center;
     </div>
     <div class="modal-features">
       <div class="modal-feat"><span class="modal-feat-check">✓</span> Todas las funciones incluidas</div>
-      <div class="modal-feat"><span class="modal-feat-check">✓</span> Citas médicas y emergencias</div>
-      <div class="modal-feat"><span class="modal-feat-check">✓</span> Exportar PDF e informes por email</div>
+      <div class="modal-feat"><span class="modal-feat-check">✓</span> Constantes vitales y cifrado AES-256</div>
+      <div class="modal-feat"><span class="modal-feat-check">✓</span> Informes PDF y sincronización con calendario</div>
       <div class="modal-feat"><span class="modal-feat-check">✓</span> Acceso inmediato tras el pago</div>
     </div>
     <button class="modal-btn" onclick="irAPago()">Pagar con tarjeta · 2,99€</button>
-    <div class="modal-note">🔒 Pago seguro · 30 días de garantía de devolución</div>
+    <div class="modal-note">🔒 Pago seguro · Recibirás el enlace de acceso por email</div>
   </div>
 </div>
 
 <script>
 // MODAL
-
-function toggleFaq(el){
-  el.classList.toggle('open');
-  const ans=el.nextElementSibling;
-  ans.classList.toggle('show');
-}
-
 function abrirModal(){document.getElementById('modal').classList.add('show');document.body.style.overflow='hidden';}
 function cerrarModal(){document.getElementById('modal').classList.remove('show');document.body.style.overflow='';}
 function cerrarModalFuera(e){if(e.target===document.getElementById('modal'))cerrarModal();}
