@@ -264,7 +264,7 @@ textarea{min-height:60px;resize:vertical;}
         <span class="pain-val" id="pval">5</span>
       </div>
       <label>Mejorías</label><input type="text" id="r-mejor" placeholder="Ej: menos fatiga..."/>
-      <button class="btn" id="btn-reg" onclick="guardarRegistro()">Guardar registro</button>
+      <button class="btn" onclick="guardarRegistro()">Guardar registro</button>
     </div>
     <div class="card">
       <div class="card-title">Historial</div>
@@ -818,7 +818,7 @@ let apVals={a:'',n:''},apFase='ingreso',apPrimerNuevo='';
 let deferredPrompt=null;
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/medibitacora-pro/sw.js',{scope:'/medibitacora-pro/'}).catch(()=>{});
+  navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(()=>{});
   // Escuchar mensajes del SW (p.ej. cuando se pulsa "Tomado" en una notificación)
   navigator.serviceWorker.addEventListener('message',e=>{
     if(e.data&&e.data.type==='MARCAR_TOMA'){
@@ -2136,7 +2136,7 @@ function exportarSoloMedicacion(){
 
 function exportarBackup(){
   const pac=getPaciente();
-  const backup={version:'2.3',fecha:new Date().toISOString(),desarrollador:'Gustavo Molina Zafra',paciente:pac.nombre||'Sin datos registrados',datos_paciente:pac,registros:DB.get('registros'),medicamentos:DB.get('medicamentos'),citas:DB.get('citas'),contactos:DB.get('contactos'),tomas:DB.get('tomas'),constantes:DB.get('constantes'),pin:localStorage.getItem(PIN_KEY)||null};
+  const backup={version:'2.2',fecha:new Date().toISOString(),desarrollador:'Gustavo Molina Zafra',paciente:pac.nombre||'Sin datos registrados',datos_paciente:pac,registros:DB.get('registros'),medicamentos:DB.get('medicamentos'),citas:DB.get('citas'),contactos:DB.get('contactos'),tomas:DB.get('tomas'),constantes:DB.get('constantes')};
   const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`medibitacora-backup-${new Date().toISOString().split('T')[0]}.json`;a.click();URL.revokeObjectURL(url);
   showToast('✓ Backup exportado');
@@ -2156,7 +2156,6 @@ function importarBackup(input){
       if(backup.datos_paciente)_savePaciente(backup.datos_paciente);
       if(backup.tomas)DB.save('tomas',backup.tomas);
       if(backup.constantes)DB.save('constantes',backup.constantes);
-      if(backup.pin)localStorage.setItem(PIN_KEY,backup.pin);
       showToast('✓ Backup importado');cargarRegistros();
     }catch(err){showToast('Error al importar',true);}
   };
