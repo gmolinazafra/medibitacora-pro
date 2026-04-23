@@ -1,26 +1,40 @@
 {
   "name": "MediBitácora Pro",
   "short_name": "MediBitácora",
-  "description": "Gestión médica personal de Gustavo Molina Zafra",
-  "start_url": "/medibitacora-pro/index.html",
-  "scope": "/medibitacora-pro/",
+  "description": "Bitácora médica personal: medicamentos, constantes vitales e informes clínicos.",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
   "background_color": "#185FA5",
   "theme_color": "#185FA5",
   "orientation": "portrait",
   "lang": "es",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/medibitacora-pro/icon-192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/medibitacora-pro/icon-512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": ["health", "medical", "lifestyle"],
