@@ -569,7 +569,7 @@ textarea{min-height:60px;resize:vertical;}
       <button class="btn btn-green" id="btn-compartir-backup" style="margin-bottom:8px;" onclick="compartirBackup()">📤 Compartir backup (Drive, email…)</button>
       <button class="btn btn-outline" style="margin-bottom:8px;" onclick="exportarBackup()">⬇️ Descargar backup</button>
       <label style="width:100%;padding:12px;background:none;border:0.5px solid var(--border);border-radius:8px;font-size:14px;cursor:pointer;text-align:center;display:block;margin-top:4px;" for="import-backup">📂 Importar backup</label>
-      <input type="file" id="import-backup" accept=".json" style="display:none;" onchange="importarBackup(this)"/>
+      <input type="file" id="import-backup" accept=".json,.txt,application/json,text/plain" style="display:none;" onchange="importarBackup(this)"/>
       <div style="font-size:11px;color:var(--text2);margin-top:10px;line-height:1.5;">
         💡 <strong>Compartir</strong> abre la bandeja del sistema (Google Drive, email, WhatsApp…). <strong>Descargar</strong> guarda el archivo en tu dispositivo.
       </div>
@@ -2365,8 +2365,12 @@ function exportarBackup(){
 
 async function compartirBackup(){
   const {blob,nombre}=_construirBackupFile();
-  const file=new File([blob],nombre,{type:'application/json'});
-  // Comprobar soporte de Web Share API con ficheros
+  // Chrome Android bloquea application/json en Web Share. Lo enviamos como text/plain
+  // y cambiamos la extensión a .txt para asegurar compatibilidad. El contenido
+  // sigue siendo un JSON válido que la app puede importar sin problema.
+  const nombreTxt=nombre.replace(/\.json$/,'.json.txt');
+  const blobTxt=new Blob([blob],{type:'text/plain'});
+  const file=new File([blobTxt],nombreTxt,{type:'text/plain'});
   if(!navigator.canShare||!navigator.canShare({files:[file]})){
     showToast('Tu navegador no soporta compartir archivos. Usa "Descargar".',true);
     return;
@@ -2379,16 +2383,17 @@ async function compartirBackup(){
     });
     showToast('✓ Compartido');
   }catch(e){
-    // El usuario puede cancelar; no es error
-    if(e.name!=='AbortError')showToast('No se pudo compartir',true);
+    if(e.name==='AbortError')return; // cancelado por el usuario
+    console.error('[compartirBackup]',e);
+    showToast('No se pudo compartir: '+(e.message||e.name||'error desconocido'),true);
   }
 }
 
-// Ocultar el botón "Compartir backup" si el navegador no lo soporta
+// La prueba para mostrar/ocultar el botón también debe usar text/plain
 function configurarBotonCompartir(){
   const btn=document.getElementById('btn-compartir-backup');
   if(!btn)return;
-  const probe=new File(['{}'],'probe.json',{type:'application/json'});
+  const probe=new File(['probe'],'probe.txt',{type:'text/plain'});
   const soporta=(typeof navigator.canShare==='function')&&navigator.canShare({files:[probe]});
   btn.style.display=soporta?'':'none';
 }
