@@ -72,16 +72,6 @@ self.addEventListener('fetch', event => {
   // Solo GET. Las peticiones POST/PUT se pasan directamente a la red.
   if (req.method !== 'GET') return;
 
-  // Ignorar llamadas a servicios externos que no deben cachearse
-  const url = new URL(req.url);
-  if (
-    url.hostname.includes('supabase.co') ||
-    url.hostname.includes('anthropic.com') ||
-    url.hostname.includes('workers.dev')
-  ) {
-    return; // sin respondWith → navegador maneja normalmente
-  }
-
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     const cached = await cache.match(req);
