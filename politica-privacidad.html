@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Política de Privacidad - MediBitácora Pro</title>
-<meta name="description" content="Política de privacidad de MediBitácora Pro. Tus datos médicos se almacenan exclusivamente en tu dispositivo, cifrados con AES-256."/>
+<meta name="description" content="Política de privacidad de MediBitácora Pro. Tus datos médicos se almacenan exclusivamente en tu dispositivo, con cifrado AES-256 opcional."/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a;line-height:1.65;padding:24px 16px;}
@@ -46,7 +46,7 @@ strong{font-weight:600;}
 </header>
 
 <div class="hl">
-  <strong>Resumen rápido:</strong> MediBitácora Pro guarda tus datos médicos <strong>exclusivamente en tu dispositivo</strong>, cifrados con AES-256 y protegidos por un PIN que tú estableces. <strong>No enviamos tus datos a ningún servidor.</strong> No usamos analytics. No compartimos información con terceros. Tú tienes el control total.
+  <strong>Resumen rápido:</strong> MediBitácora Pro guarda tus datos médicos <strong>exclusivamente en tu dispositivo</strong>, protegidos por un PIN personal que tú estableces. <strong>No enviamos tus datos a ningún servidor.</strong> No usamos analytics. No compartimos información con terceros. La aplicación ofrece además un <strong>cifrado opcional AES-256</strong> que puedes activar desde los ajustes para reforzar la protección del almacenamiento local.
 </div>
 
 <h2>1. Quién es el responsable del tratamiento</h2>
@@ -74,8 +74,9 @@ strong{font-weight:600;}
 </ul>
 
 <h2>3. Dónde se almacenan los datos</h2>
-<p><strong>Todos los datos se guardan únicamente en el dispositivo del usuario</strong> (almacenamiento local del navegador, también conocido como <em>localStorage</em>), <strong>cifrados con AES-256</strong>. La clave de cifrado se deriva del PIN que el usuario establece y nunca abandona el dispositivo.</p>
-<p>No existen servidores de MediBitácora Pro que reciban, almacenen o procesen estos datos. La aplicación funciona íntegramente en el dispositivo del usuario, también sin conexión a internet.</p>
+<p><strong>Todos los datos se guardan únicamente en el dispositivo del usuario</strong> (almacenamiento local del navegador, también conocido como <em>localStorage</em>). No existen servidores de MediBitácora Pro que reciban, almacenen o procesen estos datos. La aplicación funciona íntegramente en el dispositivo del usuario, también sin conexión a internet.</p>
+<p>Por defecto, los datos se guardan en formato legible. La aplicación incorpora una <strong>opción de cifrado AES-256</strong> que el usuario puede activar voluntariamente desde los ajustes; al activarla, los datos sensibles se cifran utilizando una clave derivada del PIN personal del usuario, que nunca abandona el dispositivo. Esta capa adicional protege los datos frente a accesos al almacenamiento del navegador por parte de terceros con acceso físico al dispositivo.</p>
+<p>En cualquier caso —con o sin cifrado activo— los datos siempre permanecen en local, sin transmisión a servidores externos. El acceso a la aplicación está siempre protegido por el PIN personal del usuario.</p>
 
 <h2>4. Finalidad del tratamiento y base jurídica</h2>
 <p>Los datos introducidos por el usuario se utilizan exclusivamente para que la propia aplicación pueda mostrarle su información médica, generar informes y enviarle recordatorios de medicación.</p>
@@ -121,12 +122,20 @@ strong{font-weight:600;}
 <h2>11. Seguridad</h2>
 <p>Se aplican las siguientes medidas técnicas:</p>
 <ul>
-  <li>Cifrado <strong>AES-256</strong> de todos los datos sensibles almacenados.</li>
   <li>Acceso a la aplicación protegido por <strong>PIN</strong> establecido por el usuario.</li>
+  <li>Opción de <strong>cifrado AES-256</strong> activable por el usuario desde los ajustes para reforzar la protección del almacenamiento local.</li>
   <li>Conexión <strong>HTTPS</strong> para la descarga inicial de la app y de las librerías técnicas.</li>
   <li>No transmisión de datos a servidores propios o de terceros.</li>
 </ul>
-<p>No obstante, ningún sistema es absolutamente invulnerable. Recomendamos al usuario establecer un PIN robusto, no compartirlo, y mantener su dispositivo y navegador actualizados.</p>
+<p>Recomendamos al usuario:</p>
+<ul>
+  <li>Establecer un <strong>PIN robusto</strong> y no compartirlo.</li>
+  <li><strong>Activar el cifrado AES-256</strong> desde los ajustes si maneja información sensible y desea protección adicional frente a accesos al almacenamiento del dispositivo.</li>
+  <li>Mantener su dispositivo y navegador actualizados.</li>
+  <li>Realizar backups periódicos con la función de exportación incluida.</li>
+</ul>
+<p>Importante: si el usuario activa el cifrado y posteriormente olvida su PIN, los datos cifrados <strong>no podrán recuperarse</strong>, ya que la clave de cifrado se deriva del propio PIN. Por ello se recomienda hacer backup antes de activar el cifrado.</p>
+<p>Ningún sistema es absolutamente invulnerable.</p>
 
 <h2>12. Cambios en esta política</h2>
 <p>Esta política puede actualizarse para reflejar mejoras en la app o cambios legales. La versión vigente siempre estará disponible en <a href="https://medibitacora.es/politica-privacidad.html">https://medibitacora.es/politica-privacidad.html</a>. La fecha de la última actualización aparece al inicio de este documento.</p>
