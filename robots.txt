@@ -1,10 +1,8 @@
 User-agent: *
 Disallow: /bitacora/
-Disallow: /landing.html
-Disallow: /politica-privacidad.html
 
 User-agent: Googlebot
 Disallow: /bitacora/
 
-# La raíz queda libre para indexar la futura landing
-# Los iconos (/icons/) y assetlinks (/.well-known/) son rastreables por defecto (necesario para Google Play)
+# Permitido: la raíz (futura landing), /icons/ (necesario para Play Store),
+# /.well-known/ (Digital Asset Links), /politica-privacidad.html (requisito legal Play Store).

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Política de Privacidad - MediBitácora Pro</title>
+<meta name="description" content="Política de privacidad de MediBitácora Pro. Tus datos médicos se almacenan exclusivamente en tu dispositivo, cifrados con AES-256."/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a;line-height:1.65;padding:24px 16px;}
+.container{max-width:760px;margin:0 auto;background:#fff;border-radius:12px;padding:32px 28px;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+header{border-bottom:1px solid #eee;padding-bottom:20px;margin-bottom:28px;}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.brand-name{font-size:20px;font-weight:700;color:#195FA5;}
+h1{font-size:26px;color:#195FA5;margin-top:4px;}
+.meta{font-size:13px;color:#666;margin-top:6px;}
+h2{font-size:18px;color:#195FA5;margin-top:28px;margin-bottom:10px;font-weight:600;}
+h3{font-size:15px;margin-top:18px;margin-bottom:8px;color:#1a1a1a;font-weight:600;}
+p{margin-bottom:12px;}
+ul,ol{margin:8px 0 14px 22px;}
+li{margin-bottom:6px;}
+.hl{background:#E6F1FB;border-left:3px solid #195FA5;padding:14px 16px;border-radius:6px;margin:14px 0;font-size:14px;}
+.contact{background:#f9f9f9;padding:14px 18px;border-radius:8px;font-size:14px;margin-top:8px;}
+a{color:#195FA5;text-decoration:none;}
+a:hover{text-decoration:underline;}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid #eee;font-size:12px;color:#888;text-align:center;}
+strong{font-weight:600;}
+@media(max-width:600px){
+  body{padding:12px 8px;}
+  .container{padding:20px 18px;}
+  h1{font-size:22px;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="brand">
+    <span class="brand-name">MediBitácora Pro</span>
+  </div>
+  <h1>Política de privacidad</h1>
+  <div class="meta">
+    Última actualización: 25 de abril de 2026 · Versión 1.0
+  </div>
+</header>
+
+<div class="hl">
+  <strong>Resumen rápido:</strong> MediBitácora Pro guarda tus datos médicos <strong>exclusivamente en tu dispositivo</strong>, cifrados con AES-256 y protegidos por un PIN que tú estableces. <strong>No enviamos tus datos a ningún servidor.</strong> No usamos analytics. No compartimos información con terceros. Tú tienes el control total.
+</div>
+
+<h2>1. Quién es el responsable del tratamiento</h2>
+<p>El responsable de esta aplicación es:</p>
+<div class="contact">
+  <strong>Gustavo Molina Zafra</strong><br>
+  Profesional autónomo (España)<br>
+  Provincia: Málaga<br>
+  Email de contacto: <a href="mailto:hola@medibitacora.es">hola@medibitacora.es</a>
+</div>
+
+<h2>2. Qué datos trata la aplicación</h2>
+<p>MediBitácora Pro permite al usuario registrar voluntariamente la siguiente información, que se considera <strong>categoría especial de datos relativos a la salud</strong> según el artículo 9 del RGPD:</p>
+<ul>
+  <li>Entradas de evolución (anotaciones, síntomas, niveles de dolor).</li>
+  <li>Medicamentos y pautas de medicación.</li>
+  <li>Citas médicas (fecha, motivo, profesional).</li>
+  <li>Constantes vitales (tensión, glucemia, perfil lipídico, etc.).</li>
+  <li>Informes y archivos PDF que el usuario genere o adjunte.</li>
+</ul>
+<p>Adicionalmente, la app almacena de forma local:</p>
+<ul>
+  <li>Un PIN cifrado (hash) que el propio usuario establece para acceder.</li>
+  <li>Preferencias técnicas de la app (idioma, ajustes de visualización, último estado).</li>
+</ul>
+
+<h2>3. Dónde se almacenan los datos</h2>
+<p><strong>Todos los datos se guardan únicamente en el dispositivo del usuario</strong> (almacenamiento local del navegador, también conocido como <em>localStorage</em>), <strong>cifrados con AES-256</strong>. La clave de cifrado se deriva del PIN que el usuario establece y nunca abandona el dispositivo.</p>
+<p>No existen servidores de MediBitácora Pro que reciban, almacenen o procesen estos datos. La aplicación funciona íntegramente en el dispositivo del usuario, también sin conexión a internet.</p>
+
+<h2>4. Finalidad del tratamiento y base jurídica</h2>
+<p>Los datos introducidos por el usuario se utilizan exclusivamente para que la propia aplicación pueda mostrarle su información médica, generar informes y enviarle recordatorios de medicación.</p>
+<p>La <strong>base jurídica</strong> es el <strong>consentimiento explícito del propio usuario</strong> (art. 6.1.a y 9.2.a RGPD), que se manifiesta al introducir los datos voluntariamente en su dispositivo. El usuario es, a la vez, el titular y el único receptor de sus propios datos.</p>
+
+<h2>5. Comunicación de datos a terceros</h2>
+<p><strong>No se comparten datos con terceros.</strong> No se ceden, no se venden, no se transmiten a procesadores externos.</p>
+<p>Las únicas comunicaciones de red que realiza la app son la descarga inicial de dos librerías técnicas alojadas en una red de distribución de contenidos pública (Cloudflare CDN), necesarias para mostrar gráficas (Chart.js) y generar PDFs (jsPDF). Estas peticiones <strong>no contienen datos del usuario</strong>: descargan únicamente los archivos JavaScript de las librerías. Tras la primera descarga, quedan cacheadas y la app puede funcionar offline.</p>
+
+<h2>6. Notificaciones</h2>
+<p>Si el usuario otorga permiso de notificaciones (opcional), la app le mostrará recordatorios de medicación según las pautas que él mismo haya configurado. Las notificaciones se generan <strong>localmente en el dispositivo</strong>; no intervienen servidores externos. El usuario puede revocar este permiso en cualquier momento desde los ajustes del sistema operativo o del navegador.</p>
+
+<h2>7. Permisos solicitados por la aplicación</h2>
+<ul>
+  <li><strong>Notificaciones:</strong> opcional. Solo se utiliza para mostrar recordatorios de medicación en el propio dispositivo.</li>
+  <li><strong>Almacenamiento local:</strong> imprescindible. La aplicación necesita guardar la información que el usuario introduce.</li>
+</ul>
+<p>La app <strong>no solicita</strong> permisos de cámara, micrófono, ubicación, contactos, calendario del sistema, ni ningún otro permiso sensible.</p>
+
+<h2>8. Conservación de los datos</h2>
+<p>Los datos permanecen en el dispositivo mientras el usuario lo decida. El usuario puede:</p>
+<ul>
+  <li>Eliminar entradas individuales desde la propia app.</li>
+  <li>Borrar todos los datos desinstalando la aplicación o limpiando los datos del navegador asociados al dominio.</li>
+  <li>Exportar los datos en cualquier momento (PDF o JSON) mediante las funciones de exportación incluidas.</li>
+</ul>
+<p>Una vez desinstalada la app o borrados los datos del dispositivo, la información no es recuperable, ya que no existen copias en servidor alguno.</p>
+
+<h2>9. Derechos del usuario</h2>
+<p>Conforme al RGPD (Reglamento (UE) 2016/679) y la LOPDGDD (Ley Orgánica 3/2018), el usuario dispone de los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de sus datos.</p>
+<p>Dado que <strong>los datos están en el propio dispositivo del usuario</strong> y no existen copias en servidores externos, estos derechos se ejercen directamente desde la app:</p>
+<ul>
+  <li><strong>Acceso:</strong> la propia app muestra al usuario toda su información en cualquier momento.</li>
+  <li><strong>Rectificación:</strong> el usuario puede modificar cualquier entrada desde la interfaz.</li>
+  <li><strong>Supresión:</strong> función de borrado individual o completo (desinstalación / borrado de datos del navegador).</li>
+  <li><strong>Portabilidad:</strong> función de exportación en PDF o JSON incluida.</li>
+</ul>
+<p>Si el usuario considera que sus derechos no se respetan, puede presentar una reclamación ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos (AEPD)</a>.</p>
+
+<h2>10. Menores de edad</h2>
+<p>La aplicación está dirigida a personas adultas que registran su propia información médica o, en su caso, la de personas a su cargo. No se recopila intencionadamente información de menores de 14 años. Si un padre, madre o tutor tiene constancia de que un menor ha utilizado la app sin su consentimiento, puede borrar los datos eliminándolos directamente del dispositivo.</p>
+
+<h2>11. Seguridad</h2>
+<p>Se aplican las siguientes medidas técnicas:</p>
+<ul>
+  <li>Cifrado <strong>AES-256</strong> de todos los datos sensibles almacenados.</li>
+  <li>Acceso a la aplicación protegido por <strong>PIN</strong> establecido por el usuario.</li>
+  <li>Conexión <strong>HTTPS</strong> para la descarga inicial de la app y de las librerías técnicas.</li>
+  <li>No transmisión de datos a servidores propios o de terceros.</li>
+</ul>
+<p>No obstante, ningún sistema es absolutamente invulnerable. Recomendamos al usuario establecer un PIN robusto, no compartirlo, y mantener su dispositivo y navegador actualizados.</p>
+
+<h2>12. Cambios en esta política</h2>
+<p>Esta política puede actualizarse para reflejar mejoras en la app o cambios legales. La versión vigente siempre estará disponible en <a href="https://medibitacora.es/politica-privacidad.html">https://medibitacora.es/politica-privacidad.html</a>. La fecha de la última actualización aparece al inicio de este documento.</p>
+
+<h2>13. Contacto</h2>
+<p>Para cualquier consulta, ejercicio de derechos o aclaración relacionada con esta política, puede escribir a:</p>
+<div class="contact">
+  <a href="mailto:hola@medibitacora.es">hola@medibitacora.es</a>
+</div>
+
+<footer>
+  © 2026 Gustavo Molina Zafra · MediBitácora Pro
+</footer>
+
+</div>
+</body>
+</html>
