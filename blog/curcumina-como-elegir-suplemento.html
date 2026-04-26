@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curcumina: cómo elegir un suplemento eficaz · Blog · MediBitácora Pro</title>
-<meta name="description" content="Aprende qué buscar en un suplemento de cúrcuma: biodisponibilidad, extractos patentados y advertencias sobre seguridad y legalidad.">
+<title>Curcumina: guía técnica para elegir un suplemento eficaz · Blog · MediBitácora Pro</title>
+<meta name="description" content="Análisis profundo sobre la biodisponibilidad de la curcumina, patentes como Meriva o NovaSOL, y advertencias legales sobre su consumo.">
 <meta name="author" content="Gustavo Molina Zafra">
 <meta name="theme-color" content="#195FA5">
 
 <meta property="og:type" content="article">
-<meta property="og:title" content="Curcumina: cómo elegir un suplemento eficaz y el reto de la biodisponibilidad">
+<meta property="og:title" content="Curcumina: guía técnica para elegir un suplemento eficaz y el reto de la biodisponibilidad">
 <meta property="og:description" content="Criterios técnicos para evaluar la calidad de los suplementos de curcumina: estandarización y tecnologías de absorción.">
 <meta property="og:url" content="https://medibitacora.es/blog/curcumina-como-elegir-suplemento.html">
-<meta property="og:image" content="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=1200">
+<meta property="og:image" content="https://medibitacora.es/blog/imagenes/portada-curcuma.jpg">
 <meta property="og:locale" content="es_ES">
 <meta property="article:author" content="Gustavo Molina Zafra">
 <meta property="article:section" content="Suplementación">
@@ -24,9 +24,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Curcumina: cómo elegir un suplemento eficaz y el reto de la biodisponibilidad",
-  "description": "Aprende qué buscar en un suplemento de cúrcuma: biodisponibilidad, extractos patentados y advertencias legales.",
-  "image": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=1200",
+  "headline": "Curcumina: guía técnica para elegir un suplemento eficaz y el reto de la biodisponibilidad",
+  "description": "Análisis profundo sobre la biodisponibilidad de la curcumina, patentes como Meriva o NovaSOL, y advertencias legales sobre su consumo.",
+  "image": "https://medibitacora.es/blog/imagenes/portada-curcuma.jpg",
   "author": {"@type": "Person", "name": "Gustavo Molina Zafra"},
   "publisher": {
     "@type": "Organization",
@@ -43,6 +43,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* Estilos exactos de tu PLANTILLA-articulo.html */
 :root{
   --blue: #195FA5; --blue-deep: #0F4178; --blue-light: #4A89C7;
   --cream: #FAF7F2; --cream-warm: #F5EFE6; --paper: #FFFFFF;
@@ -58,7 +59,7 @@ body{ font-family: var(--sans); font-weight: 400; color: var(--ink); background:
 a { color: var(--blue); text-decoration: none; transition: color .2s; }
 a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-offset: 3px; }
 
-/* NAV */
+/* Estructura Nav, Header y Body igual a la plantilla proporcionada */
 .nav{ position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px) saturate(150%); background: rgba(250,247,242,0.78); border-bottom: 1px solid var(--line); }
 .nav-inner{ max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
 .brand{ display: flex; align-items: center; gap: 12px; }
@@ -66,52 +67,38 @@ a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-off
 .brand-logo svg{ width: 22px; height: 22px; color: white; }
 .brand-name{ font-family: var(--serif); font-weight: 600; font-size: 19px; color: var(--ink); }
 .brand-name em{ font-style: italic; font-weight: 400; color: var(--blue); }
-.nav-links{ display: flex; gap: 28px; align-items: center; }
-.nav-links a{ font-size: 14px; color: var(--ink-soft); font-weight: 500; }
-.nav-links a.active{ color: var(--blue); }
 
-/* BREADCRUMB */
 .breadcrumb{ max-width: 760px; margin: 40px auto 0; padding: 0 32px; font-size: 13px; color: var(--ink-mute); }
-.breadcrumb span{ margin: 0 8px; }
-
-/* HEADER */
 .article-header{ max-width: 760px; margin: 24px auto 0; padding: 0 32px; }
 .article-cat{ display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); padding: 6px 12px; background: rgba(25,95,165,0.07); border-radius: 100px; margin-bottom: 24px; }
-.article-title{ font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 5vw, 52px); line-height: 1.1; margin-bottom: 24px; color: var(--ink); }
-.article-title em{ font-style: italic; color: var(--blue); }
+.article-title{ font-family: var(--serif); font-size: clamp(34px, 5vw, 52px); line-height: 1.1; margin-bottom: 24px; color: var(--ink); }
 .article-meta{ display: flex; align-items: center; gap: 16px; font-size: 14px; color: var(--ink-mute); padding-bottom: 32px; border-bottom: 1px solid var(--line); }
-.article-meta-author{ font-weight: 600; color: var(--ink-soft); }
 
-/* IMAGES */
 .article-cover{ max-width: 1000px; margin: 40px auto 0; padding: 0 32px; }
 .article-cover-img{ width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 .inline-img{ width: 100%; border-radius: 12px; margin: 32px 0; display: block; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 
-/* ARTICLE BODY */
 .article-body{ max-width: 720px; margin: 60px auto 80px; padding: 0 32px; font-size: 17px; line-height: 1.75; color: var(--ink); }
-.article-body p{ margin-bottom: 24px; }
 .article-body p:first-of-type::first-letter{ font-family: var(--serif); font-size: 60px; float: left; line-height: 0.9; margin: 8px 14px 0 0; color: var(--blue); }
 .article-body h2{ font-family: var(--serif); font-size: 32px; margin-top: 60px; margin-bottom: 20px; position: relative; padding-left: 22px; }
 .article-body h2::before{ content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 4px; background: var(--blue); border-radius: 2px; }
 
-/* CALLOUTS & TABLES */
+.article-table{ width: 100%; border-collapse: collapse; margin: 32px 0; font-size: 15px; background: var(--paper); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.article-table th{ background: var(--ink); color: var(--cream); padding: 14px 18px; text-align: left; font-size: 13px; }
+.article-table td{ padding: 14px 18px; border-top: 1px solid var(--line); vertical-align: top; }
+
 .callout{ margin: 36px 0; padding: 24px 28px; border-radius: 12px; font-size: 15.5px; }
 .callout-warning{ background: rgba(217, 119, 6, 0.06); border-left: 4px solid #D97706; }
-.callout-warning strong{ color: #B45309; display: block; margin-bottom: 8px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.1em; }
-.article-table{ width: 100%; border-collapse: collapse; margin: 32px 0; font-size: 15px; background: var(--paper); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-.article-table th{ background: var(--ink); color: var(--cream); padding: 14px 18px; text-align: left; font-size: 13px; letter-spacing: 0.05em; }
-.article-table td{ padding: 14px 18px; border-top: 1px solid var(--line); }
+.callout-efsa{ background: var(--paper); border: 1px solid var(--line-strong); }
 
-/* FOOTER & AUTHOR BOX */
 .author-box{ max-width: 720px; margin: 50px auto 0; padding: 28px 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; display: flex; align-items: center; gap: 20px; }
-.author-avatar{ width: 56px; height: 56px; border-radius: 50%; background: var(--blue); display: grid; place-items: center; flex-shrink: 0; color: white; font-weight: bold; }
+.author-avatar{ width: 56px; height: 56px; border-radius: 50%; background: var(--blue); display: grid; place-items: center; color: white; font-weight: bold; }
+
 .cta-app{ max-width: 720px; margin: 50px auto 0; background: var(--ink); color: var(--cream); border-radius: 16px; padding: 40px; text-align: center; }
-.cta-app h3{ font-family: var(--serif); font-size: 28px; margin-bottom: 12px; }
-.cta-app h3 em{ font-style: italic; color: var(--blue-light); }
 .cta-app a{ display: inline-flex; padding: 12px 22px; background: var(--cream); color: var(--ink); font-weight: 600; border-radius: 100px; margin-top: 24px; }
+
 .footer{ background: var(--ink); color: rgba(250,247,242,0.6); padding: 60px 32px 40px; margin-top: 80px; }
 .footer-inner{ max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
-@media (max-width: 720px){ .footer-inner{ grid-template-columns: 1fr; } }
 </style>
 </head>
 
@@ -125,66 +112,76 @@ a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-off
       </div>
       <span class="brand-name">MediBitácora<em> Pro</em></span>
     </a>
-    <div class="nav-links">
-      <a href="/#funcionalidades">Funcionalidades</a>
-      <a href="/blog/" class="active">Blog</a>
-      <a href="/politica-privacidad.html">Legal</a>
-    </div>
   </div>
 </nav>
 
 <nav class="breadcrumb">
-  <a href="/">Inicio</a> <span>›</span> <a href="/blog/">Blog</a> <span>›</span> Curcumina y biodisponibilidad
+  <a href="/">Inicio</a> <span>›</span> <a href="/blog/">Blog</a> <span>›</span> Curcumina
 </nav>
 
 <header class="article-header">
-  <span class="article-cat">Suplementación Responsable</span>
-  <h1 class="article-title">Curcumina: Cómo elegir un suplemento eficaz y el reto de la <em>biodisponibilidad</em></h1>
+  <span class="article-cat">Suplementación y Ciencia</span>
+  <h1 class="article-title">Curcumina: Guía técnica para elegir un suplemento eficaz y el reto de la <em>biodisponibilidad</em></h1>
   <div class="article-meta">
     <span class="article-meta-author">Gustavo Molina Zafra</span>
-    <span style="width:3px;height:3px;background:var(--ink-mute);border-radius:50%"></span>
+    <span>•</span>
     <span>26 de abril de 2026</span>
   </div>
 </header>
 
 <div class="article-cover">
-  <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&q=80&w=1200" alt="Raíz de cúrcuma" class="article-cover-img">
+  <img src="/blog/imagenes/portada-curcuma.jpg" alt="Raíz de cúrcuma" class="article-cover-img">
 </div>
 
 <article class="article-body">
-  <p>La curcumina es el principio activo de la cúrcuma, pero representa solo el 3-5% del peso de la raíz. Además, es hidrofóbica y el hígado la elimina casi instantáneamente. Esto significa que si compras una cápsula de "cúrcuma en polvo" normal, estarás pagando por un condimento de cocina caro con casi nulo efecto terapéutico.</p>
 
-  <h2>El problema: Una molécula "tímida"</h2>
-  <p>Para que la curcumina sea efectiva, debe superar la barrera del sistema digestivo. Sin ayuda tecnológica, la absorción intestinal es mínima.</p>
+<p>La curcumina es el principio activo de la cúrcuma, pero representa solo el 3-5% del peso de la raíz. Además, es hidrofóbica y el hígado la elimina casi instantáneamente. Esto significa que si compras una cápsula de "cúrcuma en polvo" normal, estarás pagando por un condimento de cocina caro con casi nulo efecto terapéutico.</p>
 
-  <img src="https://images.unsplash.com/photo-1585559604880-20980c657989?auto=format&fit=crop&q=80&w=800" alt="Cápsulas de suplemento" class="inline-img">
+<h2>La diferencia entre Cúrcuma y Curcumina</h2>
+<p>Es el primer error a la hora de comprar un producto: confundir la planta con su principio activo. La planta entera contiene apenas entre un 2% y un 5% de compuestos activos, mientras que un extracto estandarizado de calidad aísla estos curcuminoides hasta alcanzar concentraciones del 95%.</p>
 
-  <table class="article-table">
-    <thead>
-      <tr>
-        <th>Tecnología</th>
-        <th>Mecanismo</th>
-        <th>Eficacia</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Con Piperina</strong></td>
-        <td>Inhibe la eliminación hepática.</td>
-        <td>Económica / Alta</td>
-      </tr>
-      <tr>
-        <td><strong>Fitosomas (Meriva)</strong></td>
-        <td>Encapsulación en lípidos.</td>
-        <td>Muy Alta</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="callout callout-efsa">
+  <strong>Aspectos legales (Marco EFSA)</strong>
+  <p>Según la EFSA, los complementos alimenticios no pueden atribuirse propiedades de curación o tratamiento de enfermedades. Las declaraciones sobre la cúrcuma y la inflamación articular se encuentran actualmente "on hold".</p>
+</div>
 
-  <div class="callout callout-warning">
-      <strong>⚠️ Advertencia de seguridad</strong>
-      <p>La curcumina tiene efectos antiagregantes. Si tomas anticoagulantes (como Sintrom) o tienes programada una cirugía, consulta obligatoriamente a tu médico.</p>
-  </div>
+<h2>El gran obstáculo: La biodisponibilidad</h2>
+<p>Para que la curcumina sea efectiva, debe superar la barrera del sistema digestivo. Sin ayuda tecnológica, la absorción intestinal es mínima.</p>
+
+<img src="/blog/imagenes/capsulas-curcumina.jpg" alt="Cápsulas de suplemento" class="inline-img">
+
+<table class="article-table">
+  <thead>
+    <tr>
+      <th>Tecnología / Patente</th>
+      <th>Cómo funciona</th>
+      <th>Eficacia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Con Piperina</strong></td>
+      <td>Inhibe la eliminación hepática.</td>
+      <td>Económica / Alta</td>
+    </tr>
+    <tr>
+      <td><strong>Fitosomas (Meriva®)</strong></td>
+      <td>Encapsulación en lípidos.</td>
+      <td>Muy Alta</td>
+    </tr>
+    <tr>
+      <td><strong>Micelas líquidas (NovaSOL®)</strong></td>
+      <td>Hace la curcumina soluble en agua.</td>
+      <td>Máxima absorción</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout callout-warning">
+  <strong>⚠️ Advertencia de seguridad</strong>
+  <p>La curcumina tiene efectos antiagregantes. Si tomas anticoagulantes (como Sintrom) o tienes programada una cirugía, consulta obligatoriamente a tu médico.</p>
+</div>
+
 </article>
 
 <div class="author-box">
@@ -207,17 +204,7 @@ a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-off
   <div class="footer-inner">
     <div>
       <div style="font-family:var(--serif);font-size:22px;color:var(--cream);margin-bottom:14px;">MediBitácora<em> Pro</em></div>
-      <p style="font-size:14px;max-width:360px;">Tu bitácora médica personal. Privada, segura y siempre en tu dispositivo.</p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <h4 style="font-size:12px;color:white;text-transform:uppercase;letter-spacing:0.1em;">Producto</h4>
-      <a href="/#funcionalidades" style="font-size:14px;color:rgba(255,255,255,0.6)">Funcionalidades</a>
-      <a href="/blog/" style="font-size:14px;color:rgba(255,255,255,0.6)">Blog</a>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <h4 style="font-size:12px;color:white;text-transform:uppercase;letter-spacing:0.1em;">Soporte</h4>
-      <a href="/politica-privacidad.html" style="font-size:14px;color:rgba(255,255,255,0.6)">Privacidad</a>
-      <a href="mailto:hola@medibitacora.es" style="font-size:14px;color:rgba(255,255,255,0.6)">Contacto</a>
+      <p style="font-size:14px;">Tu bitácora médica personal. Privada, segura y siempre en tu dispositivo.</p>
     </div>
   </div>
   <div style="max-width:1200px;margin:40px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);font-size:13px;display:flex;justify-content:space-between;">
