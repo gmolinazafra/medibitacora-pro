@@ -1,1 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog · MediBitácora Pro · Salud, suplementación y alimentación consciente</title>
+<meta name="description" content="Artículos sobre alimentación saludable, criterios para elegir suplementos y cuidado consciente de la salud. Información, no consejo médico.">
+<meta name="author" content="Gustavo Molina Zafra">
+<meta name="theme-color" content="#195FA5">
 
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blog de MediBitácora Pro">
+<meta property="og:description" content="Salud, suplementación y alimentación consciente.">
+<meta property="og:url" content="https://medibitacora.es/blog/">
+<meta property="og:image" content="https://medibitacora.es/icons/icon-512.png">
+<meta property="og:locale" content="es_ES">
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<link rel="canonical" href="https://medibitacora.es/blog/">
+
+<!-- Tipografías -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue: #195FA5;
+  --blue-deep: #0F4178;
+  --blue-light: #4A89C7;
+  --cream: #FAF7F2;
+  --cream-warm: #F5EFE6;
+  --paper: #FFFFFF;
+  --ink: #0F1B2D;
+  --ink-soft: #475569;
+  --ink-mute: #94A3B8;
+  --line: rgba(15,27,45,0.08);
+  --line-strong: rgba(15,27,45,0.16);
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body{
+  font-family: var(--sans); font-weight: 400;
+  color: var(--ink); background: var(--cream);
+  line-height: 1.55;
+}
+a { color: inherit; text-decoration: none; }
+
+/* NAV (idéntica a la landing) */
+.nav{
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  background: rgba(250,247,242,0.78);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner{
+  max-width: 1200px; margin: 0 auto; padding: 18px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.brand{ display: flex; align-items: center; gap: 12px; }
+.brand-logo{
+  width: 36px; height: 36px; border-radius: 9px;
+  background: var(--blue); display: grid; place-items: center;
+  box-shadow: 0 2px 6px rgba(25,95,165,0.25);
+}
+.brand-logo svg{ width: 22px; height: 22px; color: white; }
+.brand-name{
+  font-family: var(--serif); font-weight: 600; font-size: 19px;
+  letter-spacing: -0.01em; color: var(--ink);
+}
+.brand-name em{ font-style: italic; font-weight: 400; color: var(--blue); }
+.nav-links{ display: flex; gap: 28px; align-items: center; }
+.nav-links a{ font-size: 14px; color: var(--ink-soft); font-weight: 500; transition: color .2s; }
+.nav-links a:hover, .nav-links a.active{ color: var(--blue); }
+@media (max-width: 720px){ .nav-links a:not(.nav-cta){ display: none; } }
+
+/* HERO BLOG */
+.blog-hero{
+  padding: 80px 32px 60px;
+  border-bottom: 1px solid var(--line);
+  position: relative; overflow: hidden;
+}
+.blog-hero::before{
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(25,95,165,0.08), transparent 60%);
+  pointer-events: none;
+}
+.blog-hero-inner{
+  max-width: 880px; margin: 0 auto; position: relative;
+  text-align: center;
+}
+.eyebrow{
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--blue);
+  padding: 8px 14px; border-radius: 100px;
+  background: rgba(25,95,165,0.07);
+  border: 1px solid rgba(25,95,165,0.12);
+  margin-bottom: 28px;
+}
+.blog-hero h1{
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.05; letter-spacing: -0.025em;
+  margin-bottom: 20px;
+}
+.blog-hero h1 em{ font-style: italic; font-weight: 500; color: var(--blue); }
+.blog-hero p{
+  font-size: 18px; line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 600px; margin: 0 auto;
+}
+
+/* CATEGORÍAS / FILTROS */
+.categories{
+  padding: 32px 32px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.categories-inner{
+  max-width: 1200px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center;
+}
+.cat-pill{
+  display: inline-flex; align-items: center;
+  padding: 8px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .2s ease;
+  background: var(--paper);
+}
+.cat-pill:hover{
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.cat-pill.active{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+
+/* GRID DE ARTÍCULOS */
+.posts{ padding: 70px 32px 100px; }
+.posts-inner{ max-width: 1200px; margin: 0 auto; }
+.posts-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+.post-card{
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all .3s cubic-bezier(.2,.8,.2,1);
+  display: flex; flex-direction: column;
+  text-decoration: none; color: inherit;
+}
+.post-card:hover{
+  transform: translateY(-4px);
+  border-color: var(--blue-light);
+  box-shadow: 0 12px 32px rgba(25,95,165,0.10);
+}
+.post-cover{
+  aspect-ratio: 16/10;
+  background: var(--cream-warm);
+  display: grid; place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.post-cover svg{ width: 80px; height: 80px; opacity: 0.5; }
+.post-cover.cover-blue{ background: linear-gradient(135deg, #E6F1FB 0%, #B8D4EC 100%); }
+.post-cover.cover-green{ background: linear-gradient(135deg, #E8F4EE 0%, #B8DCC4 100%); }
+.post-cover.cover-warm{ background: linear-gradient(135deg, #FFF4E6 0%, #F5DDB8 100%); }
+.post-cover.cover-rose{ background: linear-gradient(135deg, #FDEDED 0%, #E8B8B8 100%); }
+
+.post-content{
+  padding: 24px 26px 28px;
+  flex: 1; display: flex; flex-direction: column;
+}
+.post-meta{
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12px; color: var(--ink-mute);
+  margin-bottom: 14px;
+}
+.post-meta-cat{
+  font-weight: 600; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.post-meta-dot{ width: 3px; height: 3px; background: var(--ink-mute); border-radius: 50%; }
+.post-title{
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 500;
+  line-height: 1.25; letter-spacing: -0.015em;
+  margin-bottom: 12px; color: var(--ink);
+}
+.post-excerpt{
+  font-size: 14.5px; line-height: 1.6;
+  color: var(--ink-soft); flex: 1;
+}
+.post-readmore{
+  margin-top: 18px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600;
+  color: var(--blue);
+}
+.post-readmore svg{ width: 14px; height: 14px; transition: transform .2s; }
+.post-card:hover .post-readmore svg{ transform: translateX(3px); }
+
+/* DISCLAIMER GLOBAL */
+.disclaimer-block{
+  max-width: 900px; margin: 0 auto;
+  padding: 24px 28px;
+  background: var(--cream-warm);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  margin-top: 60px;
+}
+.disclaimer-block p{
+  font-size: 14px; line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.disclaimer-block strong{ color: var(--ink); }
+
+/* FOOTER */
+.footer{
+  background: var(--ink);
+  color: rgba(250,247,242,0.6);
+  padding: 60px 32px 40px;
+}
+.footer-inner{
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px;
+}
+@media (max-width: 720px){ .footer-inner{ grid-template-columns: 1fr; gap: 32px; } }
+.footer-brand{
+  font-family: var(--serif); font-size: 22px; font-weight: 500;
+  color: var(--cream); margin-bottom: 14px;
+}
+.footer-brand em{ font-style: italic; color: var(--blue-light); }
+.footer-tag{ font-size: 14px; line-height: 1.6; max-width: 360px; }
+.footer-col h4{
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cream); font-weight: 600; margin-bottom: 16px;
+}
+.footer-col a{
+  display: block; padding: 6px 0;
+  font-size: 14px; color: rgba(250,247,242,0.6);
+  transition: color .2s;
+}
+.footer-col a:hover{ color: var(--cream); }
+.footer-bottom{
+  max-width: 1200px; margin: 40px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; justify-content: space-between;
+  font-size: 13px; flex-wrap: wrap; gap: 12px;
+}
+
+/* Estado vacío para cuando no hay posts */
+.empty-state{
+  text-align: center; padding: 80px 20px;
+  color: var(--ink-mute);
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+      <span class="brand-name">MediBitácora<em> Pro</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="/#funcionalidades">Funcionalidades</a>
+      <a href="/#privacidad">Privacidad</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/politica-privacidad.html">Legal</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="blog-hero">
+  <div class="blog-hero-inner">
+    <span class="eyebrow">Blog · Información, no consejo médico</span>
+    <h1>Salud cotidiana,<br><em>cuidada con criterio.</em></h1>
+    <p>Artículos sobre alimentación consciente, criterios de calidad para elegir suplementos y cómo cuidar tu salud con información rigurosa, sin falsas promesas.</p>
+  </div>
+</header>
+
+<!-- CATEGORÍAS -->
+<section class="categories">
+  <div class="categories-inner">
+    <button class="cat-pill active" data-cat="todas">Todas</button>
+    <button class="cat-pill" data-cat="suplementacion">Suplementación</button>
+    <button class="cat-pill" data-cat="alimentacion">Alimentación</button>
+    <button class="cat-pill" data-cat="criterios">Criterios de compra</button>
+    <button class="cat-pill" data-cat="general">Salud general</button>
+  </div>
+</section>
+
+<!-- POSTS -->
+<main class="posts">
+  <div class="posts-inner">
+    <div class="posts-grid" id="postsGrid">
+
+      <!-- ARTÍCULO 1: OMEGA 3 IFOS -->
+      <a href="/blog/omega-3-como-elegir-certificacion-ifos.html" class="post-card" data-cat="suplementacion criterios">
+        <div class="post-cover cover-blue">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#195FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M50 20 C 30 30, 30 50, 50 60 C 70 50, 70 30, 50 20Z"/>
+            <path d="M50 60 L 50 80"/>
+            <path d="M40 70 L 60 70"/>
+            <circle cx="42" cy="35" r="2" fill="#195FA5"/>
+            <circle cx="58" cy="35" r="2" fill="#195FA5"/>
+          </svg>
+        </div>
+        <div class="post-content">
+          <div class="post-meta">
+            <span class="post-meta-cat">Suplementación</span>
+            <span class="post-meta-dot"></span>
+            <span>8 min de lectura</span>
+          </div>
+          <h2 class="post-title">Omega-3: cómo elegir un suplemento de calidad y por qué importa la certificación IFOS</h2>
+          <p class="post-excerpt">No todos los suplementos de Omega-3 son iguales. Aprende qué certificaciones internacionales (IFOS, GOED, Friend of the Sea) garantizan pureza y frescura del aceite de pescado.</p>
+          <span class="post-readmore">
+            Leer artículo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- POSTS FUTUROS - placeholders comentados para cuando se publiquen -->
+      <!--
+      <a href="/blog/vitamina-d-cuando-suplementarse.html" class="post-card" data-cat="suplementacion">
+        ... estructura igual ...
+      </a>
+      -->
+
+    </div>
+
+    <!-- DISCLAIMER GLOBAL -->
+    <div class="disclaimer-block">
+      <p><strong>Aviso importante:</strong> El contenido de este blog tiene fines exclusivamente informativos y educativos. No constituye consejo médico, diagnóstico ni tratamiento. La información publicada no sustituye la consulta con tu médico, farmacéutico o profesional sanitario, quienes son los únicos cualificados para evaluar tu situación particular y recomendar suplementación, dietas o cambios en tu tratamiento. Consulta siempre con un profesional antes de iniciar cualquier suplementación.</p>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">MediBitácora<em> Pro</em></div>
+      <p class="footer-tag">Tu bitácora médica personal. Privada, segura y siempre en tu dispositivo. Desarrollada con cuidado en Málaga.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <a href="/#funcionalidades">Funcionalidades</a>
+      <a href="/#privacidad">Privacidad</a>
+      <a href="/blog/">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal &amp; soporte</h4>
+      <a href="/politica-privacidad.html">Política de privacidad</a>
+      <a href="mailto:hola@medibitacora.es">hola@medibitacora.es</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Gustavo Molina Zafra. Todos los derechos reservados.</span>
+    <span>Hecho con cuidado en Málaga, España</span>
+  </div>
+</footer>
+
+<script>
+  // Filtro por categorías
+  const pills = document.querySelectorAll('.cat-pill');
+  const cards = document.querySelectorAll('.post-card');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const cat = pill.dataset.cat;
+      cards.forEach(card => {
+        if (cat === 'todas' || card.dataset.cat.includes(cat)){
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
