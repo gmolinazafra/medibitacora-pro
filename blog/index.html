@@ -188,6 +188,12 @@ a { color: inherit; text-decoration: none; }
 .post-cover.cover-green{ background: linear-gradient(135deg, #E8F4EE 0%, #B8DCC4 100%); }
 .post-cover.cover-warm{ background: linear-gradient(135deg, #FFF4E6 0%, #F5DDB8 100%); }
 .post-cover.cover-rose{ background: linear-gradient(135deg, #FDEDED 0%, #E8B8B8 100%); }
+.post-cover.post-cover-image{ background: var(--cream-warm); padding: 0; }
+.post-cover.post-cover-image img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 .post-content{
   padding: 24px 26px 28px;
@@ -328,14 +334,8 @@ a { color: inherit; text-decoration: none; }
 
       <!-- ARTÍCULO 1: OMEGA 3 IFOS -->
       <a href="/blog/omega-3-como-elegir-certificacion-ifos.html" class="post-card" data-cat="suplementacion criterios">
-        <div class="post-cover cover-blue">
-          <svg viewBox="0 0 100 100" fill="none" stroke="#195FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M50 20 C 30 30, 30 50, 50 60 C 70 50, 70 30, 50 20Z"/>
-            <path d="M50 60 L 50 80"/>
-            <path d="M40 70 L 60 70"/>
-            <circle cx="42" cy="35" r="2" fill="#195FA5"/>
-            <circle cx="58" cy="35" r="2" fill="#195FA5"/>
-          </svg>
+        <div class="post-cover post-cover-image">
+          <img src="/blog/img/omega-cover.jpg" alt="Cápsulas amarillas de aceite de pescado" loading="lazy">
         </div>
         <div class="post-content">
           <div class="post-meta">
