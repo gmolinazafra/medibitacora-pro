@@ -203,12 +203,12 @@ a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-off
   color: var(--ink);
 }
 .article-body p{ margin-bottom: 24px; }
-.article-body p:first-of-type{
+.article-body > p:first-of-type{
   font-size: 19px; line-height: 1.65;
   color: var(--ink-soft);
   margin-bottom: 32px;
 }
-.article-body p:first-of-type::first-letter{
+.article-body > p:first-of-type::first-letter{
   font-family: var(--serif);
   font-size: 60px; font-weight: 500;
   float: left; line-height: 0.9;
@@ -296,7 +296,35 @@ a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-off
   padding: 24px 28px;
 }
 .callout-efsa strong{ color: var(--ink); }
-.callout-efsa em{ display: block; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-mute); font-style: normal; }
+.callout-efsa > em{ display: block; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-mute); font-style: normal; }
+
+.callout-efsa ul.efsa-list{
+  list-style: none;
+  margin: 12px 0 0 0;
+  padding: 0;
+}
+.callout-efsa ul.efsa-list li{
+  position: relative;
+  padding: 4px 0 4px 18px !important;
+  margin: 0 !important;
+  font-size: 15px;
+  line-height: 1.55;
+  display: block;
+}
+.callout-efsa ul.efsa-list li::before{
+  content: "" !important;
+  position: absolute !important;
+  left: 4px !important;
+  top: 13px !important;
+  width: 5px !important;
+  height: 5px !important;
+  background: var(--blue) !important;
+  border-radius: 50% !important;
+}
+.callout-efsa ul.efsa-list li em{
+  font-style: italic;
+  color: var(--ink-soft);
+}
 
 /* QUOTE */
 blockquote{
@@ -662,16 +690,18 @@ blockquote{
 <div class="callout callout-efsa">
   <strong>Declaraciones autorizadas por EFSA</strong>
   <p>Según el Reglamento (UE) 432/2012, el magnesio:</p>
-  <p>• <em>"Contribuye a disminuir el cansancio y la fatiga"</em><br>
-  • <em>"Contribuye al equilibrio electrolítico"</em><br>
-  • <em>"Contribuye al metabolismo energético normal"</em><br>
-  • <em>"Contribuye al funcionamiento normal del sistema nervioso"</em><br>
-  • <em>"Contribuye a la función muscular normal"</em><br>
-  • <em>"Contribuye a la síntesis proteica normal"</em><br>
-  • <em>"Contribuye a la función psicológica normal"</em><br>
-  • <em>"Contribuye al mantenimiento de los huesos en condiciones normales"</em><br>
-  • <em>"Contribuye al mantenimiento de los dientes en condiciones normales"</em><br>
-  • <em>"Interviene en el proceso de división celular"</em></p>
+  <ul class="efsa-list">
+    <li><em>"Contribuye a disminuir el cansancio y la fatiga"</em></li>
+    <li><em>"Contribuye al equilibrio electrolítico"</em></li>
+    <li><em>"Contribuye al metabolismo energético normal"</em></li>
+    <li><em>"Contribuye al funcionamiento normal del sistema nervioso"</em></li>
+    <li><em>"Contribuye a la función muscular normal"</em></li>
+    <li><em>"Contribuye a la síntesis proteica normal"</em></li>
+    <li><em>"Contribuye a la función psicológica normal"</em></li>
+    <li><em>"Contribuye al mantenimiento de los huesos en condiciones normales"</em></li>
+    <li><em>"Contribuye al mantenimiento de los dientes en condiciones normales"</em></li>
+    <li><em>"Interviene en el proceso de división celular"</em></li>
+  </ul>
   <em>Fuente: Reglamento (UE) 432/2012 de la Comisión Europea.</em>
 </div>
 
