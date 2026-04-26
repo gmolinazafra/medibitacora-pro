@@ -13,7 +13,7 @@
 <meta property="og:title" content="Omega-3: cómo elegir un suplemento de calidad y por qué importa IFOS">
 <meta property="og:description" content="Criterios técnicos para evaluar la calidad de los suplementos de Omega-3: certificaciones, dosis, biodisponibilidad y conservación.">
 <meta property="og:url" content="https://medibitacora.es/blog/omega-3-como-elegir-certificacion-ifos.html">
-<meta property="og:image" content="https://medibitacora.es/icons/icon-512.png">
+<meta property="og:image" content="https://medibitacora.es/blog/img/omega-cover.jpg">
 <meta property="og:locale" content="es_ES">
 <meta property="article:author" content="Gustavo Molina Zafra">
 <meta property="article:section" content="Suplementación">
@@ -31,7 +31,7 @@
   "@type": "Article",
   "headline": "Omega-3: cómo elegir un suplemento de calidad y por qué importa la certificación IFOS",
   "description": "Criterios técnicos para evaluar la calidad de los suplementos de Omega-3: certificaciones, dosis, biodisponibilidad y conservación.",
-  "image": "https://medibitacora.es/icons/icon-512.png",
+  "image": "https://medibitacora.es/blog/img/omega-cover.jpg",
   "author": {"@type": "Person", "name": "Gustavo Molina Zafra"},
   "publisher": {
     "@type": "Organization",
@@ -152,24 +152,47 @@ a:hover{ color: var(--blue-deep); text-decoration: underline; text-underline-off
 }
 .article-cover-inner{
   aspect-ratio: 16/8;
-  background: linear-gradient(135deg, #E6F1FB 0%, #B8D4EC 50%, #4A89C7 100%);
   border-radius: 16px;
-  display: grid; place-items: center;
-  position: relative;
   overflow: hidden;
+  position: relative;
+  background: var(--cream-warm);
 }
-.article-cover-inner::before{
-  content: ""; position: absolute; inset: 0;
-  background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 40%);
+.article-cover-inner img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.article-cover-icon{
-  width: 140px; height: 140px;
-  background: white; border-radius: 50%;
-  display: grid; place-items: center;
-  box-shadow: 0 12px 40px rgba(25,95,165,0.25);
-  position: relative; z-index: 1;
+.article-cover-caption{
+  display: block;
+  font-size: 13px; color: var(--ink-mute);
+  margin-top: 14px;
+  font-style: italic;
+  text-align: center;
 }
-.article-cover-icon svg{ width: 80px; height: 80px; color: var(--blue); }
+.article-cover-caption a{ color: var(--ink-mute); text-decoration: underline; text-underline-offset: 2px; }
+.article-cover-caption a:hover{ color: var(--blue); }
+
+/* IMÁGENES EN EL CUERPO DEL ARTÍCULO */
+.article-figure{
+  margin: 40px 0;
+}
+.article-figure img{
+  width: 100%; height: auto;
+  border-radius: 12px;
+  display: block;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+.article-figure figcaption{
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-mute);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.5;
+}
+.article-figure figcaption a{ color: var(--ink-mute); text-decoration: underline; text-underline-offset: 2px; }
+.article-figure figcaption a:hover{ color: var(--blue); }
 
 /* ARTICLE BODY */
 .article-body{
@@ -499,16 +522,9 @@ blockquote{
 <!-- COVER -->
 <div class="article-cover">
   <div class="article-cover-inner">
-    <div class="article-cover-icon">
-      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M50 20 C 30 30, 30 50, 50 60 C 70 50, 70 30, 50 20Z"/>
-        <path d="M50 60 L 50 78"/>
-        <circle cx="42" cy="35" r="2.5" fill="currentColor"/>
-        <circle cx="58" cy="35" r="2.5" fill="currentColor"/>
-        <path d="M40 70 L 60 70"/>
-      </svg>
-    </div>
+    <img src="/blog/img/omega-cover.jpg" alt="Cápsulas de gel amarillas de aceite de pescado sobre fondo neutro" loading="eager">
   </div>
+  <span class="article-cover-caption">Foto: <a href="https://unsplash.com/photos/yellow-medication-pill-on-white-surface-FlvG-vHLp9I" target="_blank" rel="noopener">Michele Blackwell</a> en Unsplash</span>
 </div>
 
 <!-- ARTICLE BODY -->
@@ -537,6 +553,11 @@ blockquote{
 <h2>Por qué la calidad varía tanto entre suplementos</h2>
 
 <p>El aceite de pescado es un producto biológico delicado. Tres factores afectan a su calidad final:</p>
+
+<figure class="article-figure">
+  <img src="/blog/img/omega-aceite.jpg" alt="Aceite dorado fluyendo dentro de un recipiente de cristal" loading="lazy">
+  <figcaption>El aceite que llena las cápsulas es un producto delicado: la luz, el calor y el oxígeno aceleran su deterioro. Foto: <a href="https://www.pexels.com/photo/clear-glass-jar-with-yellow-liquid-1640773/" target="_blank" rel="noopener">Pexels</a></figcaption>
+</figure>
 
 <h3>1. Oxidación (rancidez)</h3>
 
@@ -614,6 +635,11 @@ blockquote{
 <p>Las dos primeras certifican calidad del aceite. Las dos últimas son sellos de sostenibilidad pesquera, no de pureza del producto, pero pueden coexistir con certificaciones de calidad.</p>
 
 <h2>Qué mirar en la etiqueta antes de comprar</h2>
+
+<figure class="article-figure">
+  <img src="/blog/img/omega-etiqueta.jpg" alt="Persona examinando con detenimiento la etiqueta de un producto antes de comprarlo" loading="lazy">
+  <figcaption>Antes de comprar cualquier suplemento conviene leer la etiqueta con calma: aporta más información de la que parece a primera vista. Foto: <a href="https://www.pexels.com/photo/woman-checking-skin-care-product-3737576/" target="_blank" rel="noopener">Pexels</a></figcaption>
+</figure>
 
 <p>Más allá de los sellos en la caja, hay información concreta que toda etiqueta de Omega-3 debería declarar de forma clara:</p>
 
