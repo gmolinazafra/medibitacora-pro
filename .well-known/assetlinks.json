@@ -1,8 +1,11 @@
 [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "es.medibitacora.app",
-        "sha256_cert_fingerprints": ["DC:7A:5D:AC:34:0A:14:0C:AF:E8:FE:B7:16:30:AA:04:85:29:0C:1B:D3:BA:C6:A5:AC:68:64:08:E5:C6:E0:8A"]
-      }
-    }]
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "es.medibitacora.app",
+    "sha256_cert_fingerprints": [
+      "DC:7A:5D:AC:34:0A:14:0C:AF:E8:FE:B7:16:30:AA:04:85:29:0C:1B:D3:BA:C6:A5:AC:68:64:08:E5:C6:E0:8A",
+      "F1:98:B1:25:90:1C:DB:43:35:B4:DD:18:4B:A6:FF:95:B5:B8:83:E0:58:45:45:40:67:AE:2E:B4:86:CE:C2:06"
+    ]
+  }
+}]
