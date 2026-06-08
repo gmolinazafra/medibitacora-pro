@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -626,6 +626,9 @@ blockquote{
 }
 
 </style>
+<style>
+.cookie-banner{position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:9999;display:none;align-items:center;justify-content:space-between;gap:1rem;max-width:960px;margin:auto;padding:1rem 1.1rem;border-radius:12px;background:#111827;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.22);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.cookie-banner.is-visible{display:flex}.cookie-banner p{margin:0}.cookie-banner a{color:#bfdbfe;text-decoration:underline}.cookie-banner button{border:0;border-radius:999px;background:#fff;color:#111827;font-weight:700;padding:.65rem 1rem;cursor:pointer;white-space:nowrap}@media(max-width:640px){.cookie-banner{flex-direction:column;align-items:flex-start}.cookie-banner button{width:100%}}
+</style>
 </head>
 
 <body>
@@ -1013,7 +1016,7 @@ blockquote{
   </div>
   <div class="footer-bottom">
     <span>© 2026 Gustavo Molina Zafra. Todos los derechos reservados.</span>
-    <span>Hecho con cuidado en Málaga, España</span>
+    <span>Desarrollado por Limonada Web · Hecho con cuidado en Málaga, España</span>
   </div>
 </footer>
 
@@ -1056,6 +1059,24 @@ document.querySelectorAll('.share-copy').forEach(btn => {
     }
   });
 });
+</script>
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Aviso de cookies">
+  <p>Utilizamos cookies técnicas y almacenamiento local para recordar tus preferencias y mejorar la navegación. </p>
+  <button type="button" id="cookie-accept">Aceptar</button>
+</div>
+<script>
+(function(){
+  var key = 'limonada_cookie_ok_medibitacora_pro';
+  var banner = document.getElementById('cookie-banner');
+  var button = document.getElementById('cookie-accept');
+  if (!banner || !button) return;
+  try { if (localStorage.getItem(key) === '1') return; } catch (e) {}
+  banner.classList.add('is-visible');
+  button.addEventListener('click', function(){
+    try { localStorage.setItem(key, '1'); } catch (e) {}
+    banner.classList.remove('is-visible');
+  });
+})();
 </script>
 </body>
 </html>

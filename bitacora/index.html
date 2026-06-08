@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
@@ -146,6 +146,9 @@ textarea{min-height:60px;resize:vertical;}
 .typing-dots span:nth-child(3){animation-delay:0.4s;}
 @keyframes blink{0%,80%,100%{opacity:0.2;}40%{opacity:1;}}
 </style>
+<style>
+.cookie-banner{position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:9999;display:none;align-items:center;justify-content:space-between;gap:1rem;max-width:960px;margin:auto;padding:1rem 1.1rem;border-radius:12px;background:#111827;color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.22);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.cookie-banner.is-visible{display:flex}.cookie-banner p{margin:0}.cookie-banner a{color:#bfdbfe;text-decoration:underline}.cookie-banner button{border:0;border-radius:999px;background:#fff;color:#111827;font-weight:700;padding:.65rem 1rem;cursor:pointer;white-space:nowrap}@media(max-width:640px){.cookie-banner{flex-direction:column;align-items:flex-start}.cookie-banner button{width:100%}}
+</style>
 </head>
 <body>
 
@@ -168,14 +171,14 @@ textarea{min-height:60px;resize:vertical;}
     <circle cx="118" cy="168" r="5" fill="#B5D4F4"/>
   </svg>
   <div class="splash-app">MediBitácora Pro</div>
-  <div class="splash-owner">Desarrollado por Gustavo Molina Zafra</div>
+  <div class="splash-owner">Desarrollado por Limonada Web</div>
   <div class="splash-box">
     <div class="splash-box-title">Descargo de responsabilidad</div>
     <div class="splash-text">Esta aplicación es una herramienta de <strong>apoyo personal</strong> para el registro de datos médicos propios. No constituye asesoramiento médico, diagnóstico ni prescripción de ningún tipo.<br><br><strong>Consulta siempre a tu médico</strong> ante cualquier duda sobre tu salud o tratamiento.</div>
   </div>
   <div class="splash-box">
     <div class="splash-box-title">Privacidad y propiedad</div>
-    <div class="splash-text">Los datos se guardan <strong>únicamente en tu dispositivo</strong>. Nadie más puede acceder a ellos. Acceso protegido mediante PIN personal.<br><br><a href="/bitacora/politica-privacidad.html" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline;">Leer política de privacidad completa</a><br><br>Desarrollado por Gustavo Molina Zafra · © 2026 · Todos los derechos reservados.</div>
+    <div class="splash-text">Los datos se guardan <strong>únicamente en tu dispositivo</strong>. Nadie más puede acceder a ellos. Acceso protegido mediante PIN personal.<br><br><a href="/bitacora/politica-privacidad.html" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline;">Leer política de privacidad completa</a><br><br>Desarrollado por Limonada Web · © 2026 · Todos los derechos reservados.</div>
   </div>
   <div class="splash-copy">MediBitácora Pro · Uso personal y privado exclusivamente</div>
   <button class="splash-btn" onclick="aceptarDescargo()">He leído y acepto · Continuar</button>
@@ -627,7 +630,7 @@ textarea{min-height:60px;resize:vertical;}
         <rect x="44" y="82" width="112" height="36" rx="8" fill="white"/>
       </svg><br>
       <strong style="color:var(--text);">MediBitácora Pro v2.0</strong><br>
-      Desarrollado por Gustavo Molina Zafra<br>
+      Desarrollado por Limonada Web<br>
       © 2025 · Todos los derechos reservados<br>
       Uso personal y privado exclusivamente<br>
       <span style="font-size:11px;">Esta app no constituye asesoramiento médico.</span>
@@ -1557,7 +1560,7 @@ function emailMedicamentos(){
   act.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr='Días: '+(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre}\n  Dosis: ${m.dosis||'—'}\n  Frecuencia: ${fr||'—'}\n  Inicio: ${m.fecha_inicio||'—'}\n\n`;});
   b+=`HISTORIAL (${fin.length})\n${'─'.repeat(30)}\n`;
   fin.forEach(m=>{b+=`• ${m.nombre} — ${m.dosis||'—'} — ${m.fecha_inicio||'—'} → ${m.fecha_fin||'—'}\n\n`;});
-  b+=`${'─'.repeat(50)}\nMediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025 · CONFIDENCIAL`;
+  b+=`${'─'.repeat(50)}\nMediBitácora Pro · Desarrollado por Limonada Web · © 2025 · CONFIDENCIAL`;
   openEmail(to,'MediBitácora Pro — Historial de Medicamentos',b);showToast('✓ Abriendo correo...');
 }
 function emailResumen(){
@@ -1569,7 +1572,7 @@ function emailResumen(){
   meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'}\n  ${fr}\n  Desde: ${m.fecha_inicio||'—'}\n\n`;});
   b+=`ÚLTIMAS 5 ENTRADAS\n${'─'.repeat(30)}\n`;
   logs.forEach(l=>{b+=`${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'})} | ${l.estado} | Dolor: ${l.dolor}/10\nSíntomas: ${l.sintomas||'—'}\n${l.mejoria?'Mejoría: '+l.mejoria+'\n':''}\n`;});
-  b+=`${'─'.repeat(50)}\nAVISO: No constituye diagnóstico médico.\nMediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025 · CONFIDENCIAL`;
+  b+=`${'─'.repeat(50)}\nAVISO: No constituye diagnóstico médico.\nMediBitácora Pro · Desarrollado por Limonada Web · © 2025 · CONFIDENCIAL`;
   openEmail(to,'MediBitácora Pro — Resumen para Consulta',b);showToast('✓ Abriendo correo...');
 }
 
@@ -1579,7 +1582,7 @@ function whatsappMedicamentos(){
   const pac=getPaciente();const nombrePac=pac.nombre||'Sin datos registrados';
   let b=`💊 *MediBitácora Pro — Medicamentos*\n_${nombrePac} · ${fecha}_\n\n*MEDICACIÓN ACTIVA*\n`;
   todos.filter(m=>m.estado==='Activo').forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'} · ${fr}\n`;});
-  b+=`\n_MediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025_`;
+  b+=`\n_MediBitácora Pro · Desarrollado por Limonada Web · © 2025_`;
   openWA(b);showToast('✓ Abriendo WhatsApp...');
 }
 function whatsappResumen(){
@@ -1590,7 +1593,7 @@ function whatsappResumen(){
   meds.forEach(m=>{const f=parseFrec(m.frecuencia||'');let fr='';if(f.tipo==='diaria')fr=`${f.veces||1}x/día · `+(f.horas||[]).join(', ');else if(f.tipo==='semanal')fr=(f.dias||[]).join(' ')+(f.hora?' · '+f.hora:'');else fr=f.texto||'';b+=`• ${m.nombre} · ${m.dosis||'—'} · ${fr}\n`;});
   b+=`\n*ÚLTIMAS ENTRADAS*\n`;
   logs.forEach(l=>{b+=`• ${new Date(l.fecha+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})} | ${l.estado} | Dolor: ${l.dolor}/10\n`;});
-  b+=`\n_No constituye diagnóstico médico._\n_MediBitácora Pro · Desarrollado por Gustavo Molina Zafra · © 2025_`;
+  b+=`\n_No constituye diagnóstico médico._\n_MediBitácora Pro · Desarrollado por Limonada Web · © 2025_`;
   openWA(b);showToast('✓ Abriendo WhatsApp...');
 }
 
@@ -3162,6 +3165,24 @@ function init(){
 }
 
 window.addEventListener('load',()=>{if(localStorage.getItem(SPLASH_KEY)){document.getElementById('splash').style.display='none';mostrarPin();}});
+</script>
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Aviso de cookies">
+  <p>Utilizamos cookies técnicas y almacenamiento local para recordar tus preferencias y mejorar la navegación. </p>
+  <button type="button" id="cookie-accept">Aceptar</button>
+</div>
+<script>
+(function(){
+  var key = 'limonada_cookie_ok_medibitacora_pro';
+  var banner = document.getElementById('cookie-banner');
+  var button = document.getElementById('cookie-accept');
+  if (!banner || !button) return;
+  try { if (localStorage.getItem(key) === '1') return; } catch (e) {}
+  banner.classList.add('is-visible');
+  button.addEventListener('click', function(){
+    try { localStorage.setItem(key, '1'); } catch (e) {}
+    banner.classList.remove('is-visible');
+  });
+})();
 </script>
 </body>
 </html>
